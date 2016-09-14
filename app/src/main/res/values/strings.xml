@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">EasyTrip</string>
+    <string name="lieuETchoixAeroport"></string>
+    <string name="lieuTVafficherAeroports" />
+    <string name="lieuLVlisteAeroports"></string>
+    <string name="lieuHTlisteAeroports">Aéroport, ville, pays, code</string>
+    <string name="accueilTVafficherDepart">Départ</string>
+    <string name="accueilTVafficherArrivee">Arrivée</string>
+    <string name="accueilETChoixDepart" />
+    <string name="accueilETChoixArrivee" />
+</resources>
