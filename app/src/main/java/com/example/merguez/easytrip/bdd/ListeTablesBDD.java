@@ -21,6 +21,10 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
     private static final String NOM_BDD = "easytrip.db";
     private ListeTablesBDD listeTablesBDD;
     private static SQLiteDatabase bdd;
+    private static final String AUCUNE_REPONSE = "Aucune réponse";
+    private static final String REPONSE_VIDE = "";
+    private static final String NOM = "Nom";
+    private static final String VILLE = "Ville";
 
     private static final String CREATE_TABLE_AEROPORTS = "CREATE TABLE " + AeroportBDD.getTableAeroports() + " ("
             + AeroportBDD.getColId() + " INTEGER PRIMARY KEY AUTOINCREMENT, " + AeroportBDD.getColAita() + " TEXT NOT NULL, "
@@ -43,6 +47,22 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
 
     public static SQLiteDatabase getBdd() {
         return bdd;
+    }
+
+    public static String getAucuneReponse() {
+        return AUCUNE_REPONSE;
+    }
+
+    public static String getReponseVide() {
+        return REPONSE_VIDE;
+    }
+
+    public static String getNOM() {
+        return NOM;
+    }
+
+    public static String getVILLE() {
+        return VILLE;
     }
 
     public void open(Context context){
@@ -94,8 +114,8 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
                         if (listeAeroport.get(i).getTimezone() > 0) {
                             timeZone = "+" + timeZone;
                         }
-                        Aeroport.put("Nom",listeAeroport.get(i).getNom() + " (" + listeAeroport.get(i).getAita() + ")");
-                        Aeroport.put("Ville",listeAeroport.get(i).getVille()+ " (GMT " + timeZone + ":00)");
+                        Aeroport.put(NOM,listeAeroport.get(i).getNom() + " (" + listeAeroport.get(i).getAita() + ")");
+                        Aeroport.put(VILLE,listeAeroport.get(i).getVille()+ " (GMT " + timeZone + ":00)");
                         listeDetailleeAeroport.add(Aeroport);
                     } // end if
             } // end for
@@ -106,13 +126,13 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
             }
             else {
                 Aeroport = new HashMap<>();
-                Aeroport.put("text1","Aucune réponse");
+                Aeroport.put(NOM,AUCUNE_REPONSE);
                 listeDetailleeAeroport.add(Aeroport);
                 return listeDetailleeAeroport;
             }
         } else {
             HashMap<String,String> listeVide = new HashMap<>();
-            listeVide.put("text1","");
+            listeVide.put(NOM,REPONSE_VIDE);
             listeDetailleeAeroport.add(listeVide);
             return listeDetailleeAeroport;
         }

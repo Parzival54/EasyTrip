@@ -3,9 +3,14 @@
     <string name="lieuETchoixAeroport"></string>
     <string name="lieuTVafficherAeroports" />
     <string name="lieuLVlisteAeroports"></string>
-    <string name="lieuHTlisteAeroports">Aéroport, ville, pays, code</string>
+    <string name="lieuTVnbResultats"></string>
+    <string name="lieuHTlisteAeroports">-> Aéroport, ville, pays, code</string>
     <string name="accueilTVafficherDepart">Départ</string>
     <string name="accueilTVafficherArrivee">Arrivée</string>
     <string name="accueilETChoixDepart" />
     <string name="accueilETChoixArrivee" />
+    <string name="accueilTVdateDepart">Date aller</string>
+    <string name="accueilETdateDepart" />
+    <string name="accueilTVdateArrivee">Date retour</string>
+    <string name="accueilCVcalendrier"></string>
 </resources>

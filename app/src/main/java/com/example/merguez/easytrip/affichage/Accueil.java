@@ -1,11 +1,15 @@
 package com.example.merguez.easytrip.affichage;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.merguez.easytrip.R;
 
@@ -13,6 +17,8 @@ public class Accueil extends AppCompatActivity {
 
     private static EditText accueilETchoixDepart;
     private static EditText accueilETchoixArrivee;
+    private static EditText accueilETdateDepart;
+    private static EditText accueilETdateArrivee;
     private static Intent accueil_to_lieu;
     private static Bundle extras;
     final static String DEPART = "depart";
@@ -24,10 +30,12 @@ public class Accueil extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_accueil);
+        setContentView(R.layout.accueil_main);
 
         accueilETchoixDepart = (EditText)findViewById(R.id.accueilETChoixDepart);
         accueilETchoixArrivee = (EditText)findViewById(R.id.accueilETChoixArrivee);
+        accueilETdateDepart = (EditText)findViewById(R.id.accueilETdateDepart);
+        accueilETdateArrivee = (EditText)findViewById(R.id.accueilETdateArrivee);
         accueil_to_lieu = new Intent(Accueil.this,ChoixLieu.class);
 
         accueilETchoixDepart.setOnClickListener(new View.OnClickListener() {
@@ -48,6 +56,21 @@ public class Accueil extends AppCompatActivity {
             }
         });
 
+        accueilETdateDepart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                estDepart = true;
+                ouvrirCalendrier();
+            }
+        });
+
+        accueilETdateArrivee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                estDepart = false;
+                ouvrirCalendrier();
+            }
+        });
 
     }
 
@@ -64,4 +87,30 @@ public class Accueil extends AppCompatActivity {
             }
         }
     }
+
+    private void ouvrirCalendrier(){
+        DialogFragment dialogFragment = Calendrier.newInstance(1);
+        dialogFragment.show(getFragmentManager(), "dialog");
+    }
+
+    public static void setAccueilETdateDepart(String date){
+        accueilETdateDepart.setText(date);
+    }
+
+    public static void setAccueilETdateArrivee(String date){
+        accueilETdateArrivee.setText(date);
+    }
+
+    public static String getAccueilETdateDepart(){
+        return accueilETdateDepart.getText().toString();
+    }
+
+    public static String getAccueilETdateArrivee(){
+        return accueilETdateArrivee.getText().toString();
+    }
+
+    public static boolean getEstDepart(){
+        return estDepart;
+    }
+
 }

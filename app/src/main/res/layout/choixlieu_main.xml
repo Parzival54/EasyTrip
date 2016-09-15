@@ -13,16 +13,28 @@
     android:foregroundGravity="top"
     android:gravity="fill_horizontal|top">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:textAlignment="center"
+        android:id="@+id/lieuTVnbResultats"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/lieuETchoixAeroport" />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="40dp"
+        android:maxHeight="40dp"
         android:id="@+id/lieuETchoixAeroport"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/lieuTVnbResultats"
+        android:paddingLeft="5dp"
         android:text="@string/lieuETchoixAeroport"
-        android:background="@color/white"
-        android:layout_alignParentTop="true"
+        android:background="@drawable/rect_blanc_bord_noir"
         android:hint="@string/lieuHTlisteAeroports"
-        android:inputType="text"
+        android:inputType="textShortMessage"
         android:layout_alignParentEnd="true" />
 
     <ListView

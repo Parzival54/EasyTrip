@@ -2,7 +2,6 @@ package com.example.merguez.easytrip.affichage;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -14,16 +13,17 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.text.TextWatcher;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.example.merguez.easytrip.R;
 import com.example.merguez.easytrip.bdd.ListeTablesBDD;
-import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ChoixLieu extends Activity implements TextWatcher {
 
+    private static TextView lieuTVnbResultats;
     private static EditText lieuETchoixAeroport;
     private static ListView lieuLVlisteAeroports;
     private static ListAdapter simpleadapter;
@@ -34,20 +34,20 @@ public class ChoixLieu extends Activity implements TextWatcher {
     private static String resultat;
     private static String aitaResultat;
     private static String nomResultat;
+    private static String nbReponses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.choixlieu_main);
+        lieuTVnbResultats = (TextView) findViewById(R.id.lieuTVnbResultats);
         lieuETchoixAeroport  = (EditText) findViewById(R.id.lieuETchoixAeroport);
         lieuLVlisteAeroports = (ListView) findViewById(R.id.list);
-        listeTablesBDD = new ListeTablesBDD(this);
-        listeTablesBDD.open(this);
         retourAccueil = new Intent();
         extras = getIntent().getExtras();
+        afficherClavier();
 
         lieuETchoixAeroport.addTextChangedListener(this);
-        masquerClavier();
 
         lieuETchoixAeroport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,11 +99,25 @@ public class ChoixLieu extends Activity implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        String choix = lieuETchoixAeroport.getText().toString();
-        listeMaj = listeTablesBDD.RechercheAeroport(choix);
-        Log.w("TAG", "" + listeMaj.get(0).toString());
-        simpleadapter = new SimpleAdapter(getApplicationContext(),listeMaj, R.layout.list_view_lieu, new String[]{"Nom","Ville"}, new int[] {R.id.list_content, R.id.list_content2});
-        lieuLVlisteAeroports.setAdapter(simpleadapter);
+                listeTablesBDD = new ListeTablesBDD(this);
+                listeTablesBDD.open(this);
+                String choix = lieuETchoixAeroport.getText().toString();
+                listeMaj = listeTablesBDD.RechercheAeroport(choix);
+                Log.w("TAG", "" + listeMaj.get(0).toString());
+                simpleadapter = new SimpleAdapter(getApplicationContext(),listeMaj, R.layout.choixlieu_listview, new String[]{"Nom","Ville"}, new int[] {R.id.list_content, R.id.list_content2});
+                lieuLVlisteAeroports.setAdapter(simpleadapter);
+                if (listeMaj.size() > 1) {
+                    nbReponses = "Il y a " + listeMaj.size() + " résultats";
+                } else if (listeMaj.size() == 1 &&
+                        (listeMaj.get(0).get("Nom").equals(ListeTablesBDD.getReponseVide()) || listeMaj.get(0).get("Nom").equals(ListeTablesBDD.getAucuneReponse()))
+                        ) {
+                    nbReponses = null;
+                } else if (listeMaj.size() == 1) {
+                    nbReponses = "Il y a 1 résultat";
+                }
+                lieuTVnbResultats.setText(nbReponses);
+                listeTablesBDD.close();
+
     }
 
     @Override
