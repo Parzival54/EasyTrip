@@ -97,9 +97,9 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
         String[] mots = saisieTexte.split(" ");
 
         if (saisieTexte.length() >= 3) {
-            listeAeroport = AeroportBDD.getAeroportWithNom(saisieTexte);
+            estContenu = true;
+            listeAeroport = AeroportBDD.getAeroportWithNom(mots[0]);
             for (int i = 0; i < listeAeroport.size(); i++) {
-                    estContenu = true;
                     Aeroport = new HashMap<>();
 
 

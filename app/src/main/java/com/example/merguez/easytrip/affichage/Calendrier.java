@@ -2,21 +2,16 @@ package com.example.merguez.easytrip.affichage;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.Calendar;
-import android.icu.util.TimeZone;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CalendarView;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.example.merguez.easytrip.R;
@@ -36,10 +31,10 @@ public class Calendrier extends DialogFragment implements android.content.Dialog
     private Calendar monCalendrier;
     private static String dateDepart = "";
     private static String dateArrivee = "";
+    private static Date dateMinMax;
     private static DecimalFormat format;
     private static SimpleDateFormat simpleDateFormat;
-    private static String dateMin;
-    private static String dateMax;
+    private static boolean estChange = false;
 
 
     public static Calendrier newInstance(int title){
@@ -64,13 +59,30 @@ public class Calendrier extends DialogFragment implements android.content.Dialog
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 date = format.format(dayOfMonth) + "/" + format.format(month+1) + "/" + year;
+                estChange = true;
             }
         });
 
         calendrier.setMinDate(calendrier.getDate());
 
         if (Accueil.getEstDepart() && dateArrivee.length() > 0){
-            calendrier.setMaxDate(Long.parseLong(dateMax));
+            try {
+                dateMinMax = simpleDateFormat.parse(dateArrivee);
+                long dateMax = dateMinMax.getTime();
+                calendrier.setMaxDate(dateMax);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (!Accueil.getEstDepart() && dateDepart.length() > 0){
+            try {
+                dateMinMax = simpleDateFormat.parse(dateDepart);
+                long dateMin = dateMinMax.getTime();
+                calendrier.setMinDate(dateMin);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
         AlertDialog dialog = builder.setPositiveButton("OK", this)
@@ -90,12 +102,14 @@ public class Calendrier extends DialogFragment implements android.content.Dialog
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
             case DialogInterface.BUTTON_POSITIVE:
-                if (Accueil.getEstDepart()){
+                if (Accueil.getEstDepart() && estChange){
                     Accueil.setAccueilETdateDepart(date);
-                    dateMin = date;
-                } else {
+                    dateDepart = date;
+                    estChange = false;
+                } else if (!Accueil.getEstDepart() && estChange) {
                     Accueil.setAccueilETdateArrivee(date);
-                    dateMax = date;
+                    dateArrivee = date;
+                    estChange = false;
                 }
                 break;
             case DialogInterface.BUTTON_NEGATIVE:

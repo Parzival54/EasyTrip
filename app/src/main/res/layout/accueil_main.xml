@@ -23,14 +23,14 @@
         android:id="@+id/accueilTVafficherDepart"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="100dp"
         android:gravity="center"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:id="@+id/accueilETChoixDepart"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="100dp"
         android:layout_alignParentEnd="true"
         android:gravity="center_vertical"
         android:paddingLeft="5dp"
@@ -76,7 +76,7 @@
         android:textSize="20sp"
         android:background="@drawable/rect_blanc_bord_noir"
         android:id="@+id/accueilTVdateDepart"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:gravity="center"
         android:layout_below="@+id/accueilTVafficherArrivee"
         android:layout_alignParentStart="true" />
@@ -121,5 +121,38 @@
         android:layout_alignTop="@+id/accueilTVdateArrivee"
         android:layout_toEndOf="@id/accueilTVdateArrivee"
         android:layout_alignParentEnd="true" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="@string/accueilCBallerRetour"
+        android:checked="false"
+        android:textSize="20sp"
+        android:id="@+id/accueilCBallerRetour"
+        android:layout_above="@+id/accueilETdateDepart"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/accueilTVchoixClasse"
+        android:textSize="20sp"
+        android:background="@drawable/rect_blanc_bord_noir"
+        android:id="@+id/accueilTVchoixClasse"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:layout_below="@+id/accueilTVdateDepart"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/accueilSPclasse"
+        android:background="@drawable/rect_blanc_bord_noir"
+        android:layout_alignTop="@+id/accueilTVchoixClasse"
+        android:layout_alignBottom="@id/accueilTVchoixClasse"
+        android:layout_toEndOf="@+id/accueilTVchoixClasse"
+        android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

@@ -13,4 +13,11 @@
     <string name="accueilETdateDepart" />
     <string name="accueilTVdateArrivee">Date retour</string>
     <string name="accueilCVcalendrier"></string>
+    <string name="accueilCBallerRetour">Aller-retour</string>
+    <string name="accueilTVchoixClasse">Classe</string>
+    <string-array name="accueilSPclasse">
+        <item>Economique</item>
+        <item>Affaires</item>
+        <item>Premiere</item>
+    </string-array>
 </resources>
