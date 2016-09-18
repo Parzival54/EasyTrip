@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.merguez.easytrip.R;
+import com.example.merguez.easytrip.bdd.InsertionDonnees;
+import com.example.merguez.easytrip.bdd.ListeTablesBDD;
 
 public class Accueil extends AppCompatActivity {
 
@@ -28,7 +31,9 @@ public class Accueil extends AppCompatActivity {
     private static EditText accueilETdateDepart;
     private static EditText accueilETdateArrivee;
     private static CheckBox accueilCBallerRetour;
+    private static Button accueilBTvalider;
     private static Intent accueil_to_lieu;
+    private static Intent accueil_to_resultat;
     private static Spinner accueilSPclasse;
     private static ArrayAdapter<CharSequence> classeAdapter;
     private static Bundle extras;
@@ -50,6 +55,7 @@ public class Accueil extends AppCompatActivity {
         accueilTVdateDepart = (TextView)findViewById(R.id.accueilTVdateDepart);
         accueilTVdateArrivee = (TextView)findViewById(R.id.accueilTVdateArrivee);
         accueilCBallerRetour = (CheckBox)findViewById(R.id.accueilCBallerRetour);
+        accueilBTvalider = (Button)findViewById(R.id.accueilBTvalider);
         accueilSPclasse = (Spinner)findViewById(R.id.accueilSPclasse);
         classeAdapter = ArrayAdapter.createFromResource(this,R.array.accueilSPclasse,R.layout.accueil_spinner);
         accueilSPclasse.setAdapter(classeAdapter);
@@ -57,7 +63,7 @@ public class Accueil extends AppCompatActivity {
         accueilETdateArrivee.setVisibility(View.GONE);
 
         accueil_to_lieu = new Intent(Accueil.this,ChoixLieu.class);
-
+        accueil_to_resultat = new Intent(Accueil.this,Recherche.class);
 
         accueilETchoixDepart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +112,13 @@ public class Accueil extends AppCompatActivity {
                     accueilTVdateArrivee.setVisibility(View.GONE);
                     accueilETdateArrivee.setVisibility(View.GONE);
                 }
+            }
+        });
+
+        accueilBTvalider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(accueil_to_resultat);
             }
         });
 

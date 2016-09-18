@@ -11,12 +11,14 @@
         <activity android:name=".affichage.Accueil">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".affichage.ChoixLieu"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".affichage.ChoixLieu"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".affichage.Recherche"></activity>
     </application>
 
 </manifest>
