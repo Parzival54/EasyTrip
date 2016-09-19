@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#a4bbc3"
+    android:weightSum="1"
+    android:clickable="false">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" EASY TRIP "
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textSize="@dimen/abc_text_size_display_2_material"
+        android:textStyle="bold|italic"
+        android:textColor="#053e7f" />
+
+    <TextView
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:text="WE MOVE PEOPLES"
+        android:id="@+id/textView2"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textSize="@dimen/abc_text_size_display_1_material"
+        android:background="#f5a607"
+        android:typeface="monospace"
+        android:textColor="#0d5bf7"
+        android:visibility="visible"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ALLER A RESERVATION"
+        android:id="@+id/resa_button"
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/textView2"
+        android:layout_alignStart="@+id/textView2"
+        android:background="#dfa70e"
+        android:onClick="OpenTravelBooking" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="BIENVENU(E) / WELCOME"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="49dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/textView2"
+        android:gravity="center" />
+
+</RelativeLayout>
