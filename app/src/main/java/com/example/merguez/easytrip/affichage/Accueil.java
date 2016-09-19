@@ -56,6 +56,8 @@ public class Accueil extends AppCompatActivity {
         accueilTVdateArrivee.setVisibility(View.GONE);
         accueilETdateArrivee.setVisibility(View.GONE);
 
+
+
         accueil_to_lieu = new Intent(Accueil.this,ChoixLieu.class);
         accueil_to_resultat = new Intent(Accueil.this,Recherche.class);
 
