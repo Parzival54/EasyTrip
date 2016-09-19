@@ -3,24 +3,18 @@ package com.example.merguez.easytrip.affichage;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.graphics.Color;
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.merguez.easytrip.R;
-import com.example.merguez.easytrip.bdd.InsertionDonnees;
-import com.example.merguez.easytrip.bdd.ListeTablesBDD;
 
 public class Accueil extends AppCompatActivity {
 
@@ -87,7 +81,13 @@ public class Accueil extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 estDepart = true;
-                ouvrirCalendrier();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ouvrirCalendrier();
+                    }
+                }).start();
+
             }
         });
 
@@ -96,7 +96,12 @@ public class Accueil extends AppCompatActivity {
             public void onClick(View v) {
                 estDepart = false;
                 if (accueilCBallerRetour.isChecked()){
-                    ouvrirCalendrier();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ouvrirCalendrier();
+                        }
+                    }).start();
                 }
 
             }
