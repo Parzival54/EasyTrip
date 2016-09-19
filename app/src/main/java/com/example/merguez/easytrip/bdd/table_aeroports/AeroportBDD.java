@@ -154,6 +154,12 @@ public class AeroportBDD extends ListeTablesBDD {
         return cursorToAeroport(cursor);
     }
 
+    public static ArrayList<Aeroport> getAeroportIDWithAita(String aita) {
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_AEROPORTS,new String[] {COL_ID, COL_AITA, COL_NOM, COL_VILLE, COL_PAYS, COL_LATITUDE, COL_LONGITUDE, COL_TIMEZONE},
+                COL_AITA + " LIKE \'" + aita + "\'", null, null, null, null);
+        return cursorToAeroport(cursor);
+    }
+
     public static ArrayList<Aeroport> getAeroportWithAita(String aita) {
         Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_AEROPORTS,new String[] {COL_ID, COL_AITA, COL_NOM, COL_VILLE, COL_PAYS, COL_LATITUDE, COL_LONGITUDE, COL_TIMEZONE},
                 COL_AITA + " LIKE \'" + aita + "\'", null, null, null, null);

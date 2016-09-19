@@ -2,6 +2,7 @@ package com.example.merguez.easytrip.affichage;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +14,14 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.merguez.easytrip.R;
+import com.example.merguez.easytrip.bdd.InsertionDonnees;
+import com.example.merguez.easytrip.bdd.ListeTablesBDD;
+import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
+
+import java.util.List;
 
 public class Accueil extends AppCompatActivity {
 
@@ -168,6 +175,10 @@ public class Accueil extends AppCompatActivity {
 
     public static boolean getEstDepart(){
         return estDepart;
+    }
+
+    public Context getContext() {
+        return getApplicationContext();
     }
 
 }
