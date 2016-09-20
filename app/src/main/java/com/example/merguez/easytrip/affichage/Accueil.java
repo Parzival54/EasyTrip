@@ -13,7 +13,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.example.merguez.easytrip.R;
 
 public class Accueil extends AppCompatActivity {

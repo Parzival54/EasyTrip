@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.merguez.easytrip.R;
+import com.example.merguez.easytrip.bdd.InsertionDonnees;
+import com.example.merguez.easytrip.bdd.ListeTablesBDD;
 
 public class Ouverture extends AppCompatActivity {
   Button resaButton;
@@ -14,6 +16,10 @@ public class Ouverture extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ouverture_main);
+        /*ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
+        listeTablesBDD.open(this);
+        InsertionDonnees.insertionDonnees(this);
+        listeTablesBDD.close();*/
 
         //déclarer le Button Resa
         resaButton=(Button)findViewById(R.id.resa_button);

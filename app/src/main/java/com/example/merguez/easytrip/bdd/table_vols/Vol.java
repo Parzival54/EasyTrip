@@ -1,9 +1,11 @@
 package com.example.merguez.easytrip.bdd.table_vols;
 
+import java.io.Serializable;
+
 /**
  * Created by merguez on 13/09/2016.
  */
-public class Vol {
+public class Vol implements Serializable{
     private int id;
     private String aeroportDepart;
     private String aeroportArrivee;
@@ -90,6 +92,8 @@ public class Vol {
         this.prix = prix;
     }
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     public String toString() {
         return "Vol{" +
@@ -97,5 +101,7 @@ public class Vol {
                 ", heureDepart='" + heureDepart + '\'' + ", heureArrivee='" + heureArrivee + '\'' +
                 ", compagnieID=" + compagnieID + ", classeID=" + classeID + ", prix=" + prix +
                 '}';
+
+
     }
 }

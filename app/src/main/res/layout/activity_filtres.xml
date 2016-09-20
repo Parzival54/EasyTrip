@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choisissez vos préférences"
+            android:id="@+id/filtreTvTitre"
+            android:textSize="@dimen/abc_text_size_display_1_material"
+            android:textStyle="normal|bold"
+            android:gravity="center"
+            android:background="#f5a607"
+            android:textColor="#0d5bf7"
+            android:visibility="visible"
+            android:typeface="monospace" />
+
+
+        <CheckBox
+            android:id="@+id/filtreCbHeureDepMin"
+            android:layout_width="180dp"
+            android:layout_height="35dp"
+            android:text="Heure de départ min"
+            android:layout_marginTop="10dp"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            android:ems="10"
+            android:id="@+id/filtreEdtHeureDepMin"
+            android:layout_gravity="right" />
+
+        <CheckBox
+            android:id="@+id/filtreCbHeureArrMax"
+            android:layout_width="180dp"
+            android:layout_height="35dp"
+            android:text="prix maximum"
+            android:layout_marginTop="5dp"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/filtreEdtHeureArrMax"
+            android:layout_gravity="right" />
+
+        <CheckBox
+            android:id="@+id/filtreCbPrixMax"
+            android:layout_width="180dp"
+            android:layout_height="35dp"
+            android:text="prix maximum"
+            android:layout_marginTop="5dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/filtreEdtPrixMax"
+            android:layout_gravity="right" />
+
+        <Button
+            android:id="@+id/filtrebtnFiltrer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Filtrer" />
+
+    </LinearLayout>
+</RelativeLayout>

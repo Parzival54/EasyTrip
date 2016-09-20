@@ -16,6 +16,8 @@
     <string name="accueilCBallerRetour">Aller-retour</string>
     <string name="accueilTVchoixClasse">Classe</string>
     <string name="accueilBTvalider">RECHERCHER</string>
+    <string name="rechercheETFiltrer">Filtrer</string>
+    <string name="rechercheETRetour">Retour</string>
     <string-array name="accueilSPclasse">
         <item>Economique</item>
         <item>Affaires</item>
