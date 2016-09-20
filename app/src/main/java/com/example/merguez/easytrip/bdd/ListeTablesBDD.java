@@ -132,7 +132,7 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
                             timeZone = "+" + timeZone;
                         }
                         Aeroport.put(NOM,listeAeroport.get(i).getNom() + " (" + listeAeroport.get(i).getAita() + ")");
-                        Aeroport.put(VILLE,listeAeroport.get(i).getVille()+ " (GMT " + timeZone + ":00)");
+                        Aeroport.put(VILLE,listeAeroport.get(i).getVille()+ " (UTC " + timeZone + ":00)");
                         listeDetailleeAeroport.add(Aeroport);
                     } // end if
             } // end for
