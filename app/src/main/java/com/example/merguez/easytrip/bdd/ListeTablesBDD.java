@@ -3,7 +3,9 @@ package com.example.merguez.easytrip.bdd;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
+import com.example.merguez.easytrip.affichage.Accueil;
 import com.example.merguez.easytrip.bdd.table_aeroports.Aeroport;
 import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
 import com.example.merguez.easytrip.bdd.table_classes.ClasseBDD;
@@ -11,6 +13,7 @@ import com.example.merguez.easytrip.bdd.table_vols.VolBDD;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by merguez on 13/09/2016.
@@ -25,6 +28,7 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
     private static final String REPONSE_VIDE = "";
     private static final String NOM = "Nom";
     private static final String VILLE = "Ville";
+    private final Context myContext;
 
     private static final String CREATE_TABLE_AEROPORTS = "CREATE TABLE " + AeroportBDD.getTableAeroports() + " ("
             + AeroportBDD.getColId() + " INTEGER PRIMARY KEY AUTOINCREMENT, " + AeroportBDD.getColAita() + " TEXT NOT NULL, "
@@ -43,6 +47,7 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
 
     public ListeTablesBDD(Context context) {
         super(context, NOM_BDD, null, VERSION_BDD);
+        this.myContext = context;
     }
 
     public static SQLiteDatabase getBdd() {
@@ -79,6 +84,18 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_AEROPORTS);
         db.execSQL(CREATE_TABLE_VOLS);
         db.execSQL(CREATE_TABLE_CLASSES);
+        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(myContext);
+        listeTablesBDD.open(myContext);
+        InsertionDonnees.insertionDonnees(myContext);
+        listeTablesBDD.close();
+        /*new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                Toast.makeText(context,"La bdd est complétée",Toast.LENGTH_LONG).show();
+            }
+        }).start();*/
+
 
     }
 
@@ -115,7 +132,7 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
                             timeZone = "+" + timeZone;
                         }
                         Aeroport.put(NOM,listeAeroport.get(i).getNom() + " (" + listeAeroport.get(i).getAita() + ")");
-                        Aeroport.put(VILLE,listeAeroport.get(i).getVille()+ " (GMT " + timeZone + ":00)");
+                        Aeroport.put(VILLE,listeAeroport.get(i).getVille()+ " (UTC " + timeZone + ":00)");
                         listeDetailleeAeroport.add(Aeroport);
                     } // end if
             } // end for

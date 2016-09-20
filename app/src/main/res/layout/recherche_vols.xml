@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <!-- Defining where should text be placed. You set you text color here-->
+    <TextView
+        android:id="@+id/depart"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:gravity="start"
+        android:text=""
+        android:layout_margin="4dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+    <TextView
+        android:id="@+id/arrivee"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:gravity="start"
+        android:text=""
+        android:layout_below="@id/depart"
+        android:layout_margin="4dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+    <TextView
+        android:id="@+id/nbEtClasse"
+        android:textColor="#f70808"
+        android:gravity="start"
+        android:text=""
+        android:layout_below="@id/arrivee"
+        android:layout_margin="4dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:id="@+id/compagnieEtPrix"
+        android:textColor="#f70808"
+        android:gravity="start"
+        android:text=""
+        android:layout_below="@id/nbEtClasse"
+        android:layout_margin="4dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reserver"
+        android:id="@+id/VolReserver"
+        android:layout_below="@+id/nbEtClasse"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

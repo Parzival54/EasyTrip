@@ -2,9 +2,12 @@ package com.example.merguez.easytrip.bdd.table_vols;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
 import com.example.merguez.easytrip.bdd.ListeTablesBDD;
 import com.example.merguez.easytrip.bdd.table_aeroports.Aeroport;
+
+import java.util.ArrayList;
 
 /**
  * Created by merguez on 13/09/2016.
@@ -101,7 +104,7 @@ public class VolBDD extends ListeTablesBDD {
         return NUM_COL_PRIX;
     }
 
-    public static long insertVol(Vol vol){
+    public static long insertVol(Vol vol) {
         //Création d'un ContentValues (fonctionne comme une HashMap)
         ContentValues values = new ContentValues();
         //on lui ajoute une valeur associé à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
@@ -116,7 +119,7 @@ public class VolBDD extends ListeTablesBDD {
         return ListeTablesBDD.getBdd().insert(TABLE_VOLS, null, values);
     }
 
-    public static int updateAeroport(Vol vol){
+    public static int updateAeroport(Vol vol) {
         int id = vol.getId();
         //La mise à jour d'un livre dans la BDD fonctionne plus ou moins comme une insertion
         //il faut simple préciser quelle livre on doit mettre à jour grâce à l'ID
@@ -128,13 +131,13 @@ public class VolBDD extends ListeTablesBDD {
         values.put(COL_COMPAGNIE_ID, vol.getCompagnieID());
         values.put(COL_CLASSE_ID, vol.getClasseID());
         values.put(COL_PRIX, vol.getPrix());
-        return ListeTablesBDD.getBdd().update(TABLE_VOLS, values, COL_ID + " = " +id, null);
+        return ListeTablesBDD.getBdd().update(TABLE_VOLS, values, COL_ID + " = " + id, null);
     }
 
-    public static int removeAeroportWithID(Aeroport aeroport){
+    public static int removeAeroportWithID(Aeroport aeroport) {
         int id = aeroport.getId();
         //Suppression d'un livre de la BDD grâce à l'ID
-        return ListeTablesBDD.getBdd().delete(TABLE_VOLS, COL_ID + " = " +id, null);
+        return ListeTablesBDD.getBdd().delete(TABLE_VOLS, COL_ID + " = " + id, null);
     }
 
     public static int removeAll() {

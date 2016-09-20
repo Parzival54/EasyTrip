@@ -39,9 +39,6 @@ public class Accueil extends AppCompatActivity {
     private static Intent accueil_to_resultat;
     private static Spinner accueilSPclasse;
     private static ArrayAdapter<CharSequence> classeAdapter;
-    private static Bundle extras;
-    final static String DEPART = "depart";
-    final static String ARRIVEE = "arrivee";
     final static String DEPART_OU_ARRIVEE = "depart ou arrivee";
     final static String RESERVATION = "reservation";
     private static Reservation reservation;
@@ -142,6 +139,7 @@ public class Accueil extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(accueil_to_resultat);
+
             }
         });
 
@@ -170,6 +168,7 @@ public class Accueil extends AppCompatActivity {
                 }
             }
         }
+
     }
 
     private void ouvrirCalendrier(){
