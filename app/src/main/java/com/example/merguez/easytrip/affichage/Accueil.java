@@ -2,9 +2,11 @@ package com.example.merguez.easytrip.affichage;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,8 +15,14 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.merguez.easytrip.R;
+import com.example.merguez.easytrip.bdd.InsertionDonnees;
+import com.example.merguez.easytrip.bdd.ListeTablesBDD;
+import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
+
+import java.util.List;
 
 public class Accueil extends AppCompatActivity {
 
@@ -30,12 +38,11 @@ public class Accueil extends AppCompatActivity {
     private static Intent accueil_to_resultat;
     private static Spinner accueilSPclasse;
     private static ArrayAdapter<CharSequence> classeAdapter;
-    private static Bundle extras;
-    final static String DEPART = "depart";
-    final static String ARRIVEE = "arrivee";
     final static String DEPART_OU_ARRIVEE = "depart ou arrivee";
+    final static String RESERVATION = "reservation";
+    private static Reservation reservation;
     private static boolean estDepart;
-    private static final int REQUEST_CODE = 1;
+    private static final int REQUEST_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +63,8 @@ public class Accueil extends AppCompatActivity {
         accueilTVdateArrivee.setVisibility(View.GONE);
         accueilETdateArrivee.setVisibility(View.GONE);
 
+        reservation = new Reservation();
+
         accueil_to_lieu = new Intent(Accueil.this,ChoixLieu.class);
         accueil_to_resultat = new Intent(Accueil.this,Recherche.class);
 
@@ -64,6 +73,7 @@ public class Accueil extends AppCompatActivity {
             public void onClick(View v) {
                 estDepart = true;
                 accueil_to_lieu.putExtra(Accueil.DEPART_OU_ARRIVEE, estDepart);
+                accueil_to_lieu.putExtra(Accueil.RESERVATION, reservation);
                 startActivityForResult(accueil_to_lieu, REQUEST_CODE);
             }
         });
@@ -73,6 +83,7 @@ public class Accueil extends AppCompatActivity {
             public void onClick(View v) {
                 estDepart = false;
                 accueil_to_lieu.putExtra(Accueil.DEPART_OU_ARRIVEE, estDepart);
+                accueil_to_lieu.putExtra(Accueil.RESERVATION, reservation);
                 startActivityForResult(accueil_to_lieu, REQUEST_CODE);
             }
         });
@@ -124,6 +135,7 @@ public class Accueil extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(accueil_to_resultat);
+
             }
         });
 
@@ -134,15 +146,17 @@ public class Accueil extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (REQUEST_CODE == 1) {
+        if (REQUEST_CODE == 2) {
             if (resultCode == Activity.RESULT_OK) {
+                reservation = (Reservation) data.getSerializableExtra(RESERVATION);
                 if (estDepart) {
-                    accueilETchoixDepart.setText(data.getStringExtra(Accueil.DEPART));
+                    accueilETchoixDepart.setText(reservation.getNomDepart() + " (" + reservation.getAitaDepart() + ")");
                 } else {
-                    accueilETchoixArrivee.setText(data.getStringExtra(Accueil.ARRIVEE));
+                    accueilETchoixArrivee.setText(reservation.getNomArrivee() + " (" + reservation.getAitaArrivee() + ")");
                 }
             }
         }
+
     }
 
     private void ouvrirCalendrier(){
@@ -168,6 +182,10 @@ public class Accueil extends AppCompatActivity {
 
     public static boolean getEstDepart(){
         return estDepart;
+    }
+
+    public Context getContext() {
+        return getApplicationContext();
     }
 
 }
