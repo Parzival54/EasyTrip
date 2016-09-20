@@ -136,29 +136,29 @@
         android:layout_above="@+id/accueilETdateDepart"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/accueilTVchoixClasse"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:background="@drawable/rect_bleufonce_bord_noir"
-        android:id="@+id/accueilTVchoixClasse"
-        android:layout_marginTop="80dp"
-        android:gravity="center"
-        android:layout_below="@+id/accueilTVdateDepart"
-        android:layout_alignParentStart="true" />
+    <!--<TextView-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+        <!--android:text="@string/accueilTVchoixClasse"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="20sp"-->
+        <!--android:background="@drawable/rect_bleufonce_bord_noir"-->
+        <!--android:id="@+id/accueilTVchoixClasse"-->
+        <!--android:layout_marginTop="80dp"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_below="@+id/accueilTVdateDepart"-->
+        <!--android:layout_alignParentStart="true" />-->
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/accueilSPclasse"
-        android:background="@drawable/rect_blanc_bord_noir"
-        android:layout_alignTop="@+id/accueilTVchoixClasse"
-        android:layout_alignBottom="@id/accueilTVchoixClasse"
-        android:layout_toEndOf="@+id/accueilTVchoixClasse"
-        android:layout_alignParentEnd="true"/>
+    <!--<Spinner-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/accueilSPclasse"-->
+        <!--android:background="@drawable/rect_blanc_bord_noir"-->
+        <!--android:layout_alignTop="@+id/accueilTVchoixClasse"-->
+        <!--android:layout_alignBottom="@id/accueilTVchoixClasse"-->
+        <!--android:layout_toEndOf="@+id/accueilTVchoixClasse"-->
+        <!--android:layout_alignParentEnd="true"/>-->
 
     <Button
         android:layout_width="100dp"
@@ -170,5 +170,18 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="33dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rect_bleufonce_bord_noir"
+        android:text="Passagers Type and Number + Class"
+        android:textColor="@color/white"
+        android:id="@+id/accueilNbPassagersButton"
+        android:layout_below="@+id/accueilTVdateDepart"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="50dp"
+        android:layout_alignEnd="@+id/accueilETdateArrivee"
+        android:onClick="OpenPassagersMain"/>
 
 </RelativeLayout>

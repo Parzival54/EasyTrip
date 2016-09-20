@@ -21,8 +21,13 @@ public class Ouverture extends AppCompatActivity {
         InsertionDonnees.insertionDonnees(this);
         listeTablesBDD.close();*/
 
+        //recup du nbre de passagers
+        final String[] nb_passagers = new String[1];
+
+
         //déclarer le Button Resa
         resaButton=(Button)findViewById(R.id.resa_button);
+
 
         //mise en place de l'intent pour aller a TravelBooking;
         resaButton.setOnClickListener(new View.OnClickListener() {
@@ -30,7 +35,11 @@ public class Ouverture extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intentLoadNewActivity = new Intent(Ouverture.this,Accueil.class);
                 startActivity(intentLoadNewActivity);
+
+
             }
         });
+
+
     }
 }
