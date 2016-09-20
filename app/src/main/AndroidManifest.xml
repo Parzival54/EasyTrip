@@ -8,11 +8,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".affichage.Accueil"></activity>
         <activity
             android:name=".affichage.ChoixLieu"
             android:screenOrientation="portrait" />
-        <activity android:name=".affichage.Recherche" />
         <activity android:name=".affichage.Ouverture">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
