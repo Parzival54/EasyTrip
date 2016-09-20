@@ -37,13 +37,14 @@ public class Accueil extends AppCompatActivity {
     private static Button accueilNbPassagersButton;
     private static Intent accueil_to_lieu;
     private static Intent accueil_to_resultat;
+    private static Intent accueil_to_passagers;
     private static Spinner accueilSPclasse;
     private static ArrayAdapter<CharSequence> classeAdapter;
     final static String DEPART_OU_ARRIVEE = "depart ou arrivee";
     final static String RESERVATION = "reservation";
-    private static Reservation reservation;
+    private static Reservation reservation = new Reservation();
     private static boolean estDepart;
-    private static final int REQUEST_CODE = 2;
+    private static final int REQUEST_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +61,12 @@ public class Accueil extends AppCompatActivity {
         accueilBTvalider = (Button)findViewById(R.id.accueilBTvalider);
         //declarer le Button Nb passagers + class
         accueilNbPassagersButton=(Button)findViewById(R.id.accueilNbPassagersButton);
-        accueilSPclasse = (Spinner)findViewById(R.id.accueilSPclasse);
-        classeAdapter = ArrayAdapter.createFromResource(this,R.array.accueilSPclasse,R.layout.accueil_spinner);
-        accueilSPclasse.setAdapter(classeAdapter);
         accueilTVdateArrivee.setVisibility(View.GONE);
         accueilETdateArrivee.setVisibility(View.GONE);
 
-        reservation = new Reservation();
-
         accueil_to_lieu = new Intent(Accueil.this,ChoixLieu.class);
         accueil_to_resultat = new Intent(Accueil.this,Recherche.class);
+        accueil_to_passagers = new Intent(Accueil.this,PassagersMain.class);
 
 
         accueilETchoixDepart.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +135,9 @@ public class Accueil extends AppCompatActivity {
         accueilBTvalider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                reservation.setDateAller(accueilETdateDepart.getText().toString());
+                reservation.setDateRetour(accueilETdateArrivee.getText().toString());
+                Log.w("TAG", reservation.toString());
                 startActivity(accueil_to_resultat);
 
             }
@@ -146,8 +146,8 @@ public class Accueil extends AppCompatActivity {
         accueilNbPassagersButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intentLoadNewActivity = new Intent(Accueil.this,PassagersMain.class);
-                startActivity(intentLoadNewActivity);
+                accueil_to_passagers.putExtra(Accueil.RESERVATION,reservation);
+                startActivityForResult(accueil_to_passagers, REQUEST_CODE+1);
             }
         });
 
@@ -158,15 +158,24 @@ public class Accueil extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (REQUEST_CODE == 2) {
+        reservation = (Reservation) data.getSerializableExtra(RESERVATION);
+        switch (REQUEST_CODE) {
+            case 0:
             if (resultCode == Activity.RESULT_OK) {
-                reservation = (Reservation) data.getSerializableExtra(RESERVATION);
+
                 if (estDepart) {
                     accueilETchoixDepart.setText(reservation.getNomDepart() + " (" + reservation.getAitaDepart() + ")");
                 } else {
                     accueilETchoixArrivee.setText(reservation.getNomArrivee() + " (" + reservation.getAitaArrivee() + ")");
                 }
             }
+
+            case 1:
+            if (resultCode == Activity.RESULT_OK) {
+
+
+            }
+
         }
 
     }
