@@ -26,6 +26,7 @@ public class Accueil extends AppCompatActivity {
     private static EditText accueilETdateArrivee;
     private static CheckBox accueilCBallerRetour;
     private static Button accueilBTvalider;
+    private static Button accueilNbPassagersButton;
     private static Intent accueil_to_lieu;
     private static Intent accueil_to_resultat;
     private static Spinner accueilSPclasse;
@@ -50,9 +51,11 @@ public class Accueil extends AppCompatActivity {
         accueilTVdateArrivee = (TextView)findViewById(R.id.accueilTVdateArrivee);
         accueilCBallerRetour = (CheckBox)findViewById(R.id.accueilCBallerRetour);
         accueilBTvalider = (Button)findViewById(R.id.accueilBTvalider);
-        accueilSPclasse = (Spinner)findViewById(R.id.accueilSPclasse);
-        classeAdapter = ArrayAdapter.createFromResource(this,R.array.accueilSPclasse,R.layout.accueil_spinner);
-        accueilSPclasse.setAdapter(classeAdapter);
+        //declarer le Button Nb passagers + class
+        accueilNbPassagersButton=(Button)findViewById(R.id.accueilNbPassagersButton);
+//        accueilSPclasse = (Spinner)findViewById(R.id.accueilSPclasse);
+//        classeAdapter = ArrayAdapter.createFromResource(this,R.array.accueilSPclasse,R.layout.accueil_spinner);
+//        accueilSPclasse.setAdapter(classeAdapter);
         accueilTVdateArrivee.setVisibility(View.GONE);
         accueilETdateArrivee.setVisibility(View.GONE);
 
@@ -60,6 +63,7 @@ public class Accueil extends AppCompatActivity {
 
         accueil_to_lieu = new Intent(Accueil.this,ChoixLieu.class);
         accueil_to_resultat = new Intent(Accueil.this,Recherche.class);
+
 
         accueilETchoixDepart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +130,14 @@ public class Accueil extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(accueil_to_resultat);
+            }
+        });
+
+        accueilNbPassagersButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intentLoadNewActivity = new Intent(Accueil.this,PassagersMain.class);
+                startActivity(intentLoadNewActivity);
             }
         });
 

@@ -30,13 +30,14 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:paddingLeft="5dp"
         android:inputType="number"
         android:ems="10"
         android:id="@+id/passagerAdulteditText"
         android:layout_marginTop="20dp"
         android:layout_alignParentTop="true"
+        android:text=""
         android:background="@drawable/rect_blanc_bord_noir"
-        android:focusableInTouchMode="false"
         android:layout_alignParentEnd="true" />
 
     <TextView
@@ -57,13 +58,14 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:inputType="number"
+        android:paddingLeft="5dp"
         android:ems="10"
         android:id="@+id/passagersEnfanteditText"
         android:layout_marginTop="36dp"
         android:background="@drawable/rect_blanc_bord_noir"
         android:layout_below="@+id/passagersAdultsEntree"
         android:layout_alignParentEnd="true"
-        android:focusableInTouchMode="false"/>
+        android:text=""/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -83,12 +85,13 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:id="@+id/classeditText"
+        android:paddingLeft="5dp"
         android:layout_alignTop="@+id/passagersClassEntree"
         android:layout_alignBottom="@+id/passagersClassEntree"
         android:layout_alignEnd="@+id/passagersEnfanteditText"
         android:layout_alignStart="@+id/passagersEnfanteditText"
         android:background="@drawable/rect_blanc_bord_noir"
-        android:focusableInTouchMode="false"/>
+        android:text=""/>
 
     <Button
         android:layout_width="wrap_content"
