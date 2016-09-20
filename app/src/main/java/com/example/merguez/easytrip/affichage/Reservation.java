@@ -19,12 +19,14 @@ public class Reservation implements Serializable{
     private boolean AllerRetour;
     private int nbAdultes;
     private int nbEnfants;
+    private String classe;
     private String dateAller;
     private String dateRetour;
 
     public Reservation(){}
 
-    public Reservation(String aitaDepart, String nomDepart, String aitaArrivee, String nomArrivee, int volAller, int volRetour, boolean allerRetour, int nbAdultes, int nbEnfants, String dateAller, String dateRetour) {
+    public Reservation(String aitaDepart, String nomDepart, String aitaArrivee, String nomArrivee, int volAller, int volRetour,
+                       boolean allerRetour, int nbAdultes, int nbEnfants, String classe,String dateAller, String dateRetour) {
         this.aitaDepart = aitaDepart;
         this.nomDepart = nomDepart;
         this.aitaArrivee = aitaArrivee;
@@ -34,8 +36,17 @@ public class Reservation implements Serializable{
         this.AllerRetour = allerRetour;
         this.nbAdultes = nbAdultes;
         this.nbEnfants = nbEnfants;
+        this.classe=classe;
         this.dateAller = dateAller;
         this.dateRetour = dateRetour;
+    }
+
+    public String getClasse() {
+        return classe;
+    }
+
+    public void setClasse(String classe) {
+        this.classe = classe;
     }
 
     public String getAitaDepart() {
@@ -124,6 +135,24 @@ public class Reservation implements Serializable{
 
     public void setNomArrivee(String nomArrivee) {
         this.nomArrivee = nomArrivee;
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "aitaDepart='" + aitaDepart + '\'' +
+                ", nomDepart='" + nomDepart + '\'' +
+                ", aitaArrivee='" + aitaArrivee + '\'' +
+                ", nomArrivee='" + nomArrivee + '\'' +
+                ", volAller=" + volAller +
+                ", volRetour=" + volRetour +
+                ", AllerRetour=" + AllerRetour +
+                ", nbAdultes='" + nbAdultes + '\'' +
+                ", nbEnfants=" + nbEnfants +
+                ", classe='" + classe + '\'' +
+                ", dateAller='" + dateAller + '\'' +
+                ", dateRetour='" + dateRetour + '\'' +
+                '}';
     }
 }
 

@@ -60,13 +60,19 @@ public class Accueil extends AppCompatActivity {
         accueilBTvalider = (Button)findViewById(R.id.accueilBTvalider);
         //declarer le Button Nb passagers + class
         accueilNbPassagersButton=(Button)findViewById(R.id.accueilNbPassagersButton);
-        accueilSPclasse = (Spinner)findViewById(R.id.accueilSPclasse);
-        classeAdapter = ArrayAdapter.createFromResource(this,R.array.accueilSPclasse,R.layout.accueil_spinner);
-        accueilSPclasse.setAdapter(classeAdapter);
+//        accueilSPclasse = (Spinner)findViewById(R.id.accueilSPclasse);
+//        classeAdapter = ArrayAdapter.createFromResource(this,R.array.accueilSPclasse,R.layout.accueil_spinner);
+//        accueilSPclasse.setAdapter(classeAdapter);
         accueilTVdateArrivee.setVisibility(View.GONE);
         accueilETdateArrivee.setVisibility(View.GONE);
 
+//        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
+//        listeTablesBDD.open(this);
+//        InsertionDonnees.insertionDonnees(this);
+//        listeTablesBDD.close();
+
         reservation = new Reservation();
+        reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
 
         accueil_to_lieu = new Intent(Accueil.this,ChoixLieu.class);
         accueil_to_resultat = new Intent(Accueil.this,Recherche.class);
@@ -147,6 +153,7 @@ public class Accueil extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intentLoadNewActivity = new Intent(Accueil.this,PassagersMain.class);
+                intentLoadNewActivity.putExtra(Accueil.RESERVATION, reservation);
                 startActivity(intentLoadNewActivity);
             }
         });

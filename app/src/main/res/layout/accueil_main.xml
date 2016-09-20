@@ -174,14 +174,15 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rect_bleufonce_bord_noir"
-        android:text="Passagers Type and Number + Class"
-        android:textColor="@color/white"
+        android:background="#dfa70e"
+        android:text="Passagers Type and Number + Classe"
+        android:textColor="@color/primary_material_dark"
         android:id="@+id/accueilNbPassagersButton"
         android:layout_below="@+id/accueilTVdateDepart"
         android:layout_alignParentStart="true"
         android:layout_marginTop="50dp"
         android:layout_alignEnd="@+id/accueilETdateArrivee"
-        android:onClick="OpenPassagersMain"/>
+        android:onClick="OpenPassagersMain"
+        android:textStyle="bold" />
 
 </RelativeLayout>
