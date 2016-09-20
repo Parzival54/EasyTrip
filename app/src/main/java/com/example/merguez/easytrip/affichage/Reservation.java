@@ -14,6 +14,7 @@ public class Reservation implements Serializable{
     private String nomDepart;
     private String aitaArrivee;
     private String nomArrivee;
+    private String classe;
     private int volAller;
     private int volRetour;
     private boolean AllerRetour;
@@ -24,11 +25,12 @@ public class Reservation implements Serializable{
 
     public Reservation(){}
 
-    public Reservation(String aitaDepart, String nomDepart, String aitaArrivee, String nomArrivee, int volAller, int volRetour, boolean allerRetour, int nbAdultes, int nbEnfants, String dateAller, String dateRetour) {
+    public Reservation(String aitaDepart, String nomDepart, String aitaArrivee, String nomArrivee, String classe, int volAller, int volRetour, boolean allerRetour, int nbAdultes, int nbEnfants, String dateAller, String dateRetour) {
         this.aitaDepart = aitaDepart;
         this.nomDepart = nomDepart;
         this.aitaArrivee = aitaArrivee;
         this.nomArrivee = nomArrivee;
+        this.classe = classe;
         this.volAller = volAller;
         this.volRetour = volRetour;
         this.AllerRetour = allerRetour;
@@ -124,6 +126,32 @@ public class Reservation implements Serializable{
 
     public void setNomArrivee(String nomArrivee) {
         this.nomArrivee = nomArrivee;
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "aitaDepart='" + aitaDepart + '\'' +
+                ", nomDepart='" + nomDepart + '\'' +
+                ", aitaArrivee='" + aitaArrivee + '\'' +
+                ", nomArrivee='" + nomArrivee + '\'' +
+                ", classe='" + classe + '\'' +
+                ", volAller=" + volAller +
+                ", volRetour=" + volRetour +
+                ", AllerRetour=" + AllerRetour +
+                ", nbAdultes=" + nbAdultes +
+                ", nbEnfants=" + nbEnfants +
+                ", dateAller='" + dateAller + '\'' +
+                ", dateRetour='" + dateRetour + '\'' +
+                '}';
+    }
+
+    public String getClasse() {
+        return classe;
+    }
+
+    public void setClasse(String classe) {
+        this.classe = classe;
     }
 }
 
