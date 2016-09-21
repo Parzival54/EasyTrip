@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#a4bbc3"
+    android:background="@color/blue"
     android:weightSum="1"
     android:clickable="false">
 
@@ -41,7 +41,8 @@
         android:layout_alignEnd="@+id/textView2"
         android:layout_alignStart="@+id/textView2"
         android:background="#dfa70e"
-        android:onClick="OpenTravelBooking" />
+        android:onClick="OpenTravelBooking"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -51,8 +52,10 @@
         android:id="@+id/textView3"
         android:layout_below="@+id/textView2"
         android:layout_marginTop="49dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/textView2"
-        android:gravity="center" />
+        android:gravity="center"
+        android:background="@drawable/rect_bleufonce_bord_noir"
+        android:textColor="@color/white"
+        android:layout_alignEnd="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
 
 </RelativeLayout>
