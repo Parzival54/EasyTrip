@@ -139,7 +139,6 @@ public class Accueil extends AppCompatActivity {
                 reservation.setDateRetour(accueilETdateArrivee.getText().toString());
                 Log.w("TAG", reservation.toString());
                 startActivity(accueil_to_resultat);
-
             }
         });
 
