@@ -93,12 +93,13 @@
         android:background="@drawable/rect_blanc_bord_noir"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:text="RETOUR ACCUEIL"
+        android:textColor="@color/black"
+        android:background="#f5a607"
         android:id="@+id/retourAccueilBtn"
         android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/passagerSPclasse"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
