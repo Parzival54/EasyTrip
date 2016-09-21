@@ -102,7 +102,6 @@ public class Accueil extends AppCompatActivity {
                         ouvrirCalendrier();
                     }
                 }).start();
-
             }
         });
 

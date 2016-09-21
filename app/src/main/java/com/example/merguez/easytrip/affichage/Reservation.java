@@ -159,7 +159,6 @@ public class Reservation implements Serializable{
             return  ((aitaDepart == null) || (aitaArrivee == null)
                     || (nbAdultes == 0) || (dateAller == null));
         }
-
     }
 
 }
