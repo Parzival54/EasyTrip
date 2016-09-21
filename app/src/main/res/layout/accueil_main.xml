@@ -14,6 +14,33 @@
     android:gravity="fill_horizontal|top">
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/accueilTVtitre"
+        android:id="@+id/accueilTVtitre"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textSize="@dimen/abc_text_size_display_2_material"
+        android:textStyle="bold|italic"
+        android:textColor="#053e7f"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:text="@string/accueilTVsousTitre"
+        android:id="@+id/accueilTVsousTitre"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textSize="@dimen/abc_text_size_display_1_material"
+        android:background="#f5a607"
+        android:typeface="monospace"
+        android:textColor="#0d5bf7"
+        android:visibility="visible"
+        android:layout_below="@+id/accueilTVtitre"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
         android:layout_width="80dp"
         android:layout_height="30dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -24,17 +51,18 @@
         android:id="@+id/accueilTVafficherDepart"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="140dp"
         android:gravity="center"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:id="@+id/accueilETChoixDepart"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="140dp"
         android:layout_alignParentEnd="true"
         android:gravity="center_vertical"
-        android:paddingLeft="5dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:background="@drawable/rect_blanc_bord_noir"
         android:focusableInTouchMode="false"
         android:text=""
@@ -136,53 +164,26 @@
         android:layout_above="@+id/accueilETdateDepart"
         android:layout_alignParentStart="true" />
 
-    <!--<TextView-->
-        <!--android:layout_width="150dp"-->
-        <!--android:layout_height="30dp"-->
-        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-        <!--android:text="@string/accueilTVchoixClasse"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textSize="20sp"-->
-        <!--android:background="@drawable/rect_bleufonce_bord_noir"-->
-        <!--android:id="@+id/accueilTVchoixClasse"-->
-        <!--android:layout_marginTop="80dp"-->
-        <!--android:gravity="center"-->
-        <!--android:layout_below="@+id/accueilTVdateDepart"-->
-        <!--android:layout_alignParentStart="true" />-->
-
-    <!--<Spinner-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/accueilSPclasse"-->
-        <!--android:background="@drawable/rect_blanc_bord_noir"-->
-        <!--android:layout_alignTop="@+id/accueilTVchoixClasse"-->
-        <!--android:layout_alignBottom="@id/accueilTVchoixClasse"-->
-        <!--android:layout_toEndOf="@+id/accueilTVchoixClasse"-->
-        <!--android:layout_alignParentEnd="true"/>-->
-
     <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:text="@string/accueilBTvalider"
-        android:textColor="@color/white"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
         android:background="@drawable/rect_bleufonce_bord_noir"
-        android:id="@+id/accueilBTvalider"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="33dp" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#dfa70e"
-        android:text="Passagers Type and Number + Classe"
-        android:textColor="@color/primary_material_dark"
+        android:text="NB PASSAGERS / CLASSE"
+        android:textColor="@color/white"
         android:id="@+id/accueilNbPassagersButton"
         android:layout_below="@+id/accueilTVdateDepart"
         android:layout_alignParentStart="true"
         android:layout_marginTop="50dp"
-        android:layout_alignEnd="@+id/accueilETdateArrivee"
-        android:onClick="OpenPassagersMain"
-        android:textStyle="bold" />
+        android:layout_alignParentEnd="true"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/accueilBTvalider"
+        android:textColor="@color/black"
+        android:background="#f5a607"
+        android:id="@+id/accueilBTvalider"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

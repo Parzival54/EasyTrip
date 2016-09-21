@@ -81,27 +81,25 @@
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/passagersEnfantsEntree" />
 
-    <EditText
+    <Spinner
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:id="@+id/classeditText"
+        android:id="@+id/passagerSPclasse"
         android:paddingLeft="5dp"
         android:layout_alignTop="@+id/passagersClassEntree"
         android:layout_alignBottom="@+id/passagersClassEntree"
         android:layout_alignEnd="@+id/passagersEnfanteditText"
         android:layout_alignStart="@+id/passagersEnfanteditText"
-        android:background="@drawable/rect_blanc_bord_noir"
-        android:text=""/>
+        android:background="@drawable/rect_blanc_bord_noir"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:text="RETOUR ACCUEIL"
+        android:textColor="@color/black"
+        android:background="#f5a607"
         android:id="@+id/retourAccueilBtn"
         android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/classeditText"
-        android:layout_alignParentStart="true"
-        android:background="#dfa70e"
-        android:textStyle="bold" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
