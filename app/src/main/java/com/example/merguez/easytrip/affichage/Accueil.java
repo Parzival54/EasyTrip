@@ -26,6 +26,7 @@ import java.util.List;
 
 public class Accueil extends AppCompatActivity {
 
+    public static boolean retour = false;
     private static EditText accueilETchoixDepart;
     private static EditText accueilETchoixArrivee;
     private static TextView accueilTVdateDepart;
@@ -64,6 +65,7 @@ public class Accueil extends AppCompatActivity {
         accueilETdateArrivee.setVisibility(View.GONE);
 
         reservation = new Reservation();
+      //  reservation = (Reservation) getIntent().getSerializableExtra(RESERVATION);
 
         accueil_to_lieu = new Intent(Accueil.this,ChoixLieu.class);
         accueil_to_resultat = new Intent(Accueil.this,Recherche.class);
@@ -134,6 +136,7 @@ public class Accueil extends AppCompatActivity {
         accueilBTvalider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                accueil_to_resultat.putExtra(Accueil.RESERVATION,reservation);
                 startActivity(accueil_to_resultat);
 
             }
@@ -148,7 +151,7 @@ public class Accueil extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (REQUEST_CODE == 2) {
             if (resultCode == Activity.RESULT_OK) {
-                reservation = (Reservation) data.getSerializableExtra(RESERVATION);
+                reservation = (Reservation)data.getSerializableExtra(Accueil.RESERVATION);
                 if (estDepart) {
                     accueilETchoixDepart.setText(reservation.getNomDepart() + " (" + reservation.getAitaDepart() + ")");
                 } else {

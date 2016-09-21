@@ -1,7 +1,9 @@
 package com.example.merguez.easytrip.affichage;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -12,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import com.example.merguez.easytrip.R;
 import com.example.merguez.easytrip.bdd.table_vols.Vol;
+import com.example.merguez.easytrip.bdd.table_vols.VolList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,7 @@ import java.util.List;
 public class Filtres extends Activity {
 
     private CheckBox filtreCbHeureDepMin, filtreCbHeureArrMax, filtreCbPrixMax;
-    private Spinner filtreEdtHeureDepMin, filtreEdtHeureDepMax, filtreEdtHeureArrMax;
+    private Spinner filtreEdtHeureDepMin, filtreEdtHeureArrMax;
     private EditText filtreEdtPrixMax;
     private Button filtrebtnFiltrer;
 
@@ -33,7 +36,9 @@ public class Filtres extends Activity {
         filtreEdtHeureDepMin = (Spinner) findViewById(R.id.filtreEdtHeureDepMin);
         filtreEdtHeureArrMax = (Spinner) findViewById(R.id.filtreEdtHeureArrMax);
         filtreEdtPrixMax = (EditText) findViewById(R.id.filtreEdtPrixMax);
-        addListenerOnButton();
+        Bundle b = getIntent().getExtras();
+        VolList listeNonFiltree = b.getParcelable("listeVols");
+        addListenerOnButton(listeNonFiltree);
         addItemsOnSpinners();
     }
     public void addItemsOnSpinners() {
@@ -47,7 +52,6 @@ public class Filtres extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listeHoraires);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         filtreEdtHeureDepMin.setAdapter(adapter);
-        filtreEdtHeureDepMax.setAdapter(adapter);
         filtreEdtHeureArrMax.setAdapter(adapter);
     }
 
@@ -92,24 +96,27 @@ public class Filtres extends Activity {
         return Integer.parseInt(s);
     }
 
-    public void addListenerOnButton() {
+    public void addListenerOnButton(final VolList maListeDeVols) {
         filtrebtnFiltrer = (Button) findViewById(R.id.filtrebtnFiltrer);
         filtrebtnFiltrer.setOnClickListener(new OnClickListener() {
             //Run when button is clicked
             @Override
             public void onClick(View v) {
                 ArrayList<Vol> listeFiltree = new ArrayList<Vol>();
-                ArrayList<Vol> listeNonFiltree = (ArrayList<Vol>) getIntent().getSerializableExtra("listeVols");
-                for (int i=0; i<listeNonFiltree.size();i++){
+                for (int i=0; i<maListeDeVols.size();i++){
                     if ((filtreCbHeureDepMin.isChecked() && (stringHeureToInt(filtreEdtHeureDepMin.getSelectedItem().toString())>stringHeureToInt(listeFiltree.get(i).getHeureDepart())))
                             &&(filtreCbHeureArrMax.isChecked() && (stringHeureToInt(filtreEdtHeureArrMax.getSelectedItem().toString())<stringHeureToInt(listeFiltree.get(i).getHeureArrivee())))
                             && (filtreCbPrixMax.isChecked() && (Double.parseDouble(filtreEdtPrixMax.getText().toString())>listeFiltree.get(i).getPrix())))
                     {
-                        listeFiltree.add(listeNonFiltree.get(i));
+                        listeFiltree.add(maListeDeVols.get(i));
                     }
                 }
+                Intent retourSurRecherche = new Intent(Filtres.this, Recherche.class);
+                retourSurRecherche.putExtra("listeVolsFiltree",(Parcelable)listeFiltree);
+                startActivity(retourSurRecherche);
             }
         });
+
 
     }
 }
