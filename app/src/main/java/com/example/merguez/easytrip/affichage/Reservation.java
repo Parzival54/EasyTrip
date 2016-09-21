@@ -1,9 +1,6 @@
 package com.example.merguez.easytrip.affichage;
 
-import com.example.merguez.easytrip.bdd.table_vols.Vol;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * Created by merguez on 19/09/2016.
@@ -14,39 +11,30 @@ public class Reservation implements Serializable{
     private String nomDepart;
     private String aitaArrivee;
     private String nomArrivee;
+    private String classe;
     private int volAller;
     private int volRetour;
-    private boolean AllerRetour;
+    private boolean allerRetour;
     private int nbAdultes;
     private int nbEnfants;
-    private String classe;
     private String dateAller;
     private String dateRetour;
 
     public Reservation(){}
 
-    public Reservation(String aitaDepart, String nomDepart, String aitaArrivee, String nomArrivee, int volAller, int volRetour,
-                       boolean allerRetour, int nbAdultes, int nbEnfants, String classe,String dateAller, String dateRetour) {
+    public Reservation(String aitaDepart, String nomDepart, String aitaArrivee, String nomArrivee, String classe, int volAller, int volRetour, boolean allerRetour, int nbAdultes, int nbEnfants, String dateAller, String dateRetour) {
         this.aitaDepart = aitaDepart;
         this.nomDepart = nomDepart;
         this.aitaArrivee = aitaArrivee;
         this.nomArrivee = nomArrivee;
+        this.classe = classe;
         this.volAller = volAller;
         this.volRetour = volRetour;
-        this.AllerRetour = allerRetour;
+        this.allerRetour = allerRetour;
         this.nbAdultes = nbAdultes;
         this.nbEnfants = nbEnfants;
-        this.classe=classe;
         this.dateAller = dateAller;
         this.dateRetour = dateRetour;
-    }
-
-    public String getClasse() {
-        return classe;
-    }
-
-    public void setClasse(String classe) {
-        this.classe = classe;
     }
 
     public String getAitaDepart() {
@@ -82,11 +70,11 @@ public class Reservation implements Serializable{
     }
 
     public boolean isAllerRetour() {
-        return AllerRetour;
+        return allerRetour;
     }
 
     public void setAllerRetour(boolean allerRetour) {
-        AllerRetour = allerRetour;
+        this.allerRetour = allerRetour;
     }
 
     public int getNbAdultes() {
@@ -144,15 +132,34 @@ public class Reservation implements Serializable{
                 ", nomDepart='" + nomDepart + '\'' +
                 ", aitaArrivee='" + aitaArrivee + '\'' +
                 ", nomArrivee='" + nomArrivee + '\'' +
+                ", classe='" + classe + '\'' +
                 ", volAller=" + volAller +
                 ", volRetour=" + volRetour +
-                ", AllerRetour=" + AllerRetour +
-                ", nbAdultes='" + nbAdultes + '\'' +
+                ", allerRetour=" + allerRetour +
+                ", nbAdultes=" + nbAdultes +
                 ", nbEnfants=" + nbEnfants +
-                ", classe='" + classe + '\'' +
                 ", dateAller='" + dateAller + '\'' +
                 ", dateRetour='" + dateRetour + '\'' +
                 '}';
     }
+
+    public String getClasse() {
+        return classe;
+    }
+
+    public void setClasse(String classe) {
+        this.classe = classe;
+    }
+
+    public boolean estComplete() {
+        if (allerRetour){
+            return  ((aitaDepart == null) || (aitaArrivee == null) || (nbAdultes == 0)
+                    || (dateAller == null) || (dateRetour == null));
+        } else {
+            return  ((aitaDepart == null) || (aitaArrivee == null)
+                    || (nbAdultes == 0) || (dateAller == null));
+        }
+    }
+
 }
 

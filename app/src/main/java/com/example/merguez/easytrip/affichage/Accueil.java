@@ -37,13 +37,14 @@ public class Accueil extends AppCompatActivity {
     private static Button accueilNbPassagersButton;
     private static Intent accueil_to_lieu;
     private static Intent accueil_to_resultat;
+    private static Intent accueil_to_passagers;
     private static Spinner accueilSPclasse;
     private static ArrayAdapter<CharSequence> classeAdapter;
     final static String DEPART_OU_ARRIVEE = "depart ou arrivee";
     final static String RESERVATION = "reservation";
-    private static Reservation reservation;
+    private static Reservation reservation = new Reservation();
     private static boolean estDepart;
-    private static final int REQUEST_CODE = 2;
+    private static final int REQUEST_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,24 +61,15 @@ public class Accueil extends AppCompatActivity {
         accueilBTvalider = (Button)findViewById(R.id.accueilBTvalider);
         //declarer le Button Nb passagers + class
         accueilNbPassagersButton=(Button)findViewById(R.id.accueilNbPassagersButton);
-//        accueilSPclasse = (Spinner)findViewById(R.id.accueilSPclasse);
-//        classeAdapter = ArrayAdapter.createFromResource(this,R.array.accueilSPclasse,R.layout.accueil_spinner);
-//        accueilSPclasse.setAdapter(classeAdapter);
         accueilTVdateArrivee.setVisibility(View.GONE);
         accueilETdateArrivee.setVisibility(View.GONE);
 
-//        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
-//        listeTablesBDD.open(this);
-//        InsertionDonnees.insertionDonnees(this);
-//        listeTablesBDD.close();
-
-        reservation = new Reservation();
-        reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
-
         accueil_to_lieu = new Intent(Accueil.this,ChoixLieu.class);
         accueil_to_resultat = new Intent(Accueil.this,Recherche.class);
+        accueil_to_passagers = new Intent(Accueil.this,PassagersMain.class);
 
 
+        // sélection de l'aéroport de départ -> ouverture de l'activité ChoixLieu
         accueilETchoixDepart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +80,7 @@ public class Accueil extends AppCompatActivity {
             }
         });
 
+        // sélection de l'aéroport d'arrivée -> ouverture de l'activité ChoixLieu
         accueilETchoixArrivee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +91,7 @@ public class Accueil extends AppCompatActivity {
             }
         });
 
+        // sélection de la date de départ -> ouverture de l'activité Calendrier (DialogFragment)
         accueilETdateDepart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,10 +102,10 @@ public class Accueil extends AppCompatActivity {
                         ouvrirCalendrier();
                     }
                 }).start();
-
             }
         });
 
+        // sélection de la date de retour -> ouverture de l'activité Calendrier (DialogFragment)
         accueilETdateArrivee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,33 +122,40 @@ public class Accueil extends AppCompatActivity {
             }
         });
 
+        // vérification du choix aller simple ou aller retour via un checkbox
         accueilCBallerRetour.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (accueilCBallerRetour.isChecked()){
                     accueilTVdateArrivee.setVisibility(View.VISIBLE);
                     accueilETdateArrivee.setVisibility(View.VISIBLE);
+                    reservation.setAllerRetour(true);
                 } else {
                     accueilTVdateArrivee.setVisibility(View.GONE);
                     accueilETdateArrivee.setVisibility(View.GONE);
+                    reservation.setAllerRetour(false);
                 }
             }
         });
 
+        // recherche des aéroports avec les données choisies puis passage à l'activité Recherche pour l'affichage des résultats
         accueilBTvalider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                reservation.setDateAller(accueilETdateDepart.getText().toString());
+                reservation.setDateRetour(accueilETdateArrivee.getText().toString());
+                Log.w("TAG", reservation.toString());
+                Log.w("TAG", "" + reservation.estComplete());
                 startActivity(accueil_to_resultat);
-
             }
         });
 
+        // sélection du nombre de passagers et de la classe -> ouverture de l'activité Passagers
         accueilNbPassagersButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intentLoadNewActivity = new Intent(Accueil.this,PassagersMain.class);
-                intentLoadNewActivity.putExtra(Accueil.RESERVATION, reservation);
-                startActivity(intentLoadNewActivity);
+                accueil_to_passagers.putExtra(Accueil.RESERVATION,reservation);
+                startActivityForResult(accueil_to_passagers, REQUEST_CODE+1);
             }
         });
 
@@ -163,25 +164,41 @@ public class Accueil extends AppCompatActivity {
     }
 
     @Override
+    // affichage des aéroports en fonction de la sélection faite dans l'activité ChoixLieu
+    // + récupération du nombre de passagers et de la classe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (REQUEST_CODE == 2) {
+        reservation = (Reservation) data.getSerializableExtra(RESERVATION);
+        switch (REQUEST_CODE) {
+            case 0:
             if (resultCode == Activity.RESULT_OK) {
-                reservation = (Reservation) data.getSerializableExtra(RESERVATION);
+
                 if (estDepart) {
-                    accueilETchoixDepart.setText(reservation.getNomDepart() + " (" + reservation.getAitaDepart() + ")");
+                    String affichageDepart = reservation.getNomDepart() + " (" + reservation.getAitaDepart() + ")";
+                    accueilETchoixDepart.setText(affichageDepart);
                 } else {
-                    accueilETchoixArrivee.setText(reservation.getNomArrivee() + " (" + reservation.getAitaArrivee() + ")");
+                    String affichageArrivee = reservation.getNomArrivee() + " (" + reservation.getAitaArrivee() + ")";
+                    accueilETchoixArrivee.setText(affichageArrivee);
                 }
             }
+
+            case 1:
+            if (resultCode == Activity.RESULT_OK) {
+
+
+            }
+
         }
 
     }
 
+    // ouverture du DialogFragment Calendrier pour choisir une date
     private void ouvrirCalendrier(){
         DialogFragment dialogFragment = Calendrier.newInstance(1);
         dialogFragment.show(getFragmentManager(), "dialog");
     }
+
+    // getters et setters
 
     public static void setAccueilETdateDepart(String date){
         accueilETdateDepart.setText(date);
