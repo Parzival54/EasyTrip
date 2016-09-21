@@ -19,6 +19,7 @@ import com.example.merguez.easytrip.bdd.RequetesBDD;
 import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
 import com.example.merguez.easytrip.bdd.table_vols.Vol;
 import com.example.merguez.easytrip.bdd.table_vols.VolBDD;
+import com.example.merguez.easytrip.bdd.table_vols.VolList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,24 +34,33 @@ public class Recherche extends AppCompatActivity {
     Button volsBtnRetour;
     TextView volsTvSelection;
     ListView volsElvListeVols;
+    Button volsBtnVol;
     Spinner spinner;
-    private static ArrayList<Vol> listeNonFiltree;
-    private static ArrayList<Vol> listeFiltree;
+    private static Reservation reservation;
+    private static VolList listeVols;
+    private static VolList listeVolsFiltree = new VolList();
+    final static String LISTE_VOLS_FILTREE = "liste vols filtree";
+    private static Intent rechercheToFiltre;
+    private static Intent rechercheToAccueil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recherche_main);
-
+        reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
+        listeVols = (VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS);
+        selectionListeFiltree();
         volsBtnFiltrer = (Button) findViewById(R.id.volsBtnFiltrer);
         volsBtnRetour = (Button) findViewById(R.id.volsBtnRetour);
         volsTvSelection = (TextView) findViewById(R.id.volsTvSelection);
         volsElvListeVols = (ListView) findViewById(R.id.volsElvListeVols);
+        volsBtnVol = (Button) findViewById(R.id.VolReserver);
         addItemsOnSpinner();
         volsTvSelection.setText("Selectionner votre vol en aller simple");
         volsTvSelection.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-        fillList();
-
+        rechercheToFiltre = new Intent(Recherche.this, Filtres.class);
+        rechercheToAccueil = new Intent(Recherche.this, Accueil.class);
+        remplirListView();
 
         volsBtnFiltrer.setOnClickListener(new View.OnClickListener()
 
@@ -59,9 +69,9 @@ public class Recherche extends AppCompatActivity {
                                               public void onClick(View v) {
                                                   //ArrayList<Vol> listeNonFiltree = new ArrayList<Vol>();
                                                   //listeNonFiltree = liste;
-                                                  Intent envoieSurFiltre = new Intent(Recherche.this, Filtres.class);
-                                                  envoieSurFiltre.putExtra("listeVols",(Parcelable)listeNonFiltree);
-                                                  startActivity(envoieSurFiltre);
+                                                  rechercheToFiltre.putExtra(Accueil.LISTE_VOLS, (Parcelable) listeVols);
+                                                  rechercheToFiltre.putExtra(Accueil.RESERVATION, reservation);
+                                                  startActivity(rechercheToFiltre);
                                               }
                                           }
 
@@ -72,8 +82,8 @@ public class Recherche extends AppCompatActivity {
                                          {
                                              @Override
                                              public void onClick(View v) {
-
-
+                                                 Accueil.accueilToRecherche = true;
+                                                 startActivity(rechercheToAccueil);
                                              }
                                          }
 
@@ -93,58 +103,63 @@ public class Recherche extends AppCompatActivity {
         spinner.setAdapter(choixTris);
     }
 
-    /*private void filtrerMaxHeureDep(String heureMax){
-        for (int i=0; i<liste.size();i++) {
-            if (conversionStringEntier(liste.get(i).getHeureDepart())>conversionStringEntier(heureMax)) {
-                liste.remove(i);
-            }
-        }
-    }*/
-
-    /*private int conversionStringEntier(String heure) {
-        int res =  Integer.parseInt(heure.substring(0,2)+ heure.substring(2,4));
-        return  res;
-    }*/
-
-    private void fillList() {
-        //int depId = getIntent().getIntExtra(Accueil.NOMS_DEP,-1);
-        //int arrId = getIntent().getIntExtra(Accueil.NOMS_ARR,-1);
-        String depAita = "CDG";
-        String arrAita = "ICN";
+    private void remplirListView() {
         ListView vue = (ListView) findViewById(R.id.volsElvListeVols);
-
-        RequetesBDD requeteBDD = new RequetesBDD(this);
-        requeteBDD.open();
-
         List<HashMap<String, String>> listItem = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> element;
-        RequetesBDD requetesBDD = new RequetesBDD(this);
-        requetesBDD.open();
-        ArrayList<Vol> liste = new ArrayList<Vol>();
-        liste = requetesBDD.getVolsWithAita(depAita, arrAita);
-        requetesBDD.close();
-        int nbVols = liste.size();
-
-        for (int i = 0; i < nbVols; i++) {
-            String heureArr = liste.get(i).getHeureArrivee();
-            String lendemain = "";
-            if (heureArr.substring(heureArr.length() - 1).equals("1")) {
-                lendemain = " (lendemain)";
-            }
+        if (listeVolsFiltree == null || listeVolsFiltree.size()==0) {
             element = new HashMap<String, String>();
-            element.put("Depart", "Départ: " + " (" + depAita + ") " + liste.get(i).getHeureDepart());
-            element.put("Arrivee", "Arrivée: " + " (" + arrAita + ") "  + heureArr.substring(0, heureArr.length() - 2) + lendemain);
-            element.put("nbEtClasse", "1 adulte    ECO");
-            element.put("compEtPrix", "Compagnie: KOREAN AIR    Prix: " + liste.get(i).getPrix());
+            element.put("Horaires","Il n'y a aucun vol correspondant à votre recherche.");
+            //volsBtnVol.setVisibility(View.INVISIBLE);
             listItem.add(element);
         }
-        requeteBDD.close();
+        else {
+            int nbVols = listeVolsFiltree.size();
+            String depAita = reservation.getAitaDepart();
+            String arrAita = reservation.getAitaArrivee();
+            int nbAdulte = reservation.getNbAdultes();
+            int nbEnfants = reservation.getNbEnfants();
+            String libelleAdultes = "";
+            String libelleEnfants = "";
+            if (nbAdulte == 1)
+                libelleAdultes = "1 adulte  ";
+            if (nbAdulte > 1)
+                libelleAdultes = nbAdulte + " adultes  ";
+            if (nbEnfants == 1)
+                libelleEnfants = "1 enfant    ";
+            if (nbEnfants > 1)
+                libelleEnfants = nbEnfants + " enfants    ";
+
+            for (int i = 0; i < nbVols; i++) {
+                Vol v = listeVolsFiltree.get(i);
+                String heureArr = v.getHeureArrivee();
+                String lendemain = "";
+                if (heureArr.substring(heureArr.length() - 1).equals("1")) {
+                    lendemain = "lendemain";
+                }
+                heureArr = heureArr.substring(0, heureArr.length() - 2);
+                double prixTotal = (double) ((int) (v.getPrix() * (nbAdulte + nbEnfants * 0.8) * 100)) / 100;
+                element = new HashMap<String, String>();
+                element.put("Horaires", v.getHeureDepart() + " (" + depAita + ")  \u2794  " + heureArr + " (" + arrAita + ") " + lendemain);
+                element.put("nbPassagersEtPrix", libelleAdultes + libelleEnfants + "Prix total: " + prixTotal + " €");
+                element.put("classe", "Classe: " + reservation.getClasse());
+                listItem.add(element);
+            }
+        }
 
        /* ArrayAdapter<String> itemsAdapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, listItem);
         //On attribut à notre listView l'adapter que l'on vient de créer
         volsElvListeVols.setAdapter(itemsAdapter);*/
-        ListAdapter adapter = new SimpleAdapter(this, listItem, R.layout.recherche_vols, new String[]{"Depart", "Arrivee", "nbEtClasse", "compEtPrix"}, new int[]{R.id.depart, R.id.arrivee, R.id.nbEtClasse, R.id.compagnieEtPrix});
+        ListAdapter adapter = new SimpleAdapter(this, listItem, R.layout.recherche_vols, new String[]{"Horaires", "nbPassagersEtPrix", "classe"}, new int[]{R.id.horaires, R.id.nbPassagersEtPrix, R.id.classe});
         vue.setAdapter(adapter);
     }
+
+     private void selectionListeFiltree() {
+        if (Accueil.accueilToRecherche) {
+            listeVolsFiltree = listeVols;
+            Accueil.accueilToRecherche = false;
+        } else
+            listeVolsFiltree = (VolList) getIntent().getParcelableExtra(Recherche.LISTE_VOLS_FILTREE);
     }
+}

@@ -41,7 +41,7 @@
             android:id="@+id/filtreCbHeureArrMax"
             android:layout_width="180dp"
             android:layout_height="35dp"
-            android:text="prix maximum"
+            android:text="Heure d'arrivée max"
             android:layout_marginTop="5dp"/>
 
         <Spinner
@@ -56,7 +56,7 @@
             android:id="@+id/filtreCbPrixMax"
             android:layout_width="180dp"
             android:layout_height="35dp"
-            android:text="prix maximum"
+            android:text="prix maximum (en euros)"
             android:layout_marginTop="5dp"/>
 
         <EditText

@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -25,21 +26,75 @@ public class Filtres extends Activity {
     private Spinner filtreEdtHeureDepMin, filtreEdtHeureArrMax;
     private EditText filtreEdtPrixMax;
     private Button filtrebtnFiltrer;
+    private static Reservation reservation;
+    private static VolList listeVols;
+    private static VolList listeVolsFiltree = new VolList();
+    private static Intent filtresToRecherche;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtres);
+        listeVols = (VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS);
         filtreCbHeureDepMin = (CheckBox) findViewById(R.id.filtreCbHeureDepMin);
         filtreCbHeureArrMax = (CheckBox) findViewById(R.id.filtreCbHeureArrMax);
         filtreCbPrixMax = (CheckBox) findViewById(R.id.filtreCbPrixMax);
         filtreEdtHeureDepMin = (Spinner) findViewById(R.id.filtreEdtHeureDepMin);
         filtreEdtHeureArrMax = (Spinner) findViewById(R.id.filtreEdtHeureArrMax);
         filtreEdtPrixMax = (EditText) findViewById(R.id.filtreEdtPrixMax);
-        Bundle b = getIntent().getExtras();
-        VolList listeNonFiltree = b.getParcelable("listeVols");
-        addListenerOnButton(listeNonFiltree);
+        reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
+        listeVols = (VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS);
+        filtresToRecherche = new Intent(Filtres.this, Recherche.class);
+        addListenerOnButton();
         addItemsOnSpinners();
+        filtreEdtHeureDepMin.setEnabled(false);
+        filtreEdtHeureDepMin.setClickable(false);
+        filtreEdtHeureArrMax.setEnabled(false);
+        filtreEdtHeureArrMax.setClickable(false);
+        filtreEdtPrixMax.setEnabled(false);
+        filtreEdtPrixMax.setClickable(false);
+
+        filtreCbHeureDepMin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (filtreCbHeureDepMin.isChecked()) {
+                    filtreEdtHeureDepMin.setEnabled(true);
+                    filtreEdtHeureDepMin.setClickable(true);
+                }
+                else {
+                    filtreEdtHeureDepMin.setEnabled(false);
+                    filtreEdtHeureDepMin.setClickable(false);
+                }
+            }
+        });
+
+        filtreCbHeureArrMax.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (filtreCbHeureArrMax.isChecked()) {
+                    filtreEdtHeureArrMax.setEnabled(true);
+                    filtreEdtHeureArrMax.setClickable(true);
+                }
+                else {
+                    filtreEdtHeureArrMax.setEnabled(false);
+                    filtreEdtHeureArrMax.setClickable(false);
+                }
+            }
+        });
+
+        filtreCbPrixMax.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (filtreCbPrixMax.isChecked()) {
+                    filtreEdtPrixMax.setEnabled(true);
+                    filtreEdtPrixMax.setClickable(true);
+                }
+                else {
+                    filtreEdtPrixMax.setEnabled(false);
+                    filtreEdtPrixMax.setClickable(false);
+                }
+            }
+        });
     }
     public void addItemsOnSpinners() {
         List<String> listeHoraires = new ArrayList<String>();
@@ -54,6 +109,7 @@ public class Filtres extends Activity {
         filtreEdtHeureDepMin.setAdapter(adapter);
         filtreEdtHeureArrMax.setAdapter(adapter);
     }
+
 
     /*public void addListenerOnChkHeureDepMin() {
         filtreCbHeureDepMin = (CheckBox) findViewById(R.id.filtreCbHeureDepMin);
@@ -96,24 +152,26 @@ public class Filtres extends Activity {
         return Integer.parseInt(s);
     }
 
-    public void addListenerOnButton(final VolList maListeDeVols) {
+    public void addListenerOnButton() {
         filtrebtnFiltrer = (Button) findViewById(R.id.filtrebtnFiltrer);
         filtrebtnFiltrer.setOnClickListener(new OnClickListener() {
             //Run when button is clicked
             @Override
             public void onClick(View v) {
-                ArrayList<Vol> listeFiltree = new ArrayList<Vol>();
-                for (int i=0; i<maListeDeVols.size();i++){
-                    if ((filtreCbHeureDepMin.isChecked() && (stringHeureToInt(filtreEdtHeureDepMin.getSelectedItem().toString())>stringHeureToInt(listeFiltree.get(i).getHeureDepart())))
-                            &&(filtreCbHeureArrMax.isChecked() && (stringHeureToInt(filtreEdtHeureArrMax.getSelectedItem().toString())<stringHeureToInt(listeFiltree.get(i).getHeureArrivee())))
-                            && (filtreCbPrixMax.isChecked() && (Double.parseDouble(filtreEdtPrixMax.getText().toString())>listeFiltree.get(i).getPrix())))
+                listeVolsFiltree.clear();
+                for (int i=0; i<listeVols.size();i++){
+                    double prixTotal = (double)(((int)(listeVols.get(i).getPrix()*(reservation.getNbAdultes()+reservation.getNbEnfants()*0.8)*100))/100);
+                    if ((!(filtreCbHeureDepMin.isChecked()) || (stringHeureToInt(filtreEdtHeureDepMin.getSelectedItem().toString())<stringHeureToInt(listeVols.get(i).getHeureDepart())))
+                            &&(!(filtreCbHeureArrMax.isChecked()) || (stringHeureToInt(filtreEdtHeureArrMax.getSelectedItem().toString())>stringHeureToInt(listeVols.get(i).getHeureArrivee())))
+                            && (!(filtreCbPrixMax.isChecked()) || (Double.parseDouble(filtreEdtPrixMax.getText().toString())> prixTotal)))
                     {
-                        listeFiltree.add(maListeDeVols.get(i));
+                        listeVolsFiltree.add(listeVols.get(i));
                     }
                 }
-                Intent retourSurRecherche = new Intent(Filtres.this, Recherche.class);
-                retourSurRecherche.putExtra("listeVolsFiltree",(Parcelable)listeFiltree);
-                startActivity(retourSurRecherche);
+                filtresToRecherche.putExtra(Recherche.LISTE_VOLS_FILTREE,(Parcelable)listeVolsFiltree);
+                filtresToRecherche.putExtra(Accueil.LISTE_VOLS, (Parcelable)listeVols);
+                filtresToRecherche.putExtra(Accueil.RESERVATION, reservation);
+                startActivity(filtresToRecherche);
             }
         });
 
