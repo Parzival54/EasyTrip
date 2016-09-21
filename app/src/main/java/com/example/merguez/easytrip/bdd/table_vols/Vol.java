@@ -1,11 +1,14 @@
 package com.example.merguez.easytrip.bdd.table_vols;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
  * Created by merguez on 13/09/2016.
  */
-public class Vol implements Serializable{
+public class Vol implements Parcelable{
     private int id;
     private String aeroportDepart;
     private String aeroportArrivee;
@@ -101,7 +104,56 @@ public class Vol implements Serializable{
                 ", heureDepart='" + heureDepart + '\'' + ", heureArrivee='" + heureArrivee + '\'' +
                 ", compagnieID=" + compagnieID + ", classeID=" + classeID + ", prix=" + prix +
                 '}';
+    }
 
+    public Vol(Parcel in)
+    {
+        this.getFromParcel(in);
+    }
 
+    @SuppressWarnings("rawtypes")
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
+    {
+        public Vol createFromParcel(Parcel in)
+        {
+            return new Vol(in);
+        }
+
+        @Override
+        public Object[] newArray(int size) {
+            return null;
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    //On ecrit dans le parcel les données de notre objet
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeInt(this.getId());
+        dest.writeString(this.getAeroportDepart());
+        dest.writeString(this.getAeroportArrivee());
+        dest.writeString(this.getHeureDepart());
+        dest.writeString(this.getHeureArrivee());
+        dest.writeInt(this.getCompagnieID());
+        dest.writeInt(this.getClasseID());
+        dest.writeDouble(this.getPrix());
+    }
+
+    //On va ici hydrater notre objet à partir du Parcel
+    public void getFromParcel(Parcel in)
+    {
+        this.setID(in.readInt());
+        this.setAeroportDepart(in.readString());
+        this.setAeroportArrivee(in.readString());
+        this.setHeureDepart(in.readString());
+        this.setHeureArrivee(in.readString());
+        this.setCompagnieID(in.readInt());
+        this.setClasseID(in.readInt());
+        this.setPrix(in.readDouble());
     }
 }
