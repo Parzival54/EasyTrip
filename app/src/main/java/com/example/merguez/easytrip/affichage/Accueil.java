@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -20,12 +21,17 @@ import android.widget.Toast;
 import com.example.merguez.easytrip.R;
 import com.example.merguez.easytrip.bdd.InsertionDonnees;
 import com.example.merguez.easytrip.bdd.ListeTablesBDD;
+import com.example.merguez.easytrip.bdd.RequetesBDD;
 import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
+import com.example.merguez.easytrip.bdd.table_vols.Vol;
+import com.example.merguez.easytrip.bdd.table_vols.VolList;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Accueil extends AppCompatActivity {
-
+    public static boolean accueilToRecherche = true;
     private static EditText accueilETchoixDepart;
     private static EditText accueilETchoixArrivee;
     private static TextView accueilTVdateDepart;
@@ -43,6 +49,10 @@ public class Accueil extends AppCompatActivity {
     final static String DEPART_OU_ARRIVEE = "depart ou arrivee";
     final static String RESERVATION = "reservation";
     private static Reservation reservation = new Reservation();
+    final static String LISTE_VOLS = "liste vols";
+    private static VolList listeVols = new VolList();
+    //final static String LISTE_VOLS_FILTREE = "liste vols filtree";
+    //private static VolList listeVolsFiltree = new VolList();
     private static boolean estDepart;
     private static final int REQUEST_CODE = 0;
 
@@ -118,6 +128,7 @@ public class Accueil extends AppCompatActivity {
                         }
                     }).start();
                 }
+
             }
         });
 
@@ -148,6 +159,9 @@ public class Accueil extends AppCompatActivity {
                     reservation.setDateRetour(accueilETdateArrivee.getText().toString());
                 }
                 if (reservation.estComplete() && !reservation.getAitaDepart().equals(reservation.getAitaArrivee())){
+                    selectionListeVols();
+                    accueil_to_resultat.putExtra(Accueil.RESERVATION, reservation);
+                    accueil_to_resultat.putExtra(Accueil.LISTE_VOLS,(Parcelable)listeVols);
                     startActivity(accueil_to_resultat);
                 } else {
                     String messageErreur = "Veuillez renseigner les infos suivantes :";
@@ -237,4 +251,15 @@ public class Accueil extends AppCompatActivity {
         return getApplicationContext();
     }
 
-}
+    private void selectionListeVols() {
+        int idClasse = 1;
+        String depAita = reservation.getAitaDepart();
+        String arrAita = reservation.getAitaArrivee();
+        RequetesBDD requeteBDD = new RequetesBDD(this);
+        requeteBDD.open();
+        listeVols = requeteBDD.getVolsWithAita(depAita, arrAita, idClasse);
+        requeteBDD.close();
+        }
+    }
+
+
