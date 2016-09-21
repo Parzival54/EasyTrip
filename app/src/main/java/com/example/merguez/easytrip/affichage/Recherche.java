@@ -6,14 +6,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.merguez.easytrip.R;
 import com.example.merguez.easytrip.bdd.RequetesBDD;
 import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
@@ -42,6 +47,8 @@ public class Recherche extends AppCompatActivity {
     final static String LISTE_VOLS_FILTREE = "liste vols filtree";
     private static Intent rechercheToFiltre;
     private static Intent rechercheToAccueil;
+    private static ListAdapter adapter;
+    private static ListView vue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +95,7 @@ public class Recherche extends AppCompatActivity {
                                          }
 
         );
+
     }
 
     public void addItemsOnSpinner() {
@@ -104,7 +112,7 @@ public class Recherche extends AppCompatActivity {
     }
 
     private void remplirListView() {
-        ListView vue = (ListView) findViewById(R.id.volsElvListeVols);
+        vue = (ListView) findViewById(R.id.volsElvListeVols);
         List<HashMap<String, String>> listItem = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> element;
         if (listeVolsFiltree == null || listeVolsFiltree.size()==0) {
@@ -151,7 +159,7 @@ public class Recherche extends AppCompatActivity {
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, listItem);
         //On attribut à notre listView l'adapter que l'on vient de créer
         volsElvListeVols.setAdapter(itemsAdapter);*/
-        ListAdapter adapter = new SimpleAdapter(this, listItem, R.layout.recherche_vols, new String[]{"Horaires", "nbPassagersEtPrix", "classe"}, new int[]{R.id.horaires, R.id.nbPassagersEtPrix, R.id.classe});
+        adapter = new SimpleAdapter(this, listItem, R.layout.recherche_vols, new String[]{"Horaires", "nbPassagersEtPrix", "classe"}, new int[]{R.id.horaires, R.id.nbPassagersEtPrix, R.id.classe});
         vue.setAdapter(adapter);
     }
 
@@ -161,5 +169,11 @@ public class Recherche extends AppCompatActivity {
             Accueil.accueilToRecherche = false;
         } else
             listeVolsFiltree = (VolList) getIntent().getParcelableExtra(Recherche.LISTE_VOLS_FILTREE);
+    }
+
+    public void clickHandler(View v){
+        RelativeLayout viewParentRow = (RelativeLayout)v.getParent();
+        Button btnChild = (Button)viewParentRow.getChildAt(3);
+
     }
 }
