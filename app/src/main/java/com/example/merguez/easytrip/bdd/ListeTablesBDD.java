@@ -117,7 +117,7 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
             estContenu = true;
             listeAeroport = AeroportBDD.getAeroportWithNom(mots[0]);
             for (int i = 0; i < listeAeroport.size(); i++) {
-                Aeroport = new HashMap<>();
+                    Aeroport = new HashMap<>();
 
 
                 for (String mot : mots) {
@@ -126,15 +126,15 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
                     }
                 }
 
-                if (estContenu) {
-                    String timeZone = Integer.toString(listeAeroport.get(i).getTimezone());
-                    if (listeAeroport.get(i).getTimezone() > 0) {
-                        timeZone = "+" + timeZone;
-                    }
-                    Aeroport.put(NOM,listeAeroport.get(i).getNom() + " (" + listeAeroport.get(i).getAita() + ")");
-                    Aeroport.put(VILLE,listeAeroport.get(i).getVille()+ " (UTC " + timeZone + ":00)");
-                    listeDetailleeAeroport.add(Aeroport);
-                } // end if
+                    if (estContenu) {
+                        String timeZone = Integer.toString(listeAeroport.get(i).getTimezone());
+                        if (listeAeroport.get(i).getTimezone() > 0) {
+                            timeZone = "+" + timeZone;
+                        }
+                        Aeroport.put(NOM,listeAeroport.get(i).getNom() + " (" + listeAeroport.get(i).getAita() + ")");
+                        Aeroport.put(VILLE,listeAeroport.get(i).getVille()+ " (UTC " + timeZone + ":00)");
+                        listeDetailleeAeroport.add(Aeroport);
+                    } // end if
             } // end for
 
 
