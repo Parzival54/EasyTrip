@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.merguez.easytrip.bdd.table_vols.Vol;
+import com.example.merguez.easytrip.bdd.table_vols.VolList;
 
 import java.util.ArrayList;
 
@@ -37,13 +38,13 @@ public class RequetesBDD {
     }
 
 
-    public ArrayList<Vol> getVolsWithAita(String depAita, String arrAita){
-        String s = "SELECT * FROM vols WHERE vols.AEROPORT_DEPART LIKE ? AND vols.AEROPORT_ARRIVEE LIKE ?";
-        Cursor c = bdd.rawQuery(s, new String[]{depAita, arrAita});
+    public VolList getVolsWithAita(String depAita, String arrAita, int idClasse){
+        String s = "SELECT * FROM vols WHERE vols.AEROPORT_DEPART LIKE ? AND vols.AEROPORT_ARRIVEE LIKE ? AND vols.ID_CLASSE = ?";
+        Cursor c = bdd.rawQuery(s, new String[]{depAita, arrAita, String.valueOf(idClasse)});
 
         if (c.getCount()>0) {
             c.moveToFirst();
-            ArrayList<Vol> liste = new ArrayList<>();
+            VolList liste = new VolList();
             while (!c.isAfterLast()) {
                 Vol vol = new Vol();
                 //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
