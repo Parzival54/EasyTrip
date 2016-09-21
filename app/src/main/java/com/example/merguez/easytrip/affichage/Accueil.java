@@ -118,7 +118,6 @@ public class Accueil extends AppCompatActivity {
                         }
                     }).start();
                 }
-
             }
         });
 
