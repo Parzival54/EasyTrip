@@ -79,7 +79,7 @@ public class ChoixLieu extends Activity implements TextWatcher {
                     reservation.setNomArrivee(nomResultat);
                 }
                 retourAccueil.putExtra(Accueil.RESERVATION,reservation);
-                setResult(Activity.RESULT_OK,retourAccueil);
+                setResult(1,retourAccueil);
                 finish();
             }
         });

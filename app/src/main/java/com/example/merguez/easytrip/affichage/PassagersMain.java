@@ -4,11 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.example.merguez.easytrip.R;
 
@@ -18,7 +19,8 @@ public class PassagersMain extends AppCompatActivity {
 
     private EditText passagerAdulteditText;
     private static EditText passagerEnfantedittext;
-    private static EditText classeditText;
+    private static Spinner passagerSPclasse;
+    private static ArrayAdapter<CharSequence> adapter;
     private static Button retourAccueilBtn;
     private static Reservation reservation;
     private static Intent retourAccueil;
@@ -36,13 +38,10 @@ public class PassagersMain extends AppCompatActivity {
 
         passagerAdulteditText=(EditText)findViewById(R.id.passagerAdulteditText);
         passagerEnfantedittext=(EditText)findViewById(R.id.passagersEnfanteditText);
-        classeditText=(EditText)findViewById(R.id.classeditText);
-       retourAccueilBtn=(Button)findViewById(R.id.retourAccueilBtn);
-
-        String theText=passagerAdulteditText.getText().toString();
-//        Intent i = new Intent(PassagersMain.this,Ouverture.class);
-//        i.putExtra("nb_passagers",theText);
-//        startActivity(i);
+        passagerSPclasse=(Spinner) findViewById(R.id.passagerSPclasse);
+        adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.passagerSPclasse,R.layout.passager_spinner);
+        passagerSPclasse.setAdapter(adapter);
+        retourAccueilBtn=(Button)findViewById(R.id.retourAccueilBtn);
 
         passagerAdulteditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,20 +57,39 @@ public class PassagersMain extends AppCompatActivity {
             }
         });
 
-        classeditText.setOnClickListener(new View.OnClickListener() {
+        passagerSPclasse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                reservation.setClasse(passagerSPclasse.getSelectedItem().toString());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
+
         retourAccueilBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reservation.setNbAdultes(Integer.parseInt(passagerAdulteditText.getText().toString()));
-                reservation.setNbEnfants(Integer.parseInt(passagerEnfantedittext.getText().toString()));
-                reservation.setClasse(classeditText.getText().toString());
+                if (passagerAdulteditText.getText().toString().length() > 0){
+                    reservation.setNbAdultes(Integer.parseInt(passagerAdulteditText.getText().toString()));
+                } else {
+                    reservation.setNbAdultes(0);
+                }
+
+                if (passagerEnfantedittext.getText().toString().length() > 0){
+                    reservation.setNbEnfants(Integer.parseInt(passagerEnfantedittext.getText().toString()));
+                } else {
+                    reservation.setNbEnfants(0);
+                }
+
+                if (!(passagerSPclasse.getSelectedItem().toString().length() > 0)){
+                    passagerSPclasse.setSelection(0);
+                }
                 retourAccueil.putExtra(Accueil.RESERVATION,reservation);
-                setResult(Activity.RESULT_OK,retourAccueil);
+                setResult(2,retourAccueil);
                 finish();
             }
         });
@@ -79,10 +97,4 @@ public class PassagersMain extends AppCompatActivity {
 
     }
 
-    private void afficherClavier() {
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
-        );
-
-    }
 }

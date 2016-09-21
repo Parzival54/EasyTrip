@@ -18,7 +18,9 @@
     <string name="accueilBTvalider">RECHERCHER</string>
     <string name="rechercheETFiltrer">Filtrer</string>
     <string name="rechercheETRetour">Retour</string>
-    <string-array name="accueilSPclasse">
+    <string name="accueilTVtitre">EASY TRIP</string>
+    <string name="accueilTVsousTitre">WE MOVE PEOPLES</string>
+    <string-array name="passagerSPclasse">
         <item>Economique</item>
         <item>Affaires</item>
         <item>Premiere</item>

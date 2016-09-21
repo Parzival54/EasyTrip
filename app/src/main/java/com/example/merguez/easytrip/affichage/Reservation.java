@@ -153,11 +153,9 @@ public class Reservation implements Serializable{
 
     public boolean estComplete() {
         if (allerRetour){
-            return  ((aitaDepart == null) || (aitaArrivee == null) || (nbAdultes == 0)
-                    || (dateAller == null) || (dateRetour == null));
+            return  ((aitaDepart != null) && (aitaArrivee != null) && (nbAdultes + nbEnfants > 0) && (classe != null) &&(dateAller != null) && (dateRetour != null));
         } else {
-            return  ((aitaDepart == null) || (aitaArrivee == null)
-                    || (nbAdultes == 0) || (dateAller == null));
+            return  ((aitaDepart != null) && (aitaArrivee != null) && (nbAdultes + nbEnfants > 0) && (classe != null)  &&(dateAller != null));
         }
     }
 
