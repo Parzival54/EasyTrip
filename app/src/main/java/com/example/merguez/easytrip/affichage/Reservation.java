@@ -1,9 +1,6 @@
 package com.example.merguez.easytrip.affichage;
 
-import com.example.merguez.easytrip.bdd.table_vols.Vol;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * Created by merguez on 19/09/2016.
@@ -17,7 +14,7 @@ public class Reservation implements Serializable{
     private String classe;
     private int volAller;
     private int volRetour;
-    private boolean AllerRetour;
+    private boolean allerRetour;
     private int nbAdultes;
     private int nbEnfants;
     private String dateAller;
@@ -33,7 +30,7 @@ public class Reservation implements Serializable{
         this.classe = classe;
         this.volAller = volAller;
         this.volRetour = volRetour;
-        this.AllerRetour = allerRetour;
+        this.allerRetour = allerRetour;
         this.nbAdultes = nbAdultes;
         this.nbEnfants = nbEnfants;
         this.dateAller = dateAller;
@@ -73,11 +70,11 @@ public class Reservation implements Serializable{
     }
 
     public boolean isAllerRetour() {
-        return AllerRetour;
+        return allerRetour;
     }
 
     public void setAllerRetour(boolean allerRetour) {
-        AllerRetour = allerRetour;
+        this.allerRetour = allerRetour;
     }
 
     public int getNbAdultes() {
@@ -138,7 +135,7 @@ public class Reservation implements Serializable{
                 ", classe='" + classe + '\'' +
                 ", volAller=" + volAller +
                 ", volRetour=" + volRetour +
-                ", AllerRetour=" + AllerRetour +
+                ", allerRetour=" + allerRetour +
                 ", nbAdultes=" + nbAdultes +
                 ", nbEnfants=" + nbEnfants +
                 ", dateAller='" + dateAller + '\'' +
@@ -153,5 +150,17 @@ public class Reservation implements Serializable{
     public void setClasse(String classe) {
         this.classe = classe;
     }
+
+    public boolean estComplete() {
+        if (allerRetour){
+            return  ((aitaDepart == null) || (aitaArrivee == null) || (nbAdultes == 0)
+                    || (dateAller == null) || (dateRetour == null));
+        } else {
+            return  ((aitaDepart == null) || (aitaArrivee == null)
+                    || (nbAdultes == 0) || (dateAller == null));
+        }
+
+    }
+
 }
 
