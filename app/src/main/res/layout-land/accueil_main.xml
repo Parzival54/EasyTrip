@@ -20,19 +20,19 @@
         android:id="@+id/accueilTVtitre"
         android:layout_gravity="center_horizontal"
         android:textAlignment="center"
-        android:textSize="@dimen/abc_text_size_display_2_material"
+        android:textSize="25sp"
         android:textStyle="bold|italic"
         android:textColor="#053e7f"
         android:layout_alignParentTop="true" />
 
     <TextView
-        android:layout_width="360dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:text="@string/accueilTVsousTitre"
         android:id="@+id/accueilTVsousTitre"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:textSize="@dimen/abc_text_size_display_1_material"
+        android:textSize="15sp"
         android:background="#f5a607"
         android:typeface="monospace"
         android:textColor="#0d5bf7"
@@ -49,17 +49,17 @@
         android:textSize="20sp"
         android:background="@drawable/rect_bleufonce_bord_noir"
         android:id="@+id/accueilTVafficherDepart"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="140dp"
+        android:layout_below="@id/accueilTVsousTitre"
+        android:layout_marginTop="5dp"
         android:gravity="center"/>
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="30dp"
         android:id="@+id/accueilETChoixDepart"
-        android:layout_marginTop="140dp"
-        android:layout_alignParentEnd="true"
+        android:layout_below="@id/accueilTVsousTitre"
+        android:layout_alignTop="@id/accueilTVafficherDepart"
         android:gravity="center_vertical"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
@@ -69,7 +69,7 @@
         android:layout_toEndOf="@+id/accueilTVafficherDepart" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="30dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/accueilTVafficherArrivee"
@@ -77,29 +77,36 @@
         android:textSize="20sp"
         android:background="@drawable/rect_bleufonce_bord_noir"
         android:id="@+id/accueilTVafficherArrivee"
-        android:layout_below="@+id/accueilETChoixDepart"
-        android:layout_marginTop="5dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@id/accueilTVafficherDepart"
+        android:layout_alignTop="@+id/accueilETChoixDepart"
+        android:layout_toEndOf="@id/accueilETChoixDepart"
         android:gravity="center" />
 
     <EditText
-        android:layout_width="80dp"
+        android:layout_width="200dp"
         android:layout_height="30dp"
         android:id="@+id/accueilETChoixArrivee"
         android:background="@drawable/rect_blanc_bord_noir"
         android:focusableInTouchMode="false"
-        android:layout_below="@+id/accueilETChoixDepart"
         android:gravity="center_vertical"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
+        android:layout_toEndOf="@id/accueilTVafficherArrivee"
+        android:layout_alignTop="@id/accueilTVafficherArrivee"
+        android:text="@string/accueilETChoixArrivee" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="@string/accueilCBallerRetour"
+        android:checked="false"
+        android:textSize="20sp"
+        android:id="@+id/accueilCBallerRetour"
+        android:layout_below="@+id/accueilETChoixDepart"
         android:layout_marginTop="5dp"
-        android:layout_alignEnd="@id/accueilETChoixDepart"
-        android:text="@string/accueilETChoixArrivee"
-        android:layout_alignStart="@+id/accueilETChoixDepart" />
+        android:layout_alignParentStart="true" />
 
     <TextView
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="30dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/accueilTVdateDepart"
@@ -107,13 +114,12 @@
         android:textSize="20sp"
         android:background="@drawable/rect_bleufonce_bord_noir"
         android:id="@+id/accueilTVdateDepart"
-        android:layout_marginTop="50dp"
         android:gravity="center"
-        android:layout_below="@+id/accueilTVafficherArrivee"
+        android:layout_below="@+id/accueilCBallerRetour"
         android:layout_alignParentStart="true" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="30dp"
         android:id="@+id/accueilETdateDepart"
         android:gravity="center_vertical"
@@ -123,11 +129,10 @@
         android:focusableInTouchMode="false"
         android:text="@string/accueilETdateDepart"
         android:layout_alignTop="@+id/accueilTVdateDepart"
-        android:layout_toEndOf="@id/accueilTVdateDepart"
-        android:layout_alignParentEnd="true" />
+        android:layout_toEndOf="@id/accueilTVdateDepart" />
 
     <TextView
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="30dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/accueilTVdateArrivee"
@@ -135,13 +140,12 @@
         android:textSize="20sp"
         android:background="@drawable/rect_bleufonce_bord_noir"
         android:id="@+id/accueilTVdateArrivee"
-        android:layout_marginTop="5dp"
         android:gravity="center"
-        android:layout_below="@+id/accueilTVdateDepart"
-        android:layout_alignParentStart="true" />
+        android:layout_toEndOf="@+id/accueilETdateDepart"
+        android:layout_alignTop="@id/accueilTVdateDepart"/>
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="30dp"
         android:id="@+id/accueilETdateArrivee"
         android:gravity="center_vertical"
@@ -151,18 +155,7 @@
         android:focusableInTouchMode="false"
         android:text="@string/accueilETdateDepart"
         android:layout_alignTop="@+id/accueilTVdateArrivee"
-        android:layout_toEndOf="@id/accueilTVdateArrivee"
-        android:layout_alignParentEnd="true" />
-
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:text="@string/accueilCBallerRetour"
-        android:checked="false"
-        android:textSize="20sp"
-        android:id="@+id/accueilCBallerRetour"
-        android:layout_above="@+id/accueilETdateDepart"
-        android:layout_alignParentStart="true" />
+        android:layout_toEndOf="@id/accueilTVdateArrivee" />
 
     <Button
         android:layout_width="150dp"
@@ -173,7 +166,7 @@
         android:id="@+id/accueilNbPassagersButton"
         android:layout_below="@+id/accueilTVdateDepart"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="5dp"
         android:layout_alignParentEnd="true"/>
 
     <Button
