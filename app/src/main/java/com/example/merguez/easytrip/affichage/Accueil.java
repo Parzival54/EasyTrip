@@ -199,7 +199,6 @@ public class Accueil extends AppCompatActivity {
                 }
                 break;
             case 2:
-
                 break;
 
         }
