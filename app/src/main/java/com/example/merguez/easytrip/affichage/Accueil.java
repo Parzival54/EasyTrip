@@ -86,7 +86,7 @@ public class Accueil extends AppCompatActivity {
                 estDepart = true;
                 accueil_to_lieu.putExtra(Accueil.DEPART_OU_ARRIVEE, estDepart);
                 accueil_to_lieu.putExtra(Accueil.RESERVATION, reservation);
-                startActivityForResult(accueil_to_lieu, REQUEST_CODE);
+                startActivityForResult(accueil_to_lieu, 1);
             }
         });
 
@@ -97,7 +97,7 @@ public class Accueil extends AppCompatActivity {
                 estDepart = false;
                 accueil_to_lieu.putExtra(Accueil.DEPART_OU_ARRIVEE, estDepart);
                 accueil_to_lieu.putExtra(Accueil.RESERVATION, reservation);
-                startActivityForResult(accueil_to_lieu, REQUEST_CODE);
+                startActivityForResult(accueil_to_lieu, 1);
             }
         });
 
@@ -152,15 +152,32 @@ public class Accueil extends AppCompatActivity {
         accueilBTvalider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                reservation.setDateAller(accueilETdateDepart.getText().toString());
-                reservation.setDateRetour(accueilETdateArrivee.getText().toString());
-                Log.w("TAG", reservation.toString());
-                Log.w("TAG", "" + reservation.estComplete());
-                selectionListeVols();
-                accueil_to_resultat.putExtra(Accueil.RESERVATION, reservation);
-                accueil_to_resultat.putExtra(Accueil.LISTE_VOLS,(Parcelable)listeVols);
-                //accueil_to_resultat.putExtra(Accueil.LISTE_VOLS_FILTREE, (Parcelable) listeVolsFiltree);
-                startActivity(accueil_to_resultat);
+                if (accueilETdateDepart.getText().toString().length() > 0){
+                    reservation.setDateAller(accueilETdateDepart.getText().toString());
+                }
+                if (accueilETdateArrivee.getText().toString().length() > 0){
+                    reservation.setDateRetour(accueilETdateArrivee.getText().toString());
+                }
+                if (reservation.estComplete() && !reservation.getAitaDepart().equals(reservation.getAitaArrivee())){
+                    selectionListeVols();
+                    accueil_to_resultat.putExtra(Accueil.RESERVATION, reservation);
+                    accueil_to_resultat.putExtra(Accueil.LISTE_VOLS,(Parcelable)listeVols);
+                    startActivity(accueil_to_resultat);
+                } else {
+                    String messageErreur = "Veuillez renseigner les infos suivantes :";
+                    if (reservation.getAitaDepart() == null) messageErreur += "\nAéroport de départ";
+                    if (reservation.getAitaArrivee() == null) messageErreur += "\nAéroport d'arrivée";
+                    if (reservation.getDateAller() == null) messageErreur += "\nDate de départ";
+                    if (reservation.getDateRetour() == null && reservation.isAllerRetour()) messageErreur += "\nDate de retour";
+                    if (reservation.getNbAdultes() + reservation.getNbEnfants() == 0) messageErreur += "\nNombre de passagers";
+                    if (reservation.getClasse() == null) messageErreur += "\nClasse";
+                    if (accueilETchoixDepart.getText().toString().equals(accueilETchoixArrivee.getText().toString())) {
+                        messageErreur += "\n\nVeuillez corriger l'erreur suivante:\nL'aéroport d'arrivée est identique\nà l'aéroport de départ";
+                    }
+
+                    Toast.makeText(getApplicationContext(),messageErreur, Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
@@ -169,7 +186,7 @@ public class Accueil extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 accueil_to_passagers.putExtra(Accueil.RESERVATION,reservation);
-                startActivityForResult(accueil_to_passagers, REQUEST_CODE+1);
+                startActivityForResult(accueil_to_passagers, 2);
             }
         });
 
@@ -183,24 +200,20 @@ public class Accueil extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         reservation = (Reservation) data.getSerializableExtra(RESERVATION);
-        switch (REQUEST_CODE) {
+        switch (resultCode) {
             case 0:
-            if (resultCode == Activity.RESULT_OK) {
-
-                if (estDepart) {
+                break;
+            case 1:
+            if (estDepart) {
                     String affichageDepart = reservation.getNomDepart() + " (" + reservation.getAitaDepart() + ")";
                     accueilETchoixDepart.setText(affichageDepart);
                 } else {
                     String affichageArrivee = reservation.getNomArrivee() + " (" + reservation.getAitaArrivee() + ")";
                     accueilETchoixArrivee.setText(affichageArrivee);
                 }
-            }
-
-            case 1:
-            if (resultCode == Activity.RESULT_OK) {
-
-
-            }
+                break;
+            case 2:
+                break;
 
         }
 
