@@ -78,7 +78,6 @@ public class Accueil extends AppCompatActivity {
         accueil_to_resultat = new Intent(Accueil.this,Recherche.class);
         accueil_to_passagers = new Intent(Accueil.this,PassagersMain.class);
 
-
         // sélection de l'aéroport de départ -> ouverture de l'activité ChoixLieu
         accueilETchoixDepart.setOnClickListener(new View.OnClickListener() {
             @Override
