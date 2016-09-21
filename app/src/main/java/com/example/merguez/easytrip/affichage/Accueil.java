@@ -148,7 +148,6 @@ public class Accueil extends AppCompatActivity {
                 Log.w("TAG", reservation.toString());
                 Log.w("TAG", "" + reservation.estComplete());
                 startActivity(accueil_to_resultat);
-
             }
         });
 

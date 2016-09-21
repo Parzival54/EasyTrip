@@ -1,5 +1,6 @@
 package com.example.merguez.easytrip.affichage;
 
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
@@ -33,7 +34,8 @@ public class Recherche extends AppCompatActivity {
     TextView volsTvSelection;
     ListView volsElvListeVols;
     Spinner spinner;
-    private static ArrayList<Vol> liste;
+    private static ArrayList<Vol> listeNonFiltree;
+    private static ArrayList<Vol> listeFiltree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +57,10 @@ public class Recherche extends AppCompatActivity {
                                           {
                                               @Override
                                               public void onClick(View v) {
-                                                  ArrayList<Vol> listeNonFiltree = new ArrayList<Vol>();
-                                                  listeNonFiltree = liste;
+                                                  //ArrayList<Vol> listeNonFiltree = new ArrayList<Vol>();
+                                                  //listeNonFiltree = liste;
                                                   Intent envoieSurFiltre = new Intent(Recherche.this, Filtres.class);
-                                                  envoieSurFiltre.putExtra("listeVols",listeNonFiltree);
+                                                  envoieSurFiltre.putExtra("listeVols",(Parcelable)listeNonFiltree);
                                                   startActivity(envoieSurFiltre);
                                               }
                                           }
@@ -99,10 +101,10 @@ public class Recherche extends AppCompatActivity {
         }
     }*/
 
-    private int conversionStringEntier(String heure) {
+    /*private int conversionStringEntier(String heure) {
         int res =  Integer.parseInt(heure.substring(0,2)+ heure.substring(2,4));
         return  res;
-    }
+    }*/
 
     private void fillList() {
         //int depId = getIntent().getIntExtra(Accueil.NOMS_DEP,-1);
@@ -118,6 +120,7 @@ public class Recherche extends AppCompatActivity {
         HashMap<String, String> element;
         RequetesBDD requetesBDD = new RequetesBDD(this);
         requetesBDD.open();
+        ArrayList<Vol> liste = new ArrayList<Vol>();
         liste = requetesBDD.getVolsWithAita(depAita, arrAita);
         requetesBDD.close();
         int nbVols = liste.size();
@@ -144,4 +147,4 @@ public class Recherche extends AppCompatActivity {
         ListAdapter adapter = new SimpleAdapter(this, listItem, R.layout.recherche_vols, new String[]{"Depart", "Arrivee", "nbEtClasse", "compEtPrix"}, new int[]{R.id.depart, R.id.arrivee, R.id.nbEtClasse, R.id.compagnieEtPrix});
         vue.setAdapter(adapter);
     }
-}
+    }

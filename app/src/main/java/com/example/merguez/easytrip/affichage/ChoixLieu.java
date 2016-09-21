@@ -107,24 +107,24 @@ public class ChoixLieu extends Activity implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                listeTablesBDD = new ListeTablesBDD(this);
-                listeTablesBDD.open(this);
-                String choix = lieuETchoixAeroport.getText().toString();
-                listeMaj = listeTablesBDD.RechercheAeroport(choix);
-                Log.w("TAG", "" + listeMaj.get(0).toString());
-                simpleadapter = new SimpleAdapter(getApplicationContext(),listeMaj, R.layout.choixlieu_listview, new String[]{"Nom","Ville"}, new int[] {R.id.list_content, R.id.list_content2});
-                lieuLVlisteAeroports.setAdapter(simpleadapter);
-                if (listeMaj.size() > 1) {
-                    nbReponses = "Il y a " + listeMaj.size() + " résultats";
-                } else if (listeMaj.size() == 1 &&
-                        (listeMaj.get(0).get("Nom").equals(ListeTablesBDD.getReponseVide()) || listeMaj.get(0).get("Nom").equals(ListeTablesBDD.getAucuneReponse()))
-                        ) {
-                    nbReponses = null;
-                } else if (listeMaj.size() == 1) {
-                    nbReponses = "Il y a 1 résultat";
-                }
-                lieuTVnbResultats.setText(nbReponses);
-                listeTablesBDD.close();
+        listeTablesBDD = new ListeTablesBDD(this);
+        listeTablesBDD.open(this);
+        String choix = lieuETchoixAeroport.getText().toString();
+        listeMaj = listeTablesBDD.RechercheAeroport(choix);
+        Log.w("TAG", "" + listeMaj.get(0).toString());
+        simpleadapter = new SimpleAdapter(getApplicationContext(),listeMaj, R.layout.choixlieu_listview, new String[]{"Nom","Ville"}, new int[] {R.id.list_content, R.id.list_content2});
+        lieuLVlisteAeroports.setAdapter(simpleadapter);
+        if (listeMaj.size() > 1) {
+            nbReponses = "Il y a " + listeMaj.size() + " résultats";
+        } else if (listeMaj.size() == 1 &&
+                (listeMaj.get(0).get("Nom").equals(ListeTablesBDD.getReponseVide()) || listeMaj.get(0).get("Nom").equals(ListeTablesBDD.getAucuneReponse()))
+                ) {
+            nbReponses = null;
+        } else if (listeMaj.size() == 1) {
+            nbReponses = "Il y a 1 résultat";
+        }
+        lieuTVnbResultats.setText(nbReponses);
+        listeTablesBDD.close();
 
     }
 
