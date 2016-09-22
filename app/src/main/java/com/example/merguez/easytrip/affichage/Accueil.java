@@ -48,9 +48,9 @@ public class Accueil extends AppCompatActivity {
     private static ArrayAdapter<CharSequence> classeAdapter;
     final static String DEPART_OU_ARRIVEE = "depart ou arrivee";
     final static String RESERVATION = "reservation";
-    private static Reservation reservation = new Reservation();
+    private static Reservation reservation ;
     final static String LISTE_VOLS = "liste vols";
-    private static VolList listeVols = new VolList();
+    private static VolList listeVols;
     //final static String LISTE_VOLS_FILTREE = "liste vols filtree";
     //private static VolList listeVolsFiltree = new VolList();
     private static boolean estDepart;
@@ -60,7 +60,8 @@ public class Accueil extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accueil_main);
-
+        listeVols = new VolList();
+        reservation = new Reservation();
         accueilETchoixDepart = (EditText)findViewById(R.id.accueilETChoixDepart);
         accueilETchoixArrivee = (EditText)findViewById(R.id.accueilETChoixArrivee);
         accueilETdateDepart = (EditText)findViewById(R.id.accueilETdateDepart);

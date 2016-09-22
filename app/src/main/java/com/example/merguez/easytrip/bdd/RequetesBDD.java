@@ -40,11 +40,11 @@ public class RequetesBDD {
     }
 
     public int getAeroportTimezoneWithAita(String aita) {
-       String s = "SELECT aeroport.TIMEZONE FROM aeroports WHERE aeroports.AITA LIKE ?";
+       String s = "SELECT aeroports.TIMEZONE FROM aeroports WHERE aeroports.AITA LIKE ?";
         Cursor c = bdd.rawQuery(s, new String[]{aita});
         c.moveToFirst();
         Aeroport aeroport = new Aeroport();
-        aeroport.setTimezone(c.getInt(7));
+        aeroport.setTimezone(c.getInt(0));
         return aeroport.getTimezone();
     }
 

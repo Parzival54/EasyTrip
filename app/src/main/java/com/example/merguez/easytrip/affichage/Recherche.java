@@ -137,18 +137,28 @@ public class Recherche extends AppCompatActivity {
                 libelleEnfants = "1 enfant    ";
             if (nbEnfants > 1)
                 libelleEnfants = nbEnfants + " enfants    ";
+            RequetesBDD requetesBDD = new RequetesBDD(this);
+            requetesBDD.open();
+            int decHorDep = requetesBDD.getAeroportTimezoneWithAita(reservation.getAitaDepart());
+            int decHorArr = requetesBDD.getAeroportTimezoneWithAita(reservation.getAitaArrivee());
+            requetesBDD.close();
 
             for (int i = 0; i < nbVols; i++) {
                 Vol v = listeVolsFiltree.get(i);
+                String heureDep = v.getHeureDepart();
                 String heureArr = v.getHeureArrivee();
+                if (heureArr.substring(heureArr.length() - 1).equals("1"))
+                    heureArr =ajouterTimeToHeure(heureArr,24);
+                heureArr = heureArr.substring(0, heureArr.length() - 2);
+                heureArr = ajouterTimeToHeure(heureArr,decHorArr-decHorDep);
                 String lendemain = "";
-                if (heureArr.substring(heureArr.length() - 1).equals("1")) {
+                if (Integer.parseInt(heureArr.substring(0,2))>=24) {
+                    heureArr = ajouterTimeToHeure(heureArr,-24);
                     lendemain = "lendemain";
                 }
-                heureArr = heureArr.substring(0, heureArr.length() - 2);
                 double prixTotal = (double) ((int) (v.getPrix() * (nbAdulte + nbEnfants * 0.8) * 100)) / 100;
                 element = new HashMap<String, String>();
-                element.put("Horaires", v.getHeureDepart() + " (" + depAita + ")  \u2794  " + heureArr + " (" + arrAita + ") " + lendemain);
+                element.put("Horaires", heureDep + " (" + depAita + ")  \u2794  " + heureArr + " (" + arrAita + ") " + lendemain);
                 element.put("nbPassagersEtPrix", libelleAdultes + libelleEnfants + "Prix total: " + prixTotal + " €");
                 element.put("classe", "Classe: " + reservation.getClasse());
                 listItem.add(element);
@@ -175,5 +185,10 @@ public class Recherche extends AppCompatActivity {
         RelativeLayout viewParentRow = (RelativeLayout)v.getParent();
         Button btnChild = (Button)viewParentRow.getChildAt(3);
 
+    }
+
+    private String ajouterTimeToHeure(String heure, int time) {
+        String chiffresHeure = String.valueOf(Integer.parseInt(heure.substring(0,2))+time);
+        return chiffresHeure+heure.substring(2);
     }
 }
