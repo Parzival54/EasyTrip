@@ -68,11 +68,9 @@ public class PassagersMain extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ListeTablesBDD listeTablesBDD = new ListeTablesBDD(getApplicationContext());
                 listeTablesBDD.open(getApplicationContext());
-                Log.w("TAG",passagerSPclasse.getSelectedItem().toString());
                 int classeID = ClasseBDD.getClasseIDwithNom(passagerSPclasse.getSelectedItem().toString());
                 listeTablesBDD.close();
                 reservation.setClasse(classeID);
-                Log.w("TAG","" + classeID);
 
             }
 

@@ -111,7 +111,6 @@ public class ChoixLieu extends Activity implements TextWatcher {
         listeTablesBDD.open(this);
         String choix = lieuETchoixAeroport.getText().toString();
         listeMaj = listeTablesBDD.RechercheAeroport(choix);
-        Log.w("TAG", "" + listeMaj.get(0).toString());
         simpleadapter = new SimpleAdapter(getApplicationContext(),listeMaj, R.layout.choixlieu_listview, new String[]{"Nom","Ville"}, new int[] {R.id.list_content, R.id.list_content2});
         lieuLVlisteAeroports.setAdapter(simpleadapter);
         if (listeMaj.size() > 1) {

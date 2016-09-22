@@ -215,7 +215,6 @@ public class Accueil extends AppCompatActivity {
         accueilBTvalider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.w("TAG",reservation.toString());
                 if (accueilETdateDepart.getText().toString().length() > 0){
                     reservation.setDateAller(accueilETdateDepart.getText().toString());
                 }
