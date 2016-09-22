@@ -5,6 +5,8 @@ import android.content.Context;
 import com.example.merguez.easytrip.R;
 import com.example.merguez.easytrip.bdd.table_aeroports.Aeroport;
 import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
+import com.example.merguez.easytrip.bdd.table_classes.Classe;
+import com.example.merguez.easytrip.bdd.table_classes.ClasseBDD;
 import com.example.merguez.easytrip.bdd.table_vols.Vol;
 import com.example.merguez.easytrip.bdd.table_vols.VolBDD;
 
@@ -81,6 +83,25 @@ public class InsertionDonnees {
                 vol.setClasseID(Integer.parseInt(line2.substring(index5 + 1,index6)));
                 vol.setPrix(Double.parseDouble(line2.substring(index6 + 1)));
                 VolBDD.insertVol(vol);
+            }
+        } catch (IOException e) {
+            e.getMessage();
+        }
+
+        InputStream fic3 = context.getResources().openRawResource(R.raw.classes);
+        InputStreamReader streamReader3 = new InputStreamReader(fic3);
+        BufferedReader bufferedReader3 = new BufferedReader(streamReader3);
+        String line3;
+        StringBuilder text3 = new StringBuilder();
+
+        try {
+            while (( line3 = bufferedReader3.readLine()) != null) {
+                Classe classe = new Classe();
+                text3.append(line3);
+                text3.append('\n');
+
+                classe.setClasse(line3);
+                ClasseBDD.insertClasse(classe);
             }
         } catch (IOException e) {
             e.getMessage();
