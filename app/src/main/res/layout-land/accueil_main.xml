@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="5dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="5dp"
     android:background="@color/blue"
     tools:context=".affichage.Accueil"
     android:id="@+id/lieuLayout"
@@ -78,7 +78,7 @@
         android:background="@drawable/rect_bleufonce_bord_noir"
         android:id="@+id/accueilTVafficherArrivee"
         android:layout_alignTop="@+id/accueilETChoixDepart"
-        android:layout_toEndOf="@id/accueilETChoixDepart"
+        android:layout_toStartOf="@id/accueilETChoixArrivee"
         android:gravity="center" />
 
     <EditText
@@ -90,9 +90,9 @@
         android:gravity="center_vertical"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:layout_toEndOf="@id/accueilTVafficherArrivee"
         android:layout_alignTop="@id/accueilTVafficherArrivee"
-        android:text="@string/accueilETChoixArrivee" />
+        android:text="@string/accueilETChoixArrivee"
+        android:layout_alignParentEnd="true"/>
 
     <CheckBox
         android:layout_width="match_parent"
@@ -141,7 +141,7 @@
         android:background="@drawable/rect_bleufonce_bord_noir"
         android:id="@+id/accueilTVdateArrivee"
         android:gravity="center"
-        android:layout_toEndOf="@+id/accueilETdateDepart"
+        android:layout_toStartOf="@id/accueilETdateArrivee"
         android:layout_alignTop="@id/accueilTVdateDepart"/>
 
     <EditText
@@ -155,7 +155,7 @@
         android:focusableInTouchMode="false"
         android:text="@string/accueilETdateDepart"
         android:layout_alignTop="@+id/accueilTVdateArrivee"
-        android:layout_toEndOf="@id/accueilTVdateArrivee" />
+        android:layout_alignParentEnd="true"/>
 
     <Button
         android:layout_width="150dp"
@@ -178,5 +178,16 @@
         android:id="@+id/accueilBTvalider"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:background="@drawable/rect_bleufonce_bord_noir"
+        android:text="@string/accueilBTdetail"
+        android:textColor="@color/white"
+        android:id="@+id/accueilBTdetail"
+        android:layout_above="@+id/accueilBTvalider"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

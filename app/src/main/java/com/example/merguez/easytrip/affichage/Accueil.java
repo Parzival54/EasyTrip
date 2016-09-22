@@ -181,13 +181,13 @@ public class Accueil extends AppCompatActivity {
 
                     if (accueilETdateArrivee.getText().toString().length() > 0) {
                         recap += "\nDate de retour : " + accueilETdateArrivee.getText().toString();
-                    } else {
+                    } else if (reservation.isAllerRetour()){
                         recap += "\nDate de retour : ?";
                     }
 
-                    recap += "\nNb Passagers : \n"
-                            + reservation.getNbAdultes() + " adultes\n"
-                            + reservation.getNbEnfants() + " enfants\n";
+                    recap += "\nNb Passagers : " + (reservation.getNbAdultes() + reservation.getNbEnfants()) + "\n"
+                            + "Adultes : "+ reservation.getNbAdultes() + "\n"
+                            + "Enfants : "+ reservation.getNbEnfants() + "\n";
 
                 if (reservation.getClasse() != null) {
                     recap += "Classe : " + reservation.getClasse();
