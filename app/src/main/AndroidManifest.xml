@@ -18,10 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".affichage.Accueil"></activity>
-        <activity android:name=".affichage.Recherche"></activity>
-        <activity android:name=".affichage.Filtres"></activity>
-        <activity android:name=".affichage.PassagersMain"></activity>
+        <activity android:name=".affichage.Accueil" />
+        <activity android:name=".affichage.Recherche" />
+        <activity android:name=".affichage.Filtres" />
+        <activity android:name=".affichage.PassagersMain" />
+        <activity android:name=".affichage.Recepisse"></activity>
     </application>
 
 </manifest>

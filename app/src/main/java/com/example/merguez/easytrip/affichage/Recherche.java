@@ -26,6 +26,8 @@ import com.example.merguez.easytrip.bdd.table_vols.Vol;
 import com.example.merguez.easytrip.bdd.table_vols.VolBDD;
 import com.example.merguez.easytrip.bdd.table_vols.VolList;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +49,7 @@ public class Recherche extends AppCompatActivity {
     final static String LISTE_VOLS_FILTREE = "liste vols filtree";
     private static Intent rechercheToFiltre;
     private static Intent rechercheToAccueil;
+    private static Intent rechercheToRecepisse;
     private static ListAdapter adapter;
     private static ListView vue;
 
@@ -67,6 +70,7 @@ public class Recherche extends AppCompatActivity {
         volsTvSelection.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
         rechercheToFiltre = new Intent(Recherche.this, Filtres.class);
         rechercheToAccueil = new Intent(Recherche.this, Accueil.class);
+        rechercheToRecepisse = new Intent(Recherche.this, Recepisse.class);
         remplirListView();
 
         volsBtnFiltrer.setOnClickListener(new View.OnClickListener()
@@ -152,6 +156,10 @@ public class Recherche extends AppCompatActivity {
                 heureArr = heureArr.substring(0, heureArr.length() - 2);
                 heureArr = ajouterTimeToHeure(heureArr,decHorArr-decHorDep);
                 String lendemain = "";
+                if (heureArr.length() == 4) {
+                    heureArr = "0" + heureArr;
+                }
+                Log.w("TAG", heureArr);
                 if (Integer.parseInt(heureArr.substring(0,2))>=24) {
                     heureArr = ajouterTimeToHeure(heureArr,-24);
                     lendemain = "lendemain";
@@ -183,7 +191,15 @@ public class Recherche extends AppCompatActivity {
 
     public void clickHandler(View v){
         RelativeLayout viewParentRow = (RelativeLayout)v.getParent();
+        TextView trajet = (TextView)viewParentRow.getChildAt(0);
+        TextView prix = (TextView)viewParentRow.getChildAt(1);
+        TextView classe = (TextView)viewParentRow.getChildAt(2);
         Button btnChild = (Button)viewParentRow.getChildAt(3);
+        rechercheToRecepisse.putExtra("TRAJET", trajet.getText().toString());
+        rechercheToRecepisse.putExtra("PRIX", prix.getText().toString());
+        rechercheToRecepisse.putExtra("CLASSE", classe.getText().toString());
+        rechercheToRecepisse.putExtra(Accueil.RESERVATION, reservation);
+        startActivity(rechercheToRecepisse);
 
     }
 
