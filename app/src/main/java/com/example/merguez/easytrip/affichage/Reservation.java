@@ -11,7 +11,7 @@ public class Reservation implements Serializable{
     private String nomDepart;
     private String aitaArrivee;
     private String nomArrivee;
-    private String classe;
+    private int classe;
     private int volAller;
     private int volRetour;
     private boolean allerRetour;
@@ -19,10 +19,12 @@ public class Reservation implements Serializable{
     private int nbEnfants;
     private String dateAller;
     private String dateRetour;
+    private int decalageHoraire;
 
     public Reservation(){}
 
-    public Reservation(String aitaDepart, String nomDepart, String aitaArrivee, String nomArrivee, String classe, int volAller, int volRetour, boolean allerRetour, int nbAdultes, int nbEnfants, String dateAller, String dateRetour) {
+    public Reservation(String aitaDepart, String nomDepart, String aitaArrivee, String nomArrivee, int classe,int volAller,int volRetour,
+                       boolean allerRetour, int nbAdultes, int nbEnfants, String dateAller, String dateRetour, int decalageHoraire) {
         this.aitaDepart = aitaDepart;
         this.nomDepart = nomDepart;
         this.aitaArrivee = aitaArrivee;
@@ -35,6 +37,7 @@ public class Reservation implements Serializable{
         this.nbEnfants = nbEnfants;
         this.dateAller = dateAller;
         this.dateRetour = dateRetour;
+        this.decalageHoraire = decalageHoraire;
     }
 
     public String getAitaDepart() {
@@ -125,6 +128,14 @@ public class Reservation implements Serializable{
         this.nomArrivee = nomArrivee;
     }
 
+    public int getDecalageHoraire() {
+        return decalageHoraire;
+    }
+
+    public void setDecalageHoraire(int decalageHoraire) {
+        this.decalageHoraire = decalageHoraire;
+    }
+
     @Override
     public String toString() {
         return "Reservation{" +
@@ -140,22 +151,23 @@ public class Reservation implements Serializable{
                 ", nbEnfants=" + nbEnfants +
                 ", dateAller='" + dateAller + '\'' +
                 ", dateRetour='" + dateRetour + '\'' +
+                ", decalageHoraire='" + decalageHoraire + '\'' +
                 '}';
     }
 
-    public String getClasse() {
+    public int getClasse() {
         return classe;
     }
 
-    public void setClasse(String classe) {
+    public void setClasse(int classe) {
         this.classe = classe;
     }
 
     public boolean estComplete() {
         if (allerRetour){
-            return  ((aitaDepart != null) && (aitaArrivee != null) && (nbAdultes + nbEnfants > 0) && (classe != null) &&(dateAller != null) && (dateRetour != null));
+            return  ((aitaDepart != null) && (aitaArrivee != null) && (nbAdultes + nbEnfants > 0) && (classe > 0) && (dateAller != null) && (dateRetour != null));
         } else {
-            return  ((aitaDepart != null) && (aitaArrivee != null) && (nbAdultes + nbEnfants > 0) && (classe != null)  &&(dateAller != null));
+            return  ((aitaDepart != null) && (aitaArrivee != null) && (nbAdultes + nbEnfants > 0) && (classe > 0)  && (dateAller != null));
         }
     }
 

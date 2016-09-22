@@ -7,6 +7,7 @@ import android.database.Cursor;
 import com.example.merguez.easytrip.bdd.ListeTablesBDD;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by merguez on 13/09/2016.
@@ -165,6 +166,14 @@ public class AeroportBDD extends ListeTablesBDD {
                 COL_AITA + " LIKE \'" + aita + "\'", null, null, null, null);
         return cursorToAeroport(cursor);
     }
+
+    public static int getTimezoneWithAita(String aita) {
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_AEROPORTS,new String[] {COL_ID, COL_AITA, COL_NOM, COL_VILLE, COL_PAYS, COL_LATITUDE, COL_LONGITUDE, COL_TIMEZONE},
+                COL_AITA + " LIKE \"" + aita + "\"", null, null, null, null);
+        return cursorToAeroport(cursor).get(0).getTimezone();
+    }
+
+
 
     private static ArrayList<Aeroport> cursorToAeroport(Cursor c) {
         ArrayList<Aeroport> listeAeroport = new ArrayList<>();
