@@ -20,6 +20,7 @@
     <string name="rechercheETRetour">Retour</string>
     <string name="accueilTVtitre">EASY TRIP</string>
     <string name="accueilTVsousTitre">WE MOVE PEOPLES</string>
+    <string name="accueilBTdetail">Afficher détail</string>
     <string-array name="passagerSPclasse">
         <item>Economique</item>
         <item>Affaires</item>

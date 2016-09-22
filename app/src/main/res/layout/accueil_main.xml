@@ -186,4 +186,15 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:background="@drawable/rect_bleufonce_bord_noir"
+        android:text="@string/accueilBTdetail"
+        android:textColor="@color/white"
+        android:id="@+id/accueilBTdetail"
+        android:layout_above="@+id/accueilBTvalider"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"/>
+
 </RelativeLayout>

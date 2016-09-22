@@ -3,9 +3,11 @@ package com.example.merguez.easytrip.affichage;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +43,7 @@ public class Accueil extends AppCompatActivity {
     private static CheckBox accueilCBallerRetour;
     private static Button accueilBTvalider;
     private static Button accueilNbPassagersButton;
+    private static Button accueilBTdetail;
     private static Intent accueil_to_lieu;
     private static Intent accueil_to_resultat;
     private static Intent accueil_to_passagers;
@@ -69,6 +72,7 @@ public class Accueil extends AppCompatActivity {
         accueilTVdateArrivee = (TextView)findViewById(R.id.accueilTVdateArrivee);
         accueilCBallerRetour = (CheckBox)findViewById(R.id.accueilCBallerRetour);
         accueilBTvalider = (Button)findViewById(R.id.accueilBTvalider);
+        accueilBTdetail = (Button)findViewById(R.id.accueilBTdetail);
         //declarer le Button Nb passagers + class
         accueilNbPassagersButton=(Button)findViewById(R.id.accueilNbPassagersButton);
         accueilTVdateArrivee.setVisibility(View.GONE);
@@ -148,6 +152,57 @@ public class Accueil extends AppCompatActivity {
                     accueilETdateArrivee.setVisibility(View.GONE);
                     reservation.setAllerRetour(false);
                 }
+            }
+        });
+
+        accueilBTdetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog alertDialog = new AlertDialog.Builder(Accueil.this).create();
+                alertDialog.setTitle("Récapitulatif");
+                String recap = "";
+                    if (reservation.getAitaDepart() != null) {
+                        recap += reservation.getNomDepart() + " (" + reservation.getAitaDepart() + ")";
+                    } else {
+                        recap += "?";
+                    }
+
+                    if (reservation.getAitaArrivee() != null) {
+                        recap += " \u2794 " + reservation.getNomArrivee() + " (" + reservation.getAitaArrivee() + ")";
+                    } else {
+                        recap += " \u2794 " + "?";
+                    }
+
+                    if (accueilETdateDepart.getText().toString().length() > 0) {
+                        recap += "\nDate de départ : " + accueilETdateDepart.getText().toString();
+                    } else {
+                        recap += "\nDate de départ : ?";
+                    }
+
+                    if (accueilETdateArrivee.getText().toString().length() > 0) {
+                        recap += "\nDate de retour : " + accueilETdateArrivee.getText().toString();
+                    } else {
+                        recap += "\nDate de retour : ?";
+                    }
+
+                    recap += "\nNb Passagers : \n"
+                            + reservation.getNbAdultes() + " adultes\n"
+                            + reservation.getNbEnfants() + " enfants\n";
+
+                if (reservation.getClasse() != null) {
+                    recap += "Classe : " + reservation.getClasse();
+                } else {
+                    recap += "Classe : ?";
+                }
+
+                alertDialog.setMessage(recap);
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
             }
         });
 
