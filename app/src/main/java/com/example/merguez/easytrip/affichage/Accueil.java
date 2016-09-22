@@ -25,6 +25,7 @@ import com.example.merguez.easytrip.bdd.InsertionDonnees;
 import com.example.merguez.easytrip.bdd.ListeTablesBDD;
 import com.example.merguez.easytrip.bdd.RequetesBDD;
 import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
+import com.example.merguez.easytrip.bdd.table_classes.ClasseBDD;
 import com.example.merguez.easytrip.bdd.table_vols.Vol;
 import com.example.merguez.easytrip.bdd.table_vols.VolList;
 
@@ -190,8 +191,8 @@ public class Accueil extends AppCompatActivity {
                             + "Adultes : "+ reservation.getNbAdultes() + "\n"
                             + "Enfants : "+ reservation.getNbEnfants() + "\n";
 
-                if (reservation.getClasse() != null) {
-                    recap += "Classe : " + reservation.getClasse();
+                if (reservation.getClasse() > 0) {
+                    recap += "Classe : " + ClasseBDD.getClasseNomwithID(reservation.getClasse(), getApplicationContext());
                 } else {
                     recap += "Classe : ?";
                 }
@@ -211,6 +212,7 @@ public class Accueil extends AppCompatActivity {
         accueilBTvalider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.w("TAG",reservation.toString());
                 if (accueilETdateDepart.getText().toString().length() > 0){
                     reservation.setDateAller(accueilETdateDepart.getText().toString());
                 }
@@ -219,6 +221,7 @@ public class Accueil extends AppCompatActivity {
                 }
                 if (reservation.estComplete() && !reservation.getAitaDepart().equals(reservation.getAitaArrivee())){
                     selectionListeVols();
+                    setDecalageHoraire();
                     accueil_to_resultat.putExtra(Accueil.RESERVATION, reservation);
                     accueil_to_resultat.putExtra(Accueil.LISTE_VOLS,(Parcelable)listeVols);
                     startActivity(accueil_to_resultat);
@@ -229,7 +232,7 @@ public class Accueil extends AppCompatActivity {
                     if (reservation.getDateAller() == null) messageErreur += "\nDate de départ";
                     if (reservation.getDateRetour() == null && reservation.isAllerRetour()) messageErreur += "\nDate de retour";
                     if (reservation.getNbAdultes() + reservation.getNbEnfants() == 0) messageErreur += "\nNombre de passagers";
-                    if (reservation.getClasse() == null) messageErreur += "\nClasse";
+                    if (reservation.getClasse() == 0) messageErreur += "\nClasse";
                     if (accueilETchoixDepart.getText().toString().equals(accueilETchoixArrivee.getText().toString())) {
                         messageErreur += "\n\nVeuillez corriger l'erreur suivante:\nL'aéroport d'arrivée est identique\nà l'aéroport de départ";
                     }
@@ -251,6 +254,15 @@ public class Accueil extends AppCompatActivity {
 
 
 
+    }
+
+    private void setDecalageHoraire() {
+        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(getApplicationContext());
+        listeTablesBDD.open(getApplicationContext());
+        int decalageHoraire = AeroportBDD.getTimezoneWithAita(reservation.getAitaArrivee())
+                - AeroportBDD.getTimezoneWithAita(reservation.getAitaDepart());
+        listeTablesBDD.close();
+        reservation.setDecalageHoraire(decalageHoraire);
     }
 
     @Override

@@ -12,7 +12,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.merguez.easytrip.R;
-
+import com.example.merguez.easytrip.bdd.ListeTablesBDD;
+import com.example.merguez.easytrip.bdd.table_classes.ClasseBDD;
 
 
 public class PassagersMain extends AppCompatActivity {
@@ -41,6 +42,7 @@ public class PassagersMain extends AppCompatActivity {
         passagerSPclasse=(Spinner) findViewById(R.id.passagerSPclasse);
         adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.passagerSPclasse,R.layout.passager_spinner);
         passagerSPclasse.setAdapter(adapter);
+        ClasseBDD.getClasseIDwithNom(passagerSPclasse.getSelectedItem().toString(), getApplicationContext());
         retourAccueilBtn=(Button)findViewById(R.id.retourAccueilBtn);
 
         passagerAdulteditText.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +62,8 @@ public class PassagersMain extends AppCompatActivity {
         passagerSPclasse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                reservation.setClasse(passagerSPclasse.getSelectedItem().toString());
+                int classeID = ClasseBDD.getClasseIDwithNom(passagerSPclasse.getSelectedItem().toString(), getApplicationContext());
+                reservation.setClasse(classeID);
 
             }
 

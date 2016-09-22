@@ -2,6 +2,7 @@ package com.example.merguez.easytrip.bdd.table_classes;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
 import com.example.merguez.easytrip.bdd.ListeTablesBDD;
 
@@ -66,5 +67,35 @@ public class ClasseBDD extends ListeTablesBDD{
     public static int removeAll() {
         //Suppression d'un livre de la BDD grâce à l'ID
         return ListeTablesBDD.getBdd().delete(TABLE_CLASSE, null, null);
+    }
+
+    public static int getClasseIDwithNom(String classe, Context context){
+        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(context);
+        listeTablesBDD.open(context);
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_CLASSE,new String[] {COL_ID},
+                COL_LIBELLE + " LIKE \'" + classe + "\'", null, null, null, null);
+        listeTablesBDD.close();
+        return cursorToClasse(cursor).getId();
+    }
+
+    public static int getClasseNomwithID(int classeID, Context context){
+        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(context);
+        listeTablesBDD.open(context);
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_CLASSE,new String[] {COL_LIBELLE},
+                COL_ID + " LIKE \'" + classeID + "\'", null, null, null, null);
+        listeTablesBDD.close();
+        return cursorToClasse(cursor).getId();
+    }
+
+    private static Classe cursorToClasse(Cursor c) {
+        Classe classe = new Classe();
+        try {
+            c.moveToNext();
+                classe.setId(c.getInt(NUM_COL_ID));
+                classe.setClasse(c.getString(NUM_COL_LIBELLE));
+        } finally {
+            c.close();
+            return classe;
+        }
     }
 }
