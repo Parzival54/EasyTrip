@@ -28,7 +28,7 @@ public class AeroportBDD extends ListeTablesBDD {
     private static final int NUM_COL_LATITUDE = 5;
     private static final String COL_LONGITUDE = "LONGITUDE";
     private static final int NUM_COL_LONGITUDE = 6;
-    private static final String COL_TIMEZONE = "FUSEAU_HORAIRE";
+    private static final String COL_TIMEZONE = "TIMEZONE";
     private static final int NUM_COL_TIMEZONE = 7;
 
     public AeroportBDD(Context context) {
@@ -152,6 +152,12 @@ public class AeroportBDD extends ListeTablesBDD {
                 + COL_PAYS + " LIKE \'%" + nom + "%\' COLLATE NOCASE"
                 , null, null, null, null);
         return cursorToAeroport(cursor);
+    }
+
+    public static int getAeroportTimezoneWithAita(String aita) {
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_AEROPORTS,new String[] {COL_ID, COL_AITA, COL_NOM, COL_VILLE, COL_PAYS, COL_LATITUDE, COL_LONGITUDE, COL_TIMEZONE},
+                COL_AITA + " LIKE \'"  + aita + "\'" , null, null, null, null);
+        return cursorToAeroport(cursor).get(0).getTimezone();
     }
 
     public static Aeroport getAeroportNomWithAita(String aita) {

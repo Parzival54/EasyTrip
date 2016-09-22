@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.merguez.easytrip.bdd.table_aeroports.Aeroport;
+import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
 import com.example.merguez.easytrip.bdd.table_vols.Vol;
 import com.example.merguez.easytrip.bdd.table_vols.VolList;
 
@@ -37,6 +39,14 @@ public class RequetesBDD {
         return bdd;
     }
 
+    public int getAeroportTimezoneWithAita(String aita) {
+       String s = "SELECT aeroport.TIMEZONE FROM aeroports WHERE aeroports.AITA LIKE ?";
+        Cursor c = bdd.rawQuery(s, new String[]{aita});
+        c.moveToFirst();
+        Aeroport aeroport = new Aeroport();
+        aeroport.setTimezone(c.getInt(7));
+        return aeroport.getTimezone();
+    }
 
     public VolList getVolsWithAita(String depAita, String arrAita, int idClasse){
         String s = "SELECT * FROM vols WHERE vols.AEROPORT_DEPART LIKE ? AND vols.AEROPORT_ARRIVEE LIKE ? AND vols.ID_CLASSE = ?";
