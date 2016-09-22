@@ -192,7 +192,10 @@ public class Accueil extends AppCompatActivity {
                             + "Enfants : "+ reservation.getNbEnfants() + "\n";
 
                 if (reservation.getClasse() > 0) {
-                    recap += "Classe : " + ClasseBDD.getClasseNomwithID(reservation.getClasse(), getApplicationContext());
+                    ListeTablesBDD listeTablesBDD = new ListeTablesBDD(getApplicationContext());
+                    listeTablesBDD.open(getApplicationContext());
+                    recap += "Classe : " + ClasseBDD.getClasseNomwithID(reservation.getClasse());
+                    listeTablesBDD.close();
                 } else {
                     recap += "Classe : ?";
                 }

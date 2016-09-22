@@ -69,22 +69,16 @@ public class ClasseBDD extends ListeTablesBDD{
         return ListeTablesBDD.getBdd().delete(TABLE_CLASSE, null, null);
     }
 
-    public static int getClasseIDwithNom(String classe, Context context){
-        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(context);
-        listeTablesBDD.open(context);
-        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_CLASSE,new String[] {COL_ID},
+    public static int getClasseIDwithNom(String classe){
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_CLASSE,new String[] {COL_ID, COL_LIBELLE},
                 COL_LIBELLE + " LIKE \'" + classe + "\'", null, null, null, null);
-        listeTablesBDD.close();
         return cursorToClasse(cursor).getId();
     }
 
-    public static int getClasseNomwithID(int classeID, Context context){
-        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(context);
-        listeTablesBDD.open(context);
-        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_CLASSE,new String[] {COL_LIBELLE},
+    public static String getClasseNomwithID(int classeID){
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_CLASSE,new String[] {COL_ID, COL_LIBELLE},
                 COL_ID + " LIKE \'" + classeID + "\'", null, null, null, null);
-        listeTablesBDD.close();
-        return cursorToClasse(cursor).getId();
+        return cursorToClasse(cursor).getClasse();
     }
 
     private static Classe cursorToClasse(Cursor c) {

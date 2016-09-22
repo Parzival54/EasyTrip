@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,7 +43,10 @@ public class PassagersMain extends AppCompatActivity {
         passagerSPclasse=(Spinner) findViewById(R.id.passagerSPclasse);
         adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.passagerSPclasse,R.layout.passager_spinner);
         passagerSPclasse.setAdapter(adapter);
-        ClasseBDD.getClasseIDwithNom(passagerSPclasse.getSelectedItem().toString(), getApplicationContext());
+        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
+        listeTablesBDD.open(this);
+        ClasseBDD.getClasseIDwithNom(passagerSPclasse.getSelectedItem().toString());
+        listeTablesBDD.close();
         retourAccueilBtn=(Button)findViewById(R.id.retourAccueilBtn);
 
         passagerAdulteditText.setOnClickListener(new View.OnClickListener() {
@@ -62,8 +66,13 @@ public class PassagersMain extends AppCompatActivity {
         passagerSPclasse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int classeID = ClasseBDD.getClasseIDwithNom(passagerSPclasse.getSelectedItem().toString(), getApplicationContext());
+                ListeTablesBDD listeTablesBDD = new ListeTablesBDD(getApplicationContext());
+                listeTablesBDD.open(getApplicationContext());
+                Log.w("TAG",passagerSPclasse.getSelectedItem().toString());
+                int classeID = ClasseBDD.getClasseIDwithNom(passagerSPclasse.getSelectedItem().toString());
+                listeTablesBDD.close();
                 reservation.setClasse(classeID);
+                Log.w("TAG","" + classeID);
 
             }
 

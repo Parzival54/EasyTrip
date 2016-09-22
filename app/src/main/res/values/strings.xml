@@ -23,7 +23,7 @@
     <string name="accueilBTdetail">Afficher détail</string>
     <string-array name="passagerSPclasse">
         <item>Economique</item>
-        <item>Affaires</item>
-        <item>Premiere</item>
+        <item>Affaire</item>
+        <item>Business</item>
     </string-array>
 </resources>
