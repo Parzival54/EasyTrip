@@ -39,7 +39,7 @@ public class ClasseBDD extends ListeTablesBDD{
         return NUM_COL_LIBELLE;
     }
 
-    public long insertClasse(Classe classe){
+    public static long insertClasse(Classe classe){
         //Création d'un ContentValues (fonctionne comme une HashMap)
         ContentValues values = new ContentValues();
         //on lui ajoute une valeur associé à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
@@ -48,7 +48,7 @@ public class ClasseBDD extends ListeTablesBDD{
         return ListeTablesBDD.getBdd().insert(TABLE_CLASSE, null, values);
     }
 
-    public int updateClasse(Classe classe){
+    public static int updateClasse(Classe classe){
         int id = classe.getId();
         //La mise à jour d'un livre dans la BDD fonctionne plus ou moins comme une insertion
         //il faut simple préciser quelle livre on doit mettre à jour grâce à l'ID
@@ -57,13 +57,13 @@ public class ClasseBDD extends ListeTablesBDD{
         return ListeTablesBDD.getBdd().update(TABLE_CLASSE, values, COL_ID + " = " +id, null);
     }
 
-    public int removeClasse(Classe classe){
+    public static int removeClasse(Classe classe){
         int id = classe.getId();
         //Suppression d'un aéroport de la BDD grâce à l'ID
         return ListeTablesBDD.getBdd().delete(TABLE_CLASSE, COL_ID + " = " + id, null);
     }
 
-    public int removeAll() {
+    public static int removeAll() {
         //Suppression d'un livre de la BDD grâce à l'ID
         return ListeTablesBDD.getBdd().delete(TABLE_CLASSE, null, null);
     }
