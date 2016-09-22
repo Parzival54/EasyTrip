@@ -75,6 +75,7 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
         bdd = listeTablesBDD.getWritableDatabase();
     }
 
+    @Override
     public void close(){
         bdd.close();
     }
@@ -84,10 +85,10 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_AEROPORTS);
         db.execSQL(CREATE_TABLE_VOLS);
         db.execSQL(CREATE_TABLE_CLASSES);
-        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(myContext);
+        /*ListeTablesBDD listeTablesBDD = new ListeTablesBDD(myContext);
         listeTablesBDD.open(myContext);
         InsertionDonnees.insertionDonnees(myContext);
-        listeTablesBDD.close();
+        listeTablesBDD.close();*/
         /*new Thread(new Runnable() {
             @Override
             public void run() {
