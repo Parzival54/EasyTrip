@@ -1,6 +1,8 @@
 package com.example.merguez.easytrip.affichage;
 
+import android.content.DialogInterface;
 import android.os.Parcelable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -91,13 +93,32 @@ public class Recherche extends AppCompatActivity {
                                          {
                                              @Override
                                              public void onClick(View v) {
-                                                 Accueil.accueilToRecherche = true;
-                                                 startActivity(rechercheToAccueil);
+                                                 afficherMessage();
                                              }
                                          }
 
         );
 
+    }
+
+    private void afficherMessage() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(Recherche.this).create();
+        alertDialog.setTitle("ATTENTION");
+        alertDialog.setMessage("Vous allez réinitialiser vos données,\nVoulez-vous continuer?");
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "ANNULER", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "CONFIRMER", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Accueil.accueilToRecherche = true;
+                startActivity(rechercheToAccueil);
+            }
+        });
+        alertDialog.show();
     }
 
     public void addItemsOnSpinner() {
