@@ -3,6 +3,7 @@ package com.example.merguez.easytrip.affichage;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -44,7 +45,8 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class Connexion extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    final static String CONNEXION = "CONNEXION";
+    private static SharedPreferences preferences;
+
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -336,7 +338,13 @@ public class Connexion extends AppCompatActivity implements LoaderCallbacks<Curs
             listeTablesBDD.open(getApplicationContext());
             UserBDD.insertUser(user);
             listeTablesBDD.close();
-            getIntent().putExtra(CONNEXION, true);
+
+            preferences = getBaseContext().getSharedPreferences(Ouverture.PREFERENCES, MODE_PRIVATE);
+            preferences
+                    .edit()
+                    .putBoolean(Ouverture.CONNECTE, true)
+                    .putString(Ouverture.EMAIL, mEmail)
+                    .apply();
 
             return true;
         }

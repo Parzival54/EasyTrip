@@ -26,6 +26,7 @@ import com.example.merguez.easytrip.bdd.ListeTablesBDD;
 import com.example.merguez.easytrip.bdd.RequetesBDD;
 import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
 import com.example.merguez.easytrip.bdd.table_classes.ClasseBDD;
+import com.example.merguez.easytrip.bdd.table_users.User;
 import com.example.merguez.easytrip.bdd.table_vols.Vol;
 import com.example.merguez.easytrip.bdd.table_vols.VolList;
 
@@ -80,7 +81,6 @@ public class Accueil extends AppCompatActivity {
         accueilTVdateArrivee.setVisibility(View.GONE);
         accueilETdateArrivee.setVisibility(View.GONE);
 
-        //ToDo: créer le layout pour le mode paysage
         //ToDo: créer une icone (+ splash?)
         //ToDo: ajouter récap nb passagers + classe sur la page accueil
 
