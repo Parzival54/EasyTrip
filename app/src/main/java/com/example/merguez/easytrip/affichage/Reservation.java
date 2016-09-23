@@ -20,11 +20,12 @@ public class Reservation implements Serializable{
     private String dateAller;
     private String dateRetour;
     private int decalageHoraire;
+    private boolean connecte;
 
     public Reservation(){}
 
     public Reservation(String aitaDepart, String nomDepart, String aitaArrivee, String nomArrivee, int classe,int volAller,int volRetour,
-                       boolean allerRetour, int nbAdultes, int nbEnfants, String dateAller, String dateRetour, int decalageHoraire) {
+                       boolean allerRetour, int nbAdultes, int nbEnfants, String dateAller, String dateRetour, int decalageHoraire, boolean connecte) {
         this.aitaDepart = aitaDepart;
         this.nomDepart = nomDepart;
         this.aitaArrivee = aitaArrivee;
@@ -38,6 +39,7 @@ public class Reservation implements Serializable{
         this.dateAller = dateAller;
         this.dateRetour = dateRetour;
         this.decalageHoraire = decalageHoraire;
+        this.connecte = connecte;
     }
 
     public String getAitaDepart() {
@@ -136,6 +138,14 @@ public class Reservation implements Serializable{
         this.decalageHoraire = decalageHoraire;
     }
 
+    public boolean isConnecte() {
+        return connecte;
+    }
+
+    public void setConnecte(boolean connecte) {
+        this.connecte = connecte;
+    }
+
     @Override
     public String toString() {
         return "Reservation{" +
@@ -152,6 +162,7 @@ public class Reservation implements Serializable{
                 ", dateAller='" + dateAller + '\'' +
                 ", dateRetour='" + dateRetour + '\'' +
                 ", decalageHoraire='" + decalageHoraire + '\'' +
+                ", connecte='" + connecte + '\'' +
                 '}';
     }
 

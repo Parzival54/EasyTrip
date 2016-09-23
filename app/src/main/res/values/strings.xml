@@ -21,6 +21,9 @@
     <string name="accueilTVtitre">EASY TRIP</string>
     <string name="accueilTVsousTitre">WE MOVE PEOPLES</string>
     <string name="accueilBTdetail">Afficher détail</string>
+    <string name="recepisseTVtitre">VOTRE CHOIX</string>
+    <string name="recepisseTVrecap" />
+    <string name="recepisseBTconfirmer">CONFIRMER</string>
     <string-array name="passagerSPclasse">
         <item>Economique</item>
         <item>Affaire</item>
