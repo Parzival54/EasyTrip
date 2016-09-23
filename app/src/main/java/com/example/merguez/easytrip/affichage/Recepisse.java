@@ -6,15 +6,20 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.merguez.easytrip.R;
 import com.example.merguez.easytrip.bdd.ListeTablesBDD;
 import com.example.merguez.easytrip.bdd.table_classes.ClasseBDD;
+import com.example.merguez.easytrip.bdd.table_enregistrements.Enregistrement;
+import com.example.merguez.easytrip.bdd.table_enregistrements.EnregistrementBDD;
+import com.example.merguez.easytrip.bdd.table_users.UserBDD;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class Recepisse extends AppCompatActivity {
 
@@ -29,6 +34,9 @@ public class Recepisse extends AppCompatActivity {
     private static String trajetRetour = "";
     private static SharedPreferences preferences;
     private static Intent recepisseToConnexion;
+    private static Intent recepisseToOuverture;
+    private static Enregistrement enregistrement;
+    private static ListeTablesBDD listeTablesBDD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +46,14 @@ public class Recepisse extends AppCompatActivity {
         recepisseBTconfirmer = (Button)findViewById(R.id.recepisseBTconfirmer);
         preferences = getBaseContext().getSharedPreferences(Ouverture.PREFERENCES, MODE_PRIVATE);
         recepisseToConnexion = new Intent(Recepisse.this,Connexion.class);
+        recepisseToOuverture = new Intent(Recepisse.this,Ouverture.class);
+        enregistrement = new Enregistrement();
 
         reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
         trajet = getIntent().getExtras().getString("TRAJET");
         prix = getIntent().getExtras().getString("PRIX");
         classe = getIntent().getExtras().getString("CLASSE");
-        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
+        listeTablesBDD = new ListeTablesBDD(this);
         listeTablesBDD.open(this);
         classe = ClasseBDD.getClasseNomwithID(Integer.parseInt(classe.substring(classe.indexOf(":")+2)));
         listeTablesBDD.close();
@@ -71,16 +81,17 @@ public class Recepisse extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (preferences.getBoolean(Ouverture.CONNECTE, false)) {
-                    Toast.makeText(getApplicationContext(),"connecté",Toast.LENGTH_LONG).show();
+                    afficherMessageValidation();
+                    completerEnregistrement();
                 } else {
-                    afficherMessage();
+                    afficherMessageConnexion();
                 }
             }
         });
 
     }
 
-    private void afficherMessage() {
+    private void afficherMessageConnexion() {
         final AlertDialog alertDialog = new AlertDialog.Builder(Recepisse.this).create();
         alertDialog.setTitle("ATTENTION");
         alertDialog.setMessage("Afin de pouvoir enregistrer votre vol,\nveuillez vous connecter.");
@@ -98,4 +109,40 @@ public class Recepisse extends AppCompatActivity {
         });
         alertDialog.show();
     }
+
+    private void afficherMessageValidation() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(Recepisse.this).create();
+        alertDialog.setTitle("DERNIERE ETAPE");
+        alertDialog.setMessage("Voulez-vous confirmer cette réservation ?");
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "ANNULER", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "CONFIRMER", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(recepisseToOuverture);
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void completerEnregistrement() {
+        listeTablesBDD.open(getApplicationContext());
+        int userID = UserBDD.getUserIDithNom(preferences.getString(Ouverture.EMAIL, null));
+        enregistrement.setUserID(userID);
+        // TODO : récupérer volID
+        enregistrement.setVolAllerID(1);
+        enregistrement.setNbAdultes(reservation.getNbAdultes());
+        enregistrement.setNbEnfants(reservation.getNbEnfants());
+        enregistrement.setPrixTotal(Double.parseDouble(prix.substring(prix.indexOf("total:") + 7, prix.indexOf("€") - 1)));
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.FRENCH);
+        String timestamp = format.format(System.currentTimeMillis());
+        enregistrement.setDateCreation(timestamp);
+        EnregistrementBDD.insertEnregistrement(enregistrement);
+        listeTablesBDD.close();
+    }
+
 }

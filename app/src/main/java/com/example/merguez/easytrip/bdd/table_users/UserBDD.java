@@ -2,6 +2,7 @@ package com.example.merguez.easytrip.bdd.table_users;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
 import com.example.merguez.easytrip.bdd.ListeTablesBDD;
 
@@ -58,5 +59,24 @@ public class UserBDD extends ListeTablesBDD {
         values.put(COL_PASSWORD, user.getPassword());
         //on insère l'objet dans la BDD via le ContentValues
         return ListeTablesBDD.getBdd().insert(TABLE_USER, null, values);
+    }
+
+    public static int getUserIDithNom(String email){
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_USER,new String[] {COL_ID, COL_EMAIL, COL_PASSWORD},
+                COL_EMAIL + " LIKE \'" + email + "\'", null, null, null, null);
+        return cursorToUser(cursor).getId();
+    }
+
+    private static User cursorToUser(Cursor c) {
+        User user = new User();
+        try {
+            c.moveToNext();
+            user.setId(c.getInt(NUM_COL_ID));
+            user.setEmail(c.getString(NUM_COL_EMAIL));
+            user.setPassword(c.getString(NUM_COL_PASSWORD));
+        } finally {
+            c.close();
+            return user;
+        }
     }
 }

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,10 +36,13 @@ public class Ouverture extends AppCompatActivity {
         setContentView(R.layout.ouverture_main);
 
         preferences = getBaseContext().getSharedPreferences(PREFERENCES, MODE_PRIVATE);
-        preferences
-                .edit()
-                .putBoolean(CONNECTE, false)
-                .apply();
+//        preferences
+//                .edit()
+//                .putBoolean(CONNECTE, false)
+//                .apply();
+
+        Log.w("TAG", "oncreate : " + preferences.getBoolean(CONNECTE, false));
+        verificationConnexion();
 
         ouvertureBTconnexion = (Button)findViewById(R.id.ouvertureBTconnexion);
         ouvertureTVidentifiant = (TextView)findViewById(R.id.ouvertureTVidentifiant);
@@ -86,9 +90,14 @@ public class Ouverture extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        verificationConnexion();
+    }
+
+    private static void verificationConnexion() {
         if (preferences.getBoolean(CONNECTE, false)) {
             ouvertureBTconnexion.setText("DECONNEXION");
             ouvertureTVidentifiant.setText("Connecté en tant que : " + preferences.getString(EMAIL,""));
+            // TODO : ajouter la liste des réservations de l'utilisateur
         }
     }
 
