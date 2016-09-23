@@ -30,7 +30,6 @@ public class Filtres extends Activity {
     private static VolList listeVols;
     private static VolList listeVolsRetour;
     private static VolList listeVolsFiltree;
-    //private static VolList listeVolsFiltreeRetour;
     private static Intent filtresToRecherche;
     private static final double coeffReductionEnfant = 0.8;
 
