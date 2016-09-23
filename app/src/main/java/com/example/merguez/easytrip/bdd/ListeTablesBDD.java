@@ -9,6 +9,8 @@ import com.example.merguez.easytrip.affichage.Accueil;
 import com.example.merguez.easytrip.bdd.table_aeroports.Aeroport;
 import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
 import com.example.merguez.easytrip.bdd.table_classes.ClasseBDD;
+import com.example.merguez.easytrip.bdd.table_enregistrements.Enregistrement;
+import com.example.merguez.easytrip.bdd.table_enregistrements.EnregistrementBDD;
 import com.example.merguez.easytrip.bdd.table_users.User;
 import com.example.merguez.easytrip.bdd.table_users.UserBDD;
 import com.example.merguez.easytrip.bdd.table_vols.VolBDD;
@@ -55,6 +57,12 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
             + UserBDD.getColId() + " INTEGER PRIMARY KEY AUTOINCREMENT, " + UserBDD.getColEmail() + " TEXT NOT NULL, "
             + UserBDD.getColPassword() + " TEXT NOT NULL);";
 
+    private static final String CREATE_TABLE_ENREGISTREMENTS = "CREATE TABLE " + EnregistrementBDD.getTableEnregistrements() + " ("
+            + EnregistrementBDD.getColId() + " INTEGER PRIMARY KEY AUTOINCREMENT, " + EnregistrementBDD.getColUserid() + " INTEGER NOT NULL, "
+            + EnregistrementBDD.getColVolAllerId() + " INTEGER NOT NULL, " + EnregistrementBDD.getColVolRetourId() + " INTEGER, "
+            + EnregistrementBDD.getColNbAdultes() + " INTEGER NOT NULL, " + EnregistrementBDD.getColNbEnfants() + " INTEGER NOT NULL, "
+            + EnregistrementBDD.getColPrix() + " REAL NOT NULL, " + EnregistrementBDD.getColDateCreation() + " TEXT NOT NULL);";
+
 //Création du constructeur
 
     public ListeTablesBDD(Context context) {
@@ -98,6 +106,7 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_VOLS);
         db.execSQL(CREATE_TABLE_CLASSES);
         db.execSQL(CREATE_TABLE_USERS);
+        db.execSQL(CREATE_TABLE_ENREGISTREMENTS);
         /*ListeTablesBDD listeTablesBDD = new ListeTablesBDD(myContext);
         listeTablesBDD.open(myContext);
         InsertionDonnees.insertionDonnees(myContext);
@@ -119,6 +128,7 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE " + VolBDD.getTableVols() + " ;");
         db.execSQL("DROP TABLE " + ClasseBDD.getTableClasse() + " ;");
         db.execSQL("DROP TABLE " + UserBDD.getTableUser() + " ;");
+        db.execSQL("DROP TABLE " + EnregistrementBDD.getTableEnregistrements() + " ;");
         onCreate(db);
     }
 //Mise en place de la Méthode de recherche des aéroports
