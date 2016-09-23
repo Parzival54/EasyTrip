@@ -9,6 +9,8 @@ import com.example.merguez.easytrip.affichage.Accueil;
 import com.example.merguez.easytrip.bdd.table_aeroports.Aeroport;
 import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
 import com.example.merguez.easytrip.bdd.table_classes.ClasseBDD;
+import com.example.merguez.easytrip.bdd.table_users.User;
+import com.example.merguez.easytrip.bdd.table_users.UserBDD;
 import com.example.merguez.easytrip.bdd.table_vols.VolBDD;
 
 import java.util.ArrayList;
@@ -49,8 +51,9 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_CLASSES = "CREATE TABLE " + ClasseBDD.getTableClasse() + " ("
             + ClasseBDD.getColId() + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ClasseBDD.getColLibelle() + " TEXT NOT NULL);";
 
-
-
+    private static final String CREATE_TABLE_USERS = "CREATE TABLE " + UserBDD.getTableUser() + " ("
+            + UserBDD.getColId() + " INTEGER PRIMARY KEY AUTOINCREMENT, " + UserBDD.getColEmail() + " TEXT NOT NULL, "
+            + UserBDD.getColPassword() + " TEXT NOT NULL);";
 
 //Création du constructeur
 
@@ -94,6 +97,7 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_AEROPORTS);
         db.execSQL(CREATE_TABLE_VOLS);
         db.execSQL(CREATE_TABLE_CLASSES);
+        db.execSQL(CREATE_TABLE_USERS);
         /*ListeTablesBDD listeTablesBDD = new ListeTablesBDD(myContext);
         listeTablesBDD.open(myContext);
         InsertionDonnees.insertionDonnees(myContext);
@@ -113,6 +117,8 @@ public class ListeTablesBDD extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE " + AeroportBDD.getTableAeroports() + " ;");
         db.execSQL("DROP TABLE " + VolBDD.getTableVols() + " ;");
+        db.execSQL("DROP TABLE " + ClasseBDD.getTableClasse() + " ;");
+        db.execSQL("DROP TABLE " + UserBDD.getTableUser() + " ;");
         onCreate(db);
     }
 //Mise en place de la Méthode de recherche des aéroports
