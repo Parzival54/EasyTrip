@@ -22,35 +22,45 @@ import java.util.List;
 
 public class Filtres extends Activity {
 
-    private CheckBox filtreCbHeureDepMin, filtreCbHeureArrMax, filtreCbPrixMax;
-    private Spinner filtreEdtHeureDepMin, filtreEdtHeureArrMax;
+    private CheckBox filtreCbHeureDepMin, filtreCbHeureArrMax, filtreCbPrixMax, filtreCbHeureDepMinRet,filtreCbHeureArrMaxRet;
+    private Spinner filtreSpHeureDepMin, filtreSpHeureArrMax, filtreSpHeureDepMinRet, filtreSpHeureArrMaxRet;
     private EditText filtreEdtPrixMax;
     private Button filtrebtnFiltrer;
     private static Reservation reservation;
     private static VolList listeVols;
-    private static VolList listeVolsFiltree = new VolList();
+    private static VolList listeVolsRetour;
+    private static VolList listeVolsFiltree;
     private static Intent filtresToRecherche;
+    private static final double coeffReductionEnfant = 0.8;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtres);
         listeVols = (VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS);
+        reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
+        if (reservation.isAllerRetour())
+        listeVolsRetour =(VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS_RETOUR);
+        listeVolsFiltree = new VolList();
+       // listeVolsFiltreeRetour = new VolList();
         filtreCbHeureDepMin = (CheckBox) findViewById(R.id.filtreCbHeureDepMin);
         filtreCbHeureArrMax = (CheckBox) findViewById(R.id.filtreCbHeureArrMax);
+        filtreCbHeureDepMinRet = (CheckBox) findViewById(R.id.filtreCbHeureDepMinRet);
+        filtreCbHeureArrMaxRet = (CheckBox) findViewById(R.id.filtreCbHeureArrMaxRet);
         filtreCbPrixMax = (CheckBox) findViewById(R.id.filtreCbPrixMax);
-        filtreEdtHeureDepMin = (Spinner) findViewById(R.id.filtreEdtHeureDepMin);
-        filtreEdtHeureArrMax = (Spinner) findViewById(R.id.filtreEdtHeureArrMax);
+        filtreSpHeureDepMin = (Spinner) findViewById(R.id.filtreSpHeureDepMin);
+        filtreSpHeureArrMax = (Spinner) findViewById(R.id.filtreSpHeureArrMax);
+        filtreSpHeureDepMinRet = (Spinner) findViewById(R.id.filtreSpHeureDepMinRet);
+        filtreSpHeureArrMaxRet = (Spinner) findViewById(R.id.filtreSpHeureArrMaxRet);
         filtreEdtPrixMax = (EditText) findViewById(R.id.filtreEdtPrixMax);
-        reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
-        listeVols = (VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS);
         filtresToRecherche = new Intent(Filtres.this, Recherche.class);
         addListenerOnButton();
         addItemsOnSpinners();
-        filtreEdtHeureDepMin.setEnabled(false);
-        filtreEdtHeureDepMin.setClickable(false);
-        filtreEdtHeureArrMax.setEnabled(false);
-        filtreEdtHeureArrMax.setClickable(false);
+        config();
+        filtreSpHeureDepMin.setEnabled(false);
+        filtreSpHeureDepMin.setClickable(false);
+        filtreSpHeureArrMax.setEnabled(false);
+        filtreSpHeureArrMax.setClickable(false);
         filtreEdtPrixMax.setEnabled(false);
         filtreEdtPrixMax.setClickable(false);
 
@@ -58,12 +68,12 @@ public class Filtres extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (filtreCbHeureDepMin.isChecked()) {
-                    filtreEdtHeureDepMin.setEnabled(true);
-                    filtreEdtHeureDepMin.setClickable(true);
+                    filtreSpHeureDepMin.setEnabled(true);
+                    filtreSpHeureDepMin.setClickable(true);
                 }
                 else {
-                    filtreEdtHeureDepMin.setEnabled(false);
-                    filtreEdtHeureDepMin.setClickable(false);
+                    filtreSpHeureDepMin.setEnabled(false);
+                    filtreSpHeureDepMin.setClickable(false);
                 }
             }
         });
@@ -72,12 +82,40 @@ public class Filtres extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (filtreCbHeureArrMax.isChecked()) {
-                    filtreEdtHeureArrMax.setEnabled(true);
-                    filtreEdtHeureArrMax.setClickable(true);
+                    filtreSpHeureArrMax.setEnabled(true);
+                    filtreSpHeureArrMax.setClickable(true);
                 }
                 else {
-                    filtreEdtHeureArrMax.setEnabled(false);
-                    filtreEdtHeureArrMax.setClickable(false);
+                    filtreSpHeureArrMax.setEnabled(false);
+                    filtreSpHeureArrMax.setClickable(false);
+                }
+            }
+        });
+
+        filtreCbHeureDepMinRet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (filtreCbHeureDepMinRet.isChecked()) {
+                    filtreSpHeureDepMinRet.setEnabled(true);
+                    filtreSpHeureDepMinRet.setClickable(true);
+                }
+                else {
+                    filtreSpHeureDepMinRet.setEnabled(false);
+                    filtreSpHeureDepMinRet.setClickable(false);
+                }
+            }
+        });
+
+        filtreCbHeureArrMaxRet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (filtreCbHeureArrMaxRet.isChecked()) {
+                    filtreSpHeureArrMaxRet.setEnabled(true);
+                    filtreSpHeureArrMaxRet.setClickable(true);
+                }
+                else {
+                    filtreSpHeureArrMaxRet.setEnabled(false);
+                    filtreSpHeureArrMaxRet.setClickable(false);
                 }
             }
         });
@@ -106,67 +144,44 @@ public class Filtres extends Activity {
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listeHoraires);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filtreEdtHeureDepMin.setAdapter(adapter);
-        filtreEdtHeureArrMax.setAdapter(adapter);
+        filtreSpHeureDepMin.setAdapter(adapter);
+        filtreSpHeureArrMax.setAdapter(adapter);
+        filtreSpHeureDepMinRet.setAdapter(adapter);
+        filtreSpHeureArrMaxRet.setAdapter(adapter);
     }
 
-
-    /*public void addListenerOnChkHeureDepMin() {
-        filtreCbHeureDepMin = (CheckBox) findViewById(R.id.filtreCbHeureDepMin);
-        filtreCbHeureDepMin.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
-
-                }
-            }
-        });
-    }
-
-    public void addListenerOnChkHeureDepMax() {
-        filtreCbHeureDepMax = (CheckBox) findViewById(R.id.filtreCbHeureDepMax);
-        filtreCbHeureDepMax.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
-
-                }
-            }
-        });
-    }
-
-    public void addListenerOnChkPrix() {
-        filtreCbPrixMax = (CheckBox) findViewById(R.id.filtreCbPrixMax);
-        filtreCbPrixMax.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
-
-                }
-            }
-        });
-    }*/
-
-    public int stringHeureToInt (String heure){
+    private int stringHeureToInt (String heure){
         String s = heure.substring(0,2)+heure.substring(3,5);
         return Integer.parseInt(s);
     }
 
-    public void addListenerOnButton() {
+    private void addListenerOnButton() {
         filtrebtnFiltrer = (Button) findViewById(R.id.filtrebtnFiltrer);
         filtrebtnFiltrer.setOnClickListener(new OnClickListener() {
             //Run when button is clicked
             @Override
             public void onClick(View v) {
-                listeVolsFiltree.clear();
-                for (int i=0; i<listeVols.size();i++){
-                    double prixTotal = (double)(((int)(listeVols.get(i).getPrix()*(reservation.getNbAdultes()+reservation.getNbEnfants()*0.8)*100))/100);
-                    if ((!(filtreCbHeureDepMin.isChecked()) || (stringHeureToInt(filtreEdtHeureDepMin.getSelectedItem().toString())<stringHeureToInt(listeVols.get(i).getHeureDepart())))
-                            &&(!(filtreCbHeureArrMax.isChecked()) || (stringHeureToInt(filtreEdtHeureArrMax.getSelectedItem().toString())>stringHeureToInt(listeVols.get(i).getHeureArrivee())))
-                            && (!(filtreCbPrixMax.isChecked()) || (Double.parseDouble(filtreEdtPrixMax.getText().toString())> prixTotal)))
-                    {
-                        listeVolsFiltree.add(listeVols.get(i));
+                int nbAdultes = reservation.getNbAdultes();
+                int nbEnfants = reservation.getNbEnfants();
+                if (!reservation.isAllerRetour()) {
+                    for (int i = 0; i < listeVols.size(); i++) {
+                        Vol aller = listeVols.get(i);
+                        if (horairesValidesAller(aller) && (prixValideAllerSimple(aller, nbAdultes, nbEnfants)))
+                            listeVolsFiltree.add(listeVols.get(i));
                     }
+                }
+                else {
+                    for (int i = 0; i < listeVols.size(); i++) {
+                        Vol aller = listeVols.get(i);
+                        for (int j = 0; j < listeVolsRetour.size(); j++) {
+                            Vol retour = listeVolsRetour.get(j);
+                            if (horairesValidesAller(aller) && horairesValidesRetour(retour)
+                            &&(prixValideAllerRetour(aller, retour, nbAdultes, nbEnfants)))
+                                listeVolsFiltree.add(listeVols.get(i));
+                                listeVolsFiltree.add(listeVolsRetour.get(j));
+                        }
+                    }
+                    filtresToRecherche.putExtra(Accueil.LISTE_VOLS_RETOUR, (Parcelable)listeVolsRetour);
                 }
                 filtresToRecherche.putExtra(Recherche.LISTE_VOLS_FILTREE,(Parcelable)listeVolsFiltree);
                 filtresToRecherche.putExtra(Accueil.LISTE_VOLS, (Parcelable)listeVols);
@@ -174,7 +189,44 @@ public class Filtres extends Activity {
                 startActivity(filtresToRecherche);
             }
         });
+    }
 
+    private boolean horairesValidesAller(Vol v) {
+        return ((!(filtreCbHeureDepMin.isChecked())||(stringHeureToInt(filtreSpHeureDepMin.getSelectedItem().toString())<stringHeureToInt(v.getHeureDepart())))
+                &&(!(filtreCbHeureArrMax.isChecked())||(stringHeureToInt(filtreSpHeureArrMax.getSelectedItem().toString())>Recherche.mod(stringHeureToInt(v.getHeureArrivee())+reservation.getDecalageHoraire()*100,2400))));
+    }
 
+    private boolean horairesValidesRetour(Vol v){
+        return ((!(filtreCbHeureDepMinRet.isChecked())||(stringHeureToInt(filtreSpHeureDepMinRet.getSelectedItem().toString())<stringHeureToInt(v.getHeureDepart())))
+                &&(!(filtreCbHeureArrMaxRet.isChecked())||(stringHeureToInt(filtreSpHeureArrMaxRet.getSelectedItem().toString())>Recherche.mod(stringHeureToInt(v.getHeureArrivee())-reservation.getDecalageHoraire()*100,2400))));
+    }
+
+    private boolean prixValideAllerSimple(Vol v, int nbAdultes, int nbEnfants) {
+        return (!(filtreCbPrixMax.isChecked())
+                ||(Double.parseDouble(filtreEdtPrixMax.getText().toString())> prixTotal(v.getPrix(),nbAdultes,nbEnfants)));
+    }
+
+    private boolean prixValideAllerRetour(Vol aller, Vol retour, int nbAdultes, int nbEnfants) {
+        return (!(filtreCbPrixMax.isChecked())
+                ||(Double.parseDouble(filtreEdtPrixMax.getText().toString())> prixTotal(aller.getPrix()+retour.getPrix(),nbAdultes,nbEnfants)));
+    }
+
+    private double prixTotal(double prix, int nbAdultes, int nbEnfants) {
+        return (double)(((int)(prix*(nbAdultes + nbEnfants*coeffReductionEnfant)*100))/100);
+    }
+
+    private void config(){
+        if (!reservation.isAllerRetour()) {
+            filtreSpHeureArrMaxRet.setVisibility(View.INVISIBLE);
+            filtreSpHeureDepMinRet.setVisibility(View.INVISIBLE);
+            filtreCbHeureDepMinRet.setVisibility(View.INVISIBLE);
+            filtreCbHeureArrMaxRet.setVisibility(View.INVISIBLE);
+        }
+        else {
+            filtreSpHeureArrMaxRet.setVisibility(View.VISIBLE);
+            filtreSpHeureDepMinRet.setVisibility(View.VISIBLE);
+            filtreCbHeureDepMinRet.setVisibility(View.VISIBLE);
+            filtreCbHeureArrMaxRet.setVisibility(View.VISIBLE);
+        }
     }
 }

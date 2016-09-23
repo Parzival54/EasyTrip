@@ -38,6 +38,7 @@ public class Recherche extends AppCompatActivity {
     Spinner spinner;
     private static Reservation reservation;
     private static VolList listeVols;
+    private static VolList listeVolsRetour;
     private static VolList listeVolsFiltree = new VolList();
     final static String LISTE_VOLS_FILTREE = "liste vols filtree";
     private static Intent rechercheToFiltre;
@@ -52,6 +53,8 @@ public class Recherche extends AppCompatActivity {
         setContentView(R.layout.recherche_main);
         reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
         listeVols = (VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS);
+        if (reservation.isAllerRetour())
+            listeVolsRetour= (VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS_RETOUR);
         selectionListeFiltree();
         volsBtnFiltrer = (Button) findViewById(R.id.volsBtnFiltrer);
         volsBtnRetour = (Button) findViewById(R.id.volsBtnRetour);
@@ -74,6 +77,8 @@ public class Recherche extends AppCompatActivity {
                                                   //ArrayList<Vol> listeNonFiltree = new ArrayList<Vol>();
                                                   //listeNonFiltree = liste;
                                                   rechercheToFiltre.putExtra(Accueil.LISTE_VOLS, (Parcelable) listeVols);
+                                                  if (reservation.isAllerRetour())
+                                                  rechercheToFiltre.putExtra(Accueil.LISTE_VOLS_RETOUR, (Parcelable) listeVolsRetour);
                                                   rechercheToFiltre.putExtra(Accueil.RESERVATION, reservation);
                                                   startActivity(rechercheToFiltre);
                                               }
@@ -112,7 +117,8 @@ public class Recherche extends AppCompatActivity {
         vue = (ListView) findViewById(R.id.volsElvListeVols);
         List<HashMap<String, String>> listItem = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> element;
-        if (listeVolsFiltree == null || listeVolsFiltree.size()==0) {
+        if (listeVolsFiltree == null || listeVolsFiltree.size()==0)
+        {
             element = new HashMap<String, String>();
             element.put("Horaires","Il n'y a aucun vol correspondant à votre recherche.");
             //volsBtnVol.setVisibility(View.INVISIBLE);
@@ -124,6 +130,7 @@ public class Recherche extends AppCompatActivity {
             String arrAita = reservation.getAitaArrivee();
             int nbAdulte = reservation.getNbAdultes();
             int nbEnfants = reservation.getNbEnfants();
+            int decalageHoraire = reservation.getDecalageHoraire();
             String libelleAdultes = "";
             String libelleEnfants = "";
             if (nbAdulte == 1)
@@ -134,35 +141,46 @@ public class Recherche extends AppCompatActivity {
                 libelleEnfants = "1 enfant    ";
             if (nbEnfants > 1)
                 libelleEnfants = nbEnfants + " enfants    ";
-            RequetesBDD requetesBDD = new RequetesBDD(this);
-            requetesBDD.open();
-            int decHorDep = requetesBDD.getAeroportTimezoneWithAita(reservation.getAitaDepart());
-            int decHorArr = requetesBDD.getAeroportTimezoneWithAita(reservation.getAitaArrivee());
-            requetesBDD.close();
-
-            for (int i = 0; i < nbVols; i++) {
-                Vol v = listeVolsFiltree.get(i);
-                String heureDep = v.getHeureDepart();
-                String heureArr = v.getHeureArrivee();
-                if (heureArr.substring(heureArr.length() - 1).equals("1"))
-                    heureArr =ajouterTimeToHeure(heureArr,24);
-                heureArr = heureArr.substring(0, heureArr.length() - 2);
-                heureArr = ajouterTimeToHeure(heureArr,decHorArr-decHorDep);
-                String lendemain = "";
-                if (heureArr.length() == 4) {
-                    heureArr = "0" + heureArr;
+            if (!reservation.isAllerRetour()) {
+                for (int i = 0; i < nbVols; i++) {
+                    Vol v = listeVolsFiltree.get(i);
+                    String heureDep = v.getHeureDepart();
+                    String heureArr = ajouterTimeToHeure(v.getHeureArrivee(), decalageHoraire);
+                    String infoNbJoursDecalage = heureArr.substring(5);
+                    if (infoNbJoursDecalage.equals("+0"))
+                        infoNbJoursDecalage = "";
+                    Log.w("TAG", heureArr);
+                    double prixTotal = (double) ((int) (v.getPrix() * (nbAdulte + nbEnfants * 0.8) * 100)) / 100;
+                    element = new HashMap<String, String>();
+                    element.put("Horaires", heureDep + " (" + depAita + ")  \u2794  " + heureArr.substring(0, 5) + " (" + arrAita + ") " + infoNbJoursDecalage);
+                    element.put("nbPassagersEtPrix", libelleAdultes + libelleEnfants + "Prix total: " + prixTotal + " €");
+                    element.put("classe", "Classe: " + reservation.getClasse());
+                    listItem.add(element);
                 }
-                Log.w("TAG", heureArr);
-                if (Integer.parseInt(heureArr.substring(0,2))>=24) {
-                    heureArr = ajouterTimeToHeure(heureArr,-24);
-                    lendemain = "lendemain";
+            }
+                else  {
+                for (int i = 0; i < nbVols; i+=2) {
+                    Vol aller = listeVolsFiltree.get(i);
+                    String heureDep = aller.getHeureDepart();
+                    Vol retour = listeVolsFiltree.get(i+1);
+                    String heureDepRetour = retour.getHeureDepart();
+                    String heureArr = ajouterTimeToHeure(aller.getHeureArrivee(), decalageHoraire);
+                    String heureArrRet = ajouterTimeToHeure(retour.getHeureArrivee(),-decalageHoraire);
+                    String infoNbJoursDecalage = heureArr.substring(5);
+                    String infoNbJoursDecalageRet = heureArrRet.substring(5);
+                    if (infoNbJoursDecalage.equals("+0"))
+                        infoNbJoursDecalage = "";
+                    if (infoNbJoursDecalageRet.equals("+0"))
+                        infoNbJoursDecalageRet = "";
+                    Log.w("TAG", heureArr);
+                    double prixTotal = (double) ((int) ((aller.getPrix()+retour.getPrix()) * (nbAdulte + nbEnfants * 0.8)) * 100) / 100;
+                    element = new HashMap<String, String>();
+                    element.put("Horaires", heureDep + " (" + depAita + ")  \u2794  " + heureArr.substring(0, 5) + " (" + arrAita + ") " + infoNbJoursDecalage
+                    + "\n" + heureDepRetour + " (" + arrAita + ")  \u2794  " + heureArrRet.substring(0, 5) + " (" + depAita + ") " + infoNbJoursDecalageRet);
+                    element.put("nbPassagersEtPrix", libelleAdultes + libelleEnfants + "Prix total: " + prixTotal + " €");
+                    element.put("classe", "Classe: " + reservation.getClasse());
+                    listItem.add(element);
                 }
-                double prixTotal = (double) ((int) (v.getPrix() * (nbAdulte + nbEnfants * 0.8) * 100)) / 100;
-                element = new HashMap<String, String>();
-                element.put("Horaires", heureDep + " (" + depAita + ")  \u2794  " + heureArr + " (" + arrAita + ") " + lendemain);
-                element.put("nbPassagersEtPrix", libelleAdultes + libelleEnfants + "Prix total: " + prixTotal + " €");
-                element.put("classe", "Classe: " + reservation.getClasse());
-                listItem.add(element);
             }
         }
 
@@ -176,7 +194,16 @@ public class Recherche extends AppCompatActivity {
 
      private void selectionListeFiltree() {
         if (Accueil.accueilToRecherche) {
+            if (!reservation.isAllerRetour())
             listeVolsFiltree = listeVols;
+            else {
+                for (int i=0;i<listeVols.size();i++) {
+                    for (int j=0;j<listeVols.size();j++) {
+                        listeVolsFiltree.add(listeVols.get(i));
+                        listeVolsFiltree.add(listeVolsRetour.get(j));
+                    }
+                }
+            }
             Accueil.accueilToRecherche = false;
         } else
             listeVolsFiltree = (VolList) getIntent().getParcelableExtra(Recherche.LISTE_VOLS_FILTREE);
@@ -196,8 +223,23 @@ public class Recherche extends AppCompatActivity {
 
     }
 
-    private String ajouterTimeToHeure(String heure, int time) {
-        String chiffresHeure = String.valueOf(Integer.parseInt(heure.substring(0,2))+time);
-        return chiffresHeure+heure.substring(2);
+    private static String ajouterTimeToHeure(String heure, int time) {
+        int nbHeures = Integer.parseInt(heure.substring(0,2))+time;
+        int reste = mod(nbHeures,24);
+        int quotient = (nbHeures - reste)/24;
+        nbHeures = reste;
+        int nbJoursDecalage = quotient + Integer.parseInt(heure.substring(6));
+        String chiffresHeure = String.valueOf(nbHeures);
+        if (chiffresHeure.length()==1)
+            chiffresHeure="0"+ chiffresHeure;
+        return chiffresHeure+heure.substring(2,6)+ String.valueOf(nbJoursDecalage);
+    }
+
+    public static int mod(int x, int y)
+    {
+        int result = x % y;
+        if (result < 0)
+            result += y;
+        return result;
     }
 }

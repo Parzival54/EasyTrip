@@ -55,8 +55,8 @@ public class Accueil extends AppCompatActivity {
     private static Reservation reservation ;
     final static String LISTE_VOLS = "liste vols";
     private static VolList listeVols;
-    //final static String LISTE_VOLS_FILTREE = "liste vols filtree";
-    //private static VolList listeVolsFiltree = new VolList();
+    final static String LISTE_VOLS_RETOUR = "liste vols retour";
+    private static VolList listeVolsRetour;
     private static boolean estDepart;
     private static final int REQUEST_CODE = 0;
 
@@ -226,6 +226,8 @@ public class Accueil extends AppCompatActivity {
                     setDecalageHoraire();
                     accueil_to_resultat.putExtra(Accueil.RESERVATION, reservation);
                     accueil_to_resultat.putExtra(Accueil.LISTE_VOLS,(Parcelable)listeVols);
+                    if (reservation.isAllerRetour())
+                        accueil_to_resultat.putExtra(Accueil.LISTE_VOLS_RETOUR, (Parcelable)listeVolsRetour);
                     startActivity(accueil_to_resultat);
                 } else {
                     String messageErreur = "Veuillez renseigner les infos suivantes :";
@@ -331,6 +333,9 @@ public class Accueil extends AppCompatActivity {
         RequetesBDD requeteBDD = new RequetesBDD(this);
         requeteBDD.open();
         listeVols = requeteBDD.getVolsWithAita(depAita, arrAita, idClasse);
+        if (reservation.isAllerRetour())
+            listeVolsRetour = new VolList();
+            listeVolsRetour = requeteBDD.getVolsWithAita(arrAita, depAita ,idClasse);
         requeteBDD.close();
         }
     }

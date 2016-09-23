@@ -3,6 +3,7 @@ package com.example.merguez.easytrip.bdd;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.merguez.easytrip.bdd.table_aeroports.Aeroport;
 import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
@@ -49,7 +50,7 @@ public class RequetesBDD {
     }
 
     public VolList getVolsWithAita(String depAita, String arrAita, int idClasse){
-        String s = "SELECT * FROM vols WHERE vols.AEROPORT_DEPART LIKE ? AND vols.AEROPORT_ARRIVEE LIKE ? AND vols.ID_CLASSE = ?";
+        String s = "SELECT *FROM vols WHERE vols.AEROPORT_DEPART LIKE ? AND vols.AEROPORT_ARRIVEE LIKE ? AND vols.ID_CLASSE = ? ORDER BY PRIX ASC";
         Cursor c = bdd.rawQuery(s, new String[]{depAita, arrAita, String.valueOf(idClasse)});
 
         if (c.getCount()>0) {

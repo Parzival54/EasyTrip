@@ -17,7 +17,7 @@ public class Ouverture extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ouverture_main);
-        /*ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
+       /* ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
         listeTablesBDD.open(this);
         InsertionDonnees.insertionDonnees(this);
         listeTablesBDD.close();*/
