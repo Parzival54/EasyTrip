@@ -63,4 +63,15 @@
         android:layout_alignEnd="@+id/textView2"
         android:layout_alignStart="@+id/textView2" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ouvertureBTconnexion"
+        android:id="@+id/ouvertureBTconnexion"
+        android:background="#dfa70e"
+        android:onClick="OpenTravelBooking"
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

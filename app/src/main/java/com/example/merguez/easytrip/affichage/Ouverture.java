@@ -13,11 +13,18 @@ import com.example.merguez.easytrip.bdd.ListeTablesBDD;
 
 public class Ouverture extends AppCompatActivity {
   Button resaButton;
+    private static Button ouvertureBTconnexion;
+    private static Intent ouvertureToConnexion;
+    final static String CONNEXION = "CONNEXION";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ouverture_main);
-       /* ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
+
+        ouvertureBTconnexion = (Button)findViewById(R.id.ouvertureBTconnexion);
+
+        /*ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
         listeTablesBDD.open(this);
         InsertionDonnees.insertionDonnees(this);
         listeTablesBDD.close();*/
@@ -38,6 +45,15 @@ public class Ouverture extends AppCompatActivity {
                 startActivity(intentLoadNewActivity);
 
 
+            }
+        });
+
+        ouvertureBTconnexion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ouvertureToConnexion = new Intent(Ouverture.this,Connexion.class);
+                getIntent().putExtra(CONNEXION, true);
+                startActivity(ouvertureToConnexion);
             }
         });
 
