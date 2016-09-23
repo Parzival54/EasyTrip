@@ -124,7 +124,8 @@ public class Recherche extends AppCompatActivity {
         vue = (ListView) findViewById(R.id.volsElvListeVols);
         List<HashMap<String, String>> listItem = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> element;
-        if (listeVolsFiltree == null || listeVolsFiltree.size()==0) {
+        if (listeVolsFiltree == null || listeVolsFiltree.size()==0)
+        {
             element = new HashMap<String, String>();
             element.put("Horaires","Il n'y a aucun vol correspondant à votre recherche.");
             //volsBtnVol.setVisibility(View.INVISIBLE);

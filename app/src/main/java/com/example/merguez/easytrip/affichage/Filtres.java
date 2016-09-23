@@ -199,7 +199,7 @@ public class Filtres extends Activity {
 
     private boolean horairesValidesRetour(Vol v){
         return ((!(filtreCbHeureDepMinRet.isChecked())||(stringHeureToInt(filtreSpHeureDepMinRet.getSelectedItem().toString())<stringHeureToInt(v.getHeureDepart())))
-                &&(!(filtreCbHeureArrMaxRet.isChecked())||(stringHeureToInt(filtreSpHeureArrMaxRet.getSelectedItem().toString())>Recherche.mod(stringHeureToInt(v.getHeureArrivee())+reservation.getDecalageHoraire()*100,2400))));
+                &&(!(filtreCbHeureArrMaxRet.isChecked())||(stringHeureToInt(filtreSpHeureArrMaxRet.getSelectedItem().toString())>Recherche.mod(stringHeureToInt(v.getHeureArrivee())-reservation.getDecalageHoraire()*100,2400))));
     }
 
     private boolean prixValideAllerSimple(Vol v, int nbAdultes, int nbEnfants) {

@@ -85,7 +85,7 @@
         android:id="@+id/filtreCbHeureArrMaxRet"
         android:layout_width="160dp"
         android:layout_height="35dp"
-        android:text="Retour départ min"
+        android:text="Retour arrivée max"
         android:layout_below="@+id/filtreSpHeureDepMinRet"
         android:layout_marginTop="10dp"
         android:layout_alignParentEnd="true" />
