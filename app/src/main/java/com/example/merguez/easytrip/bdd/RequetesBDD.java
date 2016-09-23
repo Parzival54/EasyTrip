@@ -38,7 +38,7 @@ public class RequetesBDD {
     public SQLiteDatabase getBDD(){
         return bdd;
     }
-
+//récupération dans un curseur de l'heure local de l'aéroport
     public int getAeroportTimezoneWithAita(String aita) {
        String s = "SELECT aeroports.TIMEZONE FROM aeroports WHERE aeroports.AITA LIKE ?";
         Cursor c = bdd.rawQuery(s, new String[]{aita});
@@ -47,11 +47,11 @@ public class RequetesBDD {
         aeroport.setTimezone(c.getInt(0));
         return aeroport.getTimezone();
     }
-
+//récupération dans un curseur des vols avec Aéroports + Heure dep /arrivée + classe + prix du voyage en fonction de la BDD
     public VolList getVolsWithAita(String depAita, String arrAita, int idClasse){
         String s = "SELECT * FROM vols WHERE vols.AEROPORT_DEPART LIKE ? AND vols.AEROPORT_ARRIVEE LIKE ? AND vols.ID_CLASSE = ?";
         Cursor c = bdd.rawQuery(s, new String[]{depAita, arrAita, String.valueOf(idClasse)});
-
+//si au moins un element a été trouvé
         if (c.getCount()>0) {
             c.moveToFirst();
             VolList liste = new VolList();
@@ -69,10 +69,12 @@ public class RequetesBDD {
                 liste.add(vol);
                 c.moveToNext();
             }
+            //on ferme le curseur et on envoi la liste
             c.close();
             return liste;
         }
         else
+        //on ferme le curseur et ne renvoi rien
         {   c.close();
             return null;
         }
