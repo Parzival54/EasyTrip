@@ -30,7 +30,7 @@ public class Filtres extends Activity {
     private static VolList listeVols;
     private static VolList listeVolsRetour;
     private static VolList listeVolsFiltree;
-    private static VolList listeVolsFiltreeRetour;
+    //private static VolList listeVolsFiltreeRetour;
     private static Intent filtresToRecherche;
     private static final double coeffReductionEnfant = 0.8;
 
@@ -39,10 +39,11 @@ public class Filtres extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtres);
         listeVols = (VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS);
+        reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
         if (reservation.isAllerRetour())
         listeVolsRetour =(VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS_RETOUR);
         listeVolsFiltree = new VolList();
-        listeVolsFiltreeRetour = new VolList();
+       // listeVolsFiltreeRetour = new VolList();
         filtreCbHeureDepMin = (CheckBox) findViewById(R.id.filtreCbHeureDepMin);
         filtreCbHeureArrMax = (CheckBox) findViewById(R.id.filtreCbHeureArrMax);
         filtreCbHeureDepMinRet = (CheckBox) findViewById(R.id.filtreCbHeureDepMinRet);
@@ -53,7 +54,6 @@ public class Filtres extends Activity {
         filtreSpHeureDepMinRet = (Spinner) findViewById(R.id.filtreSpHeureDepMinRet);
         filtreSpHeureArrMaxRet = (Spinner) findViewById(R.id.filtreSpHeureArrMaxRet);
         filtreEdtPrixMax = (EditText) findViewById(R.id.filtreEdtPrixMax);
-        reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
         filtresToRecherche = new Intent(Filtres.this, Recherche.class);
         addListenerOnButton();
         addItemsOnSpinners();
@@ -217,10 +217,17 @@ public class Filtres extends Activity {
     }
 
     private void config(){
-        if (!reservation.isAllerRetour())
+        if (!reservation.isAllerRetour()) {
             filtreSpHeureArrMaxRet.setVisibility(View.INVISIBLE);
             filtreSpHeureDepMinRet.setVisibility(View.INVISIBLE);
             filtreCbHeureDepMinRet.setVisibility(View.INVISIBLE);
             filtreCbHeureArrMaxRet.setVisibility(View.INVISIBLE);
+        }
+        else {
+            filtreSpHeureArrMaxRet.setVisibility(View.VISIBLE);
+            filtreSpHeureDepMinRet.setVisibility(View.VISIBLE);
+            filtreCbHeureDepMinRet.setVisibility(View.VISIBLE);
+            filtreCbHeureArrMaxRet.setVisibility(View.VISIBLE);
+        }
     }
 }
