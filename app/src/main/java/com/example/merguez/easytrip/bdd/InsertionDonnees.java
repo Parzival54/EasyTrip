@@ -21,7 +21,7 @@ import java.io.InputStreamReader;
 public class InsertionDonnees {
 
     public static void insertionDonnees(Context context) {
-
+// Methode d'insertion de données concernant les aéroports dans
         InputStream fic = context.getResources().openRawResource(R.raw.aeroports);
         InputStreamReader streamReader = new InputStreamReader(fic);
         BufferedReader bufferedReader = new BufferedReader(streamReader);
@@ -33,7 +33,7 @@ public class InsertionDonnees {
                 Aeroport aeroport = new Aeroport();
                 text.append(line);
                 text.append('\n');
-
+//Methode de lecture/affichage des données depuis la bdd aéroports
                 int index1 = line.indexOf(",");
                 int index2 = line.indexOf(",",index1+1);
                 int index3 = line.indexOf(",",index2+1);
@@ -55,7 +55,7 @@ public class InsertionDonnees {
         } catch (IOException e) {
             e.getMessage();
         }
-
+//Methode de lecture/affichage des données depuis la bdd vols
         InputStream fic2 = context.getResources().openRawResource(R.raw.vols);
         InputStreamReader streamReader2 = new InputStreamReader(fic2);
         BufferedReader bufferedReader2 = new BufferedReader(streamReader2);
@@ -87,7 +87,7 @@ public class InsertionDonnees {
         } catch (IOException e) {
             e.getMessage();
         }
-
+//Methode de lecture/affichage des données depuis la bdd classes
         InputStream fic3 = context.getResources().openRawResource(R.raw.classes);
         InputStreamReader streamReader3 = new InputStreamReader(fic3);
         BufferedReader bufferedReader3 = new BufferedReader(streamReader3);

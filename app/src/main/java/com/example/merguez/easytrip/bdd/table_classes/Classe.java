@@ -8,12 +8,12 @@ public class Classe {
     private String classe;
 
     public Classe(){}
-
+//Constructeur
     public Classe(int id, String classe) {
         this.id = id;
         this.classe = classe;
     }
-
+//Getter et Setter
     public int getId() {
         return id;
     }
@@ -29,7 +29,7 @@ public class Classe {
     public void setClasse(String classe) {
         this.classe = classe;
     }
-
+//Style d'affichage donées Classes
     @Override
     public String toString() {
         return "Classe{" +
