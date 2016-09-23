@@ -47,4 +47,15 @@
         android:background="#f5a607"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:text="@string/recepisseTVidentifiant"
+        android:id="@+id/recepisseTVidentifiant"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/recepisseBTconfirmer"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

@@ -25,6 +25,7 @@ public class Recepisse extends AppCompatActivity {
 
     private static Reservation reservation;
     private static TextView recepisseTVrecap;
+    private static TextView recepisseTVidentifiant;
     private static Button recepisseBTconfirmer;
     private static String recap;
     private static String trajet;
@@ -43,11 +44,16 @@ public class Recepisse extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recepisse_main);
         recepisseTVrecap = (TextView)findViewById(R.id.recepisseTVrecap);
+        recepisseTVidentifiant = (TextView)findViewById(R.id.recepisseTVidentifiant);
         recepisseBTconfirmer = (Button)findViewById(R.id.recepisseBTconfirmer);
         preferences = getBaseContext().getSharedPreferences(Ouverture.PREFERENCES, MODE_PRIVATE);
         recepisseToConnexion = new Intent(Recepisse.this,Connexion.class);
         recepisseToOuverture = new Intent(Recepisse.this,Ouverture.class);
         enregistrement = new Enregistrement();
+
+        if (preferences.getBoolean(Ouverture.CONNECTE, false)) {
+            recepisseTVidentifiant.setText("Connecté en tant que : " + preferences.getString(Ouverture.EMAIL,""));
+        }
 
         reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
         trajet = getIntent().getExtras().getString("TRAJET");
@@ -83,6 +89,8 @@ public class Recepisse extends AppCompatActivity {
                 if (preferences.getBoolean(Ouverture.CONNECTE, false)) {
                     afficherMessageValidation();
                     completerEnregistrement();
+                    // TODO : ajouter vol retour
+                    // TODO : intégrer Maps
                 } else {
                     afficherMessageConnexion();
                 }
@@ -135,6 +143,7 @@ public class Recepisse extends AppCompatActivity {
         enregistrement.setUserID(userID);
         // TODO : récupérer volID
         enregistrement.setVolAllerID(1);
+        enregistrement.setVolRetourID(1);
         enregistrement.setNbAdultes(reservation.getNbAdultes());
         enregistrement.setNbEnfants(reservation.getNbEnfants());
         enregistrement.setPrixTotal(Double.parseDouble(prix.substring(prix.indexOf("total:") + 7, prix.indexOf("€") - 1)));
