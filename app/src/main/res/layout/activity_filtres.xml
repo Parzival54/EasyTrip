@@ -1,78 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/blue"
+    tools:context=".affichage.Accueil"
+    android:id="@+id/lieuLayout"
+    android:foregroundGravity="top"
+    android:gravity="fill_horizontal|top">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Choisissez vos préférences"
-            android:id="@+id/filtreTvTitre"
-            android:textSize="@dimen/abc_text_size_display_1_material"
-            android:textStyle="normal|bold"
-            android:gravity="center"
-            android:background="#f5a607"
-            android:textColor="#0d5bf7"
-            android:visibility="visible"
-            android:typeface="monospace" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choisissez vos préférences"
+        android:id="@+id/filtreTvTitre"
+        android:textSize="@dimen/abc_text_size_display_1_material"
+        android:textStyle="normal|bold"
+        android:gravity="center"
+        android:background="#f5a607"
+        android:textColor="#0d5bf7"
+        android:visibility="visible"
+        android:typeface="monospace" />
 
 
-        <CheckBox
-            android:id="@+id/filtreCbHeureDepMin"
-            android:layout_width="180dp"
-            android:layout_height="35dp"
-            android:text="Heure de départ min"
-            android:layout_marginTop="10dp"/>
+    <CheckBox
+        android:id="@+id/filtreCbHeureDepMin"
+        android:layout_width="160dp"
+        android:layout_height="35dp"
+        android:text="Heure de départ min"
+        android:layout_below="@id/filtreTvTitre"
+        android:layout_marginTop="10dp"/>
 
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="time"
-            android:ems="10"
-            android:id="@+id/filtreEdtHeureDepMin"
-            android:layout_gravity="right" />
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/filtreSpHeureDepMin"
+        android:layout_gravity="left"
+        android:layout_below="@+id/filtreCbHeureDepMin"
+        android:layout_alignEnd="@+id/filtreCbHeureDepMin" />
 
-        <CheckBox
-            android:id="@+id/filtreCbHeureArrMax"
-            android:layout_width="180dp"
-            android:layout_height="35dp"
-            android:text="Heure d'arrivée max"
-            android:layout_marginTop="5dp"/>
+    <CheckBox
+        android:id="@+id/filtreCbHeureArrMax"
+        android:layout_width="160dp"
+        android:layout_height="35dp"
+        android:text="Heure d'arrivée max"
+        android:layout_below="@+id/filtreSpHeureDepMin"
+        android:layout_marginTop="10dp"/>
 
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/filtreEdtHeureArrMax"
-            android:layout_gravity="right" />
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/filtreSpHeureArrMax"
+        android:layout_gravity="left"
+        android:layout_below="@+id/filtreCbHeureArrMax"
+        android:layout_alignEnd="@+id/filtreCbHeureArrMax" />
 
-        <CheckBox
-            android:id="@+id/filtreCbPrixMax"
-            android:layout_width="180dp"
-            android:layout_height="35dp"
-            android:text="prix maximum (en euros)"
-            android:layout_marginTop="5dp"/>
+    <CheckBox
+        android:id="@+id/filtreCbHeureDepMinRet"
+        android:layout_width="160dp"
+        android:layout_height="35dp"
+        android:text="Retour départ min"
+        android:layout_above="@+id/filtreSpHeureDepMin"
+        android:layout_alignParentEnd="true" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/filtreEdtPrixMax"
-            android:layout_gravity="right" />
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/filtreSpHeureDepMinRet"
+        android:layout_gravity="right"
+        android:layout_above="@+id/filtreCbHeureArrMax"
+        android:layout_alignStart="@+id/filtreCbHeureDepMinRet" />
 
-        <Button
-            android:id="@+id/filtrebtnFiltrer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Filtrer" />
+    <CheckBox
+        android:id="@+id/filtreCbHeureArrMaxRet"
+        android:layout_width="160dp"
+        android:layout_height="35dp"
+        android:text="Retour départ min"
+        android:layout_below="@+id/filtreSpHeureDepMinRet"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true" />
 
-    </LinearLayout>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/filtreSpHeureArrMaxRet"
+        android:layout_gravity="right"
+        android:layout_below="@+id/filtreCbHeureArrMaxRet"
+        android:layout_alignStart="@+id/filtreCbHeureArrMaxRet" />
+
+
+
+    <CheckBox
+        android:id="@+id/filtreCbPrixMax"
+        android:layout_width="160dp"
+        android:layout_height="35dp"
+        android:text="prix maximum (en euros)"
+        android:layout_below="@+id/filtreSpHeureArrMax"
+        android:layout_marginTop="10dp"/>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/filtreEdtPrixMax"
+        android:layout_below="@+id/filtreCbPrixMax"
+        android:layout_gravity="left"
+        android:layout_alignEnd="@+id/filtreCbPrixMax"
+        android:layout_toEndOf="@+id/filtrebtnFiltrer" />
+
+    <Button
+        android:id="@+id/filtrebtnFiltrer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#f5a607"
+        android:textColor="#0d5bf7"
+        android:layout_below="@+id/filtreEdtPrixMax"
+        android:layout_gravity="left"
+        android:text="Filtrer" />
+
+    <Button
+        android:id="@+id/filtrebtnRetour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#f5a607"
+        android:textColor="#0d5bf7"
+        android:layout_gravity="right"
+        android:text="Retour"
+        android:layout_alignTop="@+id/filtrebtnFiltrer"
+        android:layout_alignEnd="@+id/filtreTvTitre" />
+
+
 </RelativeLayout>

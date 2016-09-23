@@ -45,6 +45,7 @@ public class Recherche extends AppCompatActivity {
     Spinner spinner;
     private static Reservation reservation;
     private static VolList listeVols;
+    private static VolList listeVolsRetour;
     private static VolList listeVolsFiltree = new VolList();
     final static String LISTE_VOLS_FILTREE = "liste vols filtree";
     private static Intent rechercheToFiltre;
@@ -59,6 +60,8 @@ public class Recherche extends AppCompatActivity {
         setContentView(R.layout.recherche_main);
         reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
         listeVols = (VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS);
+        if (reservation.isAllerRetour())
+            listeVolsRetour= (VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS_RETOUR);
         selectionListeFiltree();
         volsBtnFiltrer = (Button) findViewById(R.id.volsBtnFiltrer);
         volsBtnRetour = (Button) findViewById(R.id.volsBtnRetour);
@@ -81,6 +84,8 @@ public class Recherche extends AppCompatActivity {
                                                   //ArrayList<Vol> listeNonFiltree = new ArrayList<Vol>();
                                                   //listeNonFiltree = liste;
                                                   rechercheToFiltre.putExtra(Accueil.LISTE_VOLS, (Parcelable) listeVols);
+                                                  if (reservation.isAllerRetour())
+                                                  rechercheToFiltre.putExtra(Accueil.LISTE_VOLS_RETOUR, (Parcelable) listeVolsRetour);
                                                   rechercheToFiltre.putExtra(Accueil.RESERVATION, reservation);
                                                   startActivity(rechercheToFiltre);
                                               }
@@ -142,20 +147,46 @@ public class Recherche extends AppCompatActivity {
                 libelleEnfants = "1 enfant    ";
             if (nbEnfants > 1)
                 libelleEnfants = nbEnfants + " enfants    ";
-            for (int i = 0; i < nbVols; i++) {
-                Vol v = listeVolsFiltree.get(i);
-                String heureDep = v.getHeureDepart();
-                String heureArr = ajouterTimeToHeure(v.getHeureArrivee(),decalageHoraire);
-                String infoNbJoursDecalage = heureArr.substring(5);
-                if (infoNbJoursDecalage.equals("+0"))
-                    infoNbJoursDecalage ="";
-                Log.w("TAG", heureArr);
-                double prixTotal = (double) ((int) (v.getPrix() * (nbAdulte + nbEnfants * 0.8) * 100)) / 100;
-                element = new HashMap<String, String>();
-                element.put("Horaires", heureDep + " (" + depAita + ")  \u2794  " + heureArr.substring(0,5) + " (" + arrAita + ") " + infoNbJoursDecalage);
-                element.put("nbPassagersEtPrix", libelleAdultes + libelleEnfants + "Prix total: " + prixTotal + " €");
-                element.put("classe", "Classe: " + reservation.getClasse());
-                listItem.add(element);
+            if (!reservation.isAllerRetour()) {
+                for (int i = 0; i < nbVols; i++) {
+                    Vol v = listeVolsFiltree.get(i);
+                    String heureDep = v.getHeureDepart();
+                    String heureArr = ajouterTimeToHeure(v.getHeureArrivee(), decalageHoraire);
+                    String infoNbJoursDecalage = heureArr.substring(5);
+                    if (infoNbJoursDecalage.equals("+0"))
+                        infoNbJoursDecalage = "";
+                    Log.w("TAG", heureArr);
+                    double prixTotal = (double) ((int) (v.getPrix() * (nbAdulte + nbEnfants * 0.8) * 100)) / 100;
+                    element = new HashMap<String, String>();
+                    element.put("Horaires", heureDep + " (" + depAita + ")  \u2794  " + heureArr.substring(0, 5) + " (" + arrAita + ") " + infoNbJoursDecalage);
+                    element.put("nbPassagersEtPrix", libelleAdultes + libelleEnfants + "Prix total: " + prixTotal + " €");
+                    element.put("classe", "Classe: " + reservation.getClasse());
+                    listItem.add(element);
+                }
+            }
+                else  {
+                for (int i = 0; i < nbVols; i+=2) {
+                    Vol aller = listeVolsFiltree.get(i);
+                    String heureDep = aller.getHeureDepart();
+                    Vol retour = listeVolsFiltree.get(i+1);
+                    String heureDepRetour = retour.getHeureDepart();
+                    String heureArr = ajouterTimeToHeure(aller.getHeureArrivee(), decalageHoraire);
+                    String heureArrRet = ajouterTimeToHeure(retour.getHeureArrivee(),-decalageHoraire);
+                    String infoNbJoursDecalage = heureArr.substring(5);
+                    String infoNbJoursDecalageRet = heureArrRet.substring(5);
+                    if (infoNbJoursDecalage.equals("+0"))
+                        infoNbJoursDecalage = "";
+                    if (infoNbJoursDecalageRet.equals("+0"))
+                        infoNbJoursDecalageRet = "";
+                    Log.w("TAG", heureArr);
+                    double prixTotal = (double) ((int) ((aller.getPrix()+retour.getPrix()) * (nbAdulte + nbEnfants * 0.8)) * 100) / 100;
+                    element = new HashMap<String, String>();
+                    element.put("Horaires", heureDep + " (" + depAita + ")  \u2794  " + heureArr.substring(0, 5) + " (" + arrAita + ") " + infoNbJoursDecalage
+                    + "\n" + heureDepRetour + " (" + arrAita + ")  \u2794  " + heureArrRet.substring(0, 5) + " (" + depAita + ") " + infoNbJoursDecalageRet);
+                    element.put("nbPassagersEtPrix", libelleAdultes + libelleEnfants + "Prix total: " + prixTotal + " €");
+                    element.put("classe", "Classe: " + reservation.getClasse());
+                    listItem.add(element);
+                }
             }
         }
 
@@ -169,7 +200,16 @@ public class Recherche extends AppCompatActivity {
 
      private void selectionListeFiltree() {
         if (Accueil.accueilToRecherche) {
+            if (!reservation.isAllerRetour())
             listeVolsFiltree = listeVols;
+            else {
+                for (int i=0;i<listeVols.size();i++) {
+                    for (int j=0;j<listeVols.size();j++) {
+                        listeVolsFiltree.add(listeVols.get(i));
+                        listeVolsFiltree.add(listeVolsRetour.get(j));
+                    }
+                }
+            }
             Accueil.accueilToRecherche = false;
         } else
             listeVolsFiltree = (VolList) getIntent().getParcelableExtra(Recherche.LISTE_VOLS_FILTREE);
