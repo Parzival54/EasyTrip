@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">EasyTrip</string>
-    <string name="lieuETchoixAeroport"></string>
+    <string name="lieuETchoixAeroport"/>
     <string name="lieuTVafficherAeroports" />
-    <string name="lieuLVlisteAeroports"></string>
-    <string name="lieuTVnbResultats"></string>
+    <string name="lieuLVlisteAeroports"/>
+    <string name="lieuTVnbResultats"/>
     <string name="lieuHTlisteAeroports">-> Aéroport, ville, pays, code</string>
     <string name="accueilTVafficherDepart">Départ</string>
     <string name="accueilTVafficherArrivee">Arrivée</string>
@@ -12,7 +12,7 @@
     <string name="accueilTVdateDepart">Date aller</string>
     <string name="accueilETdateDepart" />
     <string name="accueilTVdateArrivee">Date retour</string>
-    <string name="accueilCVcalendrier"></string>
+    <string name="accueilCVcalendrier"/>
     <string name="accueilCBallerRetour">Aller-retour</string>
     <string name="accueilTVchoixClasse">Classe</string>
     <string name="accueilBTvalider">RECHERCHER</string>
@@ -24,6 +24,8 @@
     <string name="recepisseTVtitre">VOTRE CHOIX</string>
     <string name="recepisseTVrecap" />
     <string name="recepisseBTconfirmer">CONFIRMER</string>
+    <string name="passagerAdulteditText">1</string>
+    <string name="passagersEnfanteditText">0</string>
     <string-array name="passagerSPclasse">
         <item>Economique</item>
         <item>Affaire</item>
@@ -45,5 +47,6 @@
     </string>
     <string name="ouvertureBTconnexion">CONNEXION</string>
     <string name="ouvertureTVidentifiant" />
+    <string name="ouvertureTVlisteReservations"/>
     <string name="recepisseTVidentifiant" />
 </resources>

@@ -86,11 +86,21 @@ public class Recepisse extends AppCompatActivity {
         recepisseBTconfirmer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int dureeConnexion = (int)(System.currentTimeMillis() - preferences.getLong(Ouverture.DERNIERE_CONNEXION,System.currentTimeMillis()));
                 if (preferences.getBoolean(Ouverture.CONNECTE, false)) {
-                    afficherMessageValidation();
-                    completerEnregistrement();
-                    // TODO : ajouter vol retour
-                    // TODO : intégrer Maps
+                    if (dureeConnexion < Ouverture.DUREE_CONNEXION_MAXI) {
+                        afficherMessageValidation();
+                        completerEnregistrement();
+                        // TODO : ajouter vol retour
+                        // TODO : intégrer Maps
+                    } else {
+                        preferences
+                                .edit()
+                                .putBoolean(Ouverture.CONNECTE, false)
+                                .apply();
+                        afficherMessageReconnexion();
+                    }
+
                 } else {
                     afficherMessageConnexion();
                 }
@@ -102,7 +112,7 @@ public class Recepisse extends AppCompatActivity {
     private void afficherMessageConnexion() {
         final AlertDialog alertDialog = new AlertDialog.Builder(Recepisse.this).create();
         alertDialog.setTitle("ATTENTION");
-        alertDialog.setMessage("Afin de pouvoir enregistrer votre vol,\nveuillez vous connecter.");
+        alertDialog.setMessage("Afin de pouvoir enregistrer votre vol,\nveuillez-vous connecter.");
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "ANNULER", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -110,6 +120,26 @@ public class Recepisse extends AppCompatActivity {
             }
         });
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "CONNEXION", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(recepisseToConnexion);
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void afficherMessageReconnexion() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(Recepisse.this).create();
+        alertDialog.setTitle("CONNEXION EXPIREE");
+        alertDialog.setMessage("Veuillez vous reconnecter pour valider votre réservation.");
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "ANNULER", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                recepisseTVidentifiant.setText("");
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "RECONNEXION", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 startActivity(recepisseToConnexion);
@@ -131,6 +161,10 @@ public class Recepisse extends AppCompatActivity {
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "CONFIRMER", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                preferences
+                        .edit()
+                        .putBoolean(Ouverture.VOL_ENREGISTRE, true)
+                        .apply();
                 startActivity(recepisseToOuverture);
             }
         });

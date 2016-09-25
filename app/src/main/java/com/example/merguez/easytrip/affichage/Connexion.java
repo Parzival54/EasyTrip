@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +40,7 @@ import com.example.merguez.easytrip.bdd.table_users.User;
 import com.example.merguez.easytrip.bdd.table_users.UserBDD;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static android.Manifest.permission.SYSTEM_ALERT_WINDOW;
 
 /**
  * A login screen that offers login via email/password.
@@ -344,6 +346,7 @@ public class Connexion extends AppCompatActivity implements LoaderCallbacks<Curs
                     .edit()
                     .putBoolean(Ouverture.CONNECTE, true)
                     .putString(Ouverture.EMAIL, mEmail)
+                    .putLong(Ouverture.DERNIERE_CONNEXION, System.currentTimeMillis())
                     .apply();
 
             return true;

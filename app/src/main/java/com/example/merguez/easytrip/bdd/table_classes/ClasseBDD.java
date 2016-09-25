@@ -81,6 +81,12 @@ public class ClasseBDD extends ListeTablesBDD{
         return cursorToClasse(cursor).getClasse();
     }
 
+    public static int getFirstID(){
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_CLASSE,new String[] {COL_ID, COL_LIBELLE},
+                null, null, null, null, null);
+        return cursorToClasse(cursor).getId();
+    }
+
     private static Classe cursorToClasse(Cursor c) {
         Classe classe = new Classe();
         try {
@@ -92,4 +98,5 @@ public class ClasseBDD extends ListeTablesBDD{
             return classe;
         }
     }
+
 }

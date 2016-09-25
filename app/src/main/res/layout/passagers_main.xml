@@ -36,7 +36,7 @@
         android:id="@+id/passagerAdulteditText"
         android:layout_marginTop="20dp"
         android:layout_alignParentTop="true"
-        android:text=""
+        android:text="@string/passagerAdulteditText"
         android:background="@drawable/rect_blanc_bord_noir"
         android:layout_alignParentEnd="true" />
 
@@ -65,7 +65,7 @@
         android:background="@drawable/rect_blanc_bord_noir"
         android:layout_below="@+id/passagersAdultsEntree"
         android:layout_alignParentEnd="true"
-        android:text=""/>
+        android:text="@string/passagersEnfanteditText"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -95,7 +95,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="RETOUR ACCUEIL"
+        android:text="VALIDER"
         android:textColor="@color/black"
         android:background="#f5a607"
         android:id="@+id/retourAccueilBtn"
