@@ -29,7 +29,7 @@ public class Ouverture extends AppCompatActivity {
     final static String CONNECTE = "CONNECTE";
     final static String VOL_ENREGISTRE = "VOL_ENREGISTRE";
     final static String DERNIERE_CONNEXION = "DERNIERE_CONNEXION";
-    final static int DUREE_CONNEXION_MAXI = 1 * 1000 * 60; // La première valeur correspond au nombre de minutes
+    final static int DUREE_CONNEXION_MAXI = 15 * 1000 * 60; // La première valeur correspond au nombre de minutes
     private static SharedPreferences preferences;
 
 
@@ -134,7 +134,7 @@ public class Ouverture extends AppCompatActivity {
                 ouvertureTVidentifiant.post(new Runnable() {
                     @Override
                     public void run() {
-                        ouvertureTVidentifiant.setText("Connecté en tant que : " + preferences.getString(EMAIL,""));
+                        ouvertureTVidentifiant.setText("Connecté en tant que : \n" + preferences.getString(EMAIL,""));
                     }
                 });
                 ouvertureTVlisteReservations.post(new Runnable() {
