@@ -96,7 +96,6 @@ public class Accueil extends AppCompatActivity {
         }).start();
 
         //ToDo: créer une icone (+ splash?)
-        //ToDo: ajouter récap nb passagers + classe sur la page accueil
 
 
 

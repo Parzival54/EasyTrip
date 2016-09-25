@@ -47,5 +47,6 @@
     </string>
     <string name="ouvertureBTconnexion">CONNEXION</string>
     <string name="ouvertureTVidentifiant" />
+    <string name="ouvertureTVlisteReservations"/>
     <string name="recepisseTVidentifiant" />
 </resources>

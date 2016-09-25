@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.merguez.easytrip.R;
 
@@ -22,6 +23,7 @@ public class Ouverture extends AppCompatActivity {
     private static Intent ouvertureToConnexion;
     private static Intent ouvertureToAccueil;
     private static TextView ouvertureTVidentifiant;
+    private static TextView ouvertureTVlisteReservations;
     final static String PREFERENCES = "PREFERENCES";
     final static String EMAIL = "EMAIL";
     final static String CONNECTE = "CONNECTE";
@@ -41,6 +43,8 @@ public class Ouverture extends AppCompatActivity {
         ouvertureBTconnexion = (Button)findViewById(R.id.ouvertureBTconnexion);
         resaButton=(Button)findViewById(R.id.resa_button);
         ouvertureTVidentifiant = (TextView)findViewById(R.id.ouvertureTVidentifiant);
+        ouvertureTVlisteReservations = (TextView)findViewById(R.id.ouvertureTVlisteReservations);
+        ouvertureTVlisteReservations.setClickable(true);
         ouvertureToAccueil = new Intent(Ouverture.this,Accueil.class);
         ouvertureToConnexion = new Intent(Ouverture.this,Connexion.class);
 
@@ -50,12 +54,7 @@ public class Ouverture extends AppCompatActivity {
         listeTablesBDD.close();*/
 
         final AlertDialog connexion = new AlertDialog.Builder(Ouverture.this).create();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                verificationConnexion(connexion);
-            }
-        }).start();
+        verificationConnexion(connexion);
 
         //mise en place de l'intent pour aller a TravelBooking;
         resaButton.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +100,13 @@ public class Ouverture extends AppCompatActivity {
                 }
             }
         }).start();
+
+        ouvertureTVlisteReservations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO : afficher liste réservations
+            }
+        });
     }
 
     @Override
@@ -131,7 +137,13 @@ public class Ouverture extends AppCompatActivity {
                         ouvertureTVidentifiant.setText("Connecté en tant que : " + preferences.getString(EMAIL,""));
                     }
                 });
-                // TODO : ajouter la liste des réservations de l'utilisateur
+                ouvertureTVlisteReservations.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ouvertureTVlisteReservations.setText("Vos réservations");
+                        ouvertureTVlisteReservations.setBackgroundResource(R.drawable.rect_bleufonce_bord_noir);
+                    }
+                });
             } else {
                 afficherMessageReconnexion(alertDialog);
             }
@@ -147,6 +159,13 @@ public class Ouverture extends AppCompatActivity {
                 @Override
                 public void run() {
                     ouvertureTVidentifiant.setText("");
+                }
+            });
+            ouvertureTVlisteReservations.post(new Runnable() {
+                @Override
+                public void run() {
+                    ouvertureTVlisteReservations.setText("");
+                    ouvertureTVlisteReservations.setBackgroundResource(R.color.blue);
                 }
             });
         }
@@ -205,6 +224,13 @@ public class Ouverture extends AppCompatActivity {
                     @Override
                     public void run() {
                         ouvertureTVidentifiant.setText("");
+                    }
+                });
+                ouvertureTVlisteReservations.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ouvertureTVlisteReservations.setText("");
+                        ouvertureTVlisteReservations.setBackgroundResource(R.color.blue);
                     }
                 });
                 runOnUiThread(new Runnable() {
