@@ -81,183 +81,258 @@ public class Accueil extends AppCompatActivity {
         accueilTVdateArrivee.setVisibility(View.GONE);
         accueilETdateArrivee.setVisibility(View.GONE);
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                reservation.setNbAdultes(1);
+                ListeTablesBDD listeTablesBDD = new ListeTablesBDD(getApplicationContext());
+                listeTablesBDD.open(getApplicationContext());
+                reservation.setClasse(ClasseBDD.getFirstID());
+                listeTablesBDD.close();
+                accueil_to_lieu = new Intent(Accueil.this,ChoixLieu.class);
+                accueil_to_resultat = new Intent(Accueil.this,Recherche.class);
+                accueil_to_passagers = new Intent(Accueil.this,PassagersMain.class);
+            }
+        }).start();
+
         //ToDo: créer une icone (+ splash?)
         //ToDo: ajouter récap nb passagers + classe sur la page accueil
 
-        accueil_to_lieu = new Intent(Accueil.this,ChoixLieu.class);
-        accueil_to_resultat = new Intent(Accueil.this,Recherche.class);
-        accueil_to_passagers = new Intent(Accueil.this,PassagersMain.class);
+
 
         // sélection de l'aéroport de départ -> ouverture de l'activité ChoixLieu
         accueilETchoixDepart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                estDepart = true;
-                accueil_to_lieu.putExtra(Accueil.DEPART_OU_ARRIVEE, estDepart);
-                accueil_to_lieu.putExtra(Accueil.RESERVATION, reservation);
-                startActivityForResult(accueil_to_lieu, 1);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        estDepart = true;
+                        accueil_to_lieu.putExtra(Accueil.DEPART_OU_ARRIVEE, estDepart);
+                        accueil_to_lieu.putExtra(Accueil.RESERVATION, reservation);
+                        startActivityForResult(accueil_to_lieu, 1);
+                    }
+                }).start();
             }
         });
 
         // sélection de l'aéroport d'arrivée -> ouverture de l'activité ChoixLieu
+
         accueilETchoixArrivee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                estDepart = false;
-                accueil_to_lieu.putExtra(Accueil.DEPART_OU_ARRIVEE, estDepart);
-                accueil_to_lieu.putExtra(Accueil.RESERVATION, reservation);
-                startActivityForResult(accueil_to_lieu, 1);
-            }
-        });
-
-        // sélection de la date de départ -> ouverture de l'activité Calendrier (DialogFragment)
-        accueilETdateDepart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                estDepart = true;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        estDepart = false;
+                        accueil_to_lieu.putExtra(Accueil.DEPART_OU_ARRIVEE, estDepart);
+                        accueil_to_lieu.putExtra(Accueil.RESERVATION, reservation);
+                        startActivityForResult(accueil_to_lieu, 1);
+                    }
+                }).start();
+            }
+        });
+
+
+        // sélection de la date de départ -> ouverture de l'activité Calendrier (DialogFragment)
+
+        accueilETdateDepart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        estDepart = true;
                         ouvrirCalendrier();
                     }
                 }).start();
             }
         });
 
+
         // sélection de la date de retour -> ouverture de l'activité Calendrier (DialogFragment)
         accueilETdateArrivee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                estDepart = false;
-                if (accueilCBallerRetour.isChecked()){
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        estDepart = false;
+                        if (accueilCBallerRetour.isChecked()){
                             ouvrirCalendrier();
                         }
-                    }).start();
-                }
-
+                    }
+                }).start();
             }
         });
+
 
         // vérification du choix aller simple ou aller retour via un checkbox
         accueilCBallerRetour.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (accueilCBallerRetour.isChecked()){
-                    accueilTVdateArrivee.setVisibility(View.VISIBLE);
-                    accueilETdateArrivee.setVisibility(View.VISIBLE);
-                    reservation.setAllerRetour(true);
-                } else {
-                    accueilTVdateArrivee.setVisibility(View.GONE);
-                    accueilETdateArrivee.setVisibility(View.GONE);
-                    reservation.setAllerRetour(false);
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (accueilCBallerRetour.isChecked()){
+                            accueilTVdateArrivee.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    accueilTVdateArrivee.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            accueilETdateArrivee.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    accueilETdateArrivee.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            reservation.setAllerRetour(true);
+                        } else {
+                            accueilTVdateArrivee.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    accueilTVdateArrivee.setVisibility(View.GONE);
+                                }
+                            });
+                            accueilETdateArrivee.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    accueilETdateArrivee.setVisibility(View.GONE);
+                                }
+                            });
+                            reservation.setAllerRetour(false);
+                        }
+                    }
+                }).start();
             }
         });
 
         accueilBTdetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog alertDialog = new AlertDialog.Builder(Accueil.this).create();
-                alertDialog.setTitle("Récapitulatif");
-                String recap = "";
-                    if (reservation.getAitaDepart() != null) {
-                        recap += reservation.getNomDepart() + " (" + reservation.getAitaDepart() + ")";
-                    } else {
-                        recap += "?";
+                final AlertDialog alertDialog = new AlertDialog.Builder(Accueil.this).create();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        afficherDetail(alertDialog);
                     }
-
-                    if (reservation.getAitaArrivee() != null) {
-                        recap += " \u2794 " + reservation.getNomArrivee() + " (" + reservation.getAitaArrivee() + ")";
-                    } else {
-                        recap += " \u2794 " + "?";
-                    }
-
-                    if (accueilETdateDepart.getText().toString().length() > 0) {
-                        recap += "\nDate de départ : " + accueilETdateDepart.getText().toString();
-                    } else {
-                        recap += "\nDate de départ : ?";
-                    }
-
-                    if (accueilETdateArrivee.getText().toString().length() > 0) {
-                        recap += "\nDate de retour : " + accueilETdateArrivee.getText().toString();
-                    } else if (reservation.isAllerRetour()){
-                        recap += "\nDate de retour : ?";
-                    }
-
-                    recap += "\nNb Passagers : " + (reservation.getNbAdultes() + reservation.getNbEnfants()) + "\n"
-                            + "Adultes : "+ reservation.getNbAdultes() + "\n"
-                            + "Enfants : "+ reservation.getNbEnfants() + "\n";
-
-                if (reservation.getClasse() > 0) {
-                    ListeTablesBDD listeTablesBDD = new ListeTablesBDD(getApplicationContext());
-                    listeTablesBDD.open(getApplicationContext());
-                    recap += "Classe : " + ClasseBDD.getClasseNomwithID(reservation.getClasse());
-                    listeTablesBDD.close();
-                } else {
-                    recap += "Classe : ?";
-                }
-
-                alertDialog.setMessage(recap);
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
+                }).start();
                 alertDialog.show();
             }
         });
+
 
         // recherche des aéroports avec les données choisies puis passage à l'activité Recherche pour l'affichage des résultats
         accueilBTvalider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (accueilETdateDepart.getText().toString().length() > 0){
-                    reservation.setDateAller(accueilETdateDepart.getText().toString());
-                }
-                if (accueilETdateArrivee.getText().toString().length() > 0){
-                    reservation.setDateRetour(accueilETdateArrivee.getText().toString());
-                }
-                if (reservation.estComplete() && !reservation.getAitaDepart().equals(reservation.getAitaArrivee())){
-                    selectionListeVols();
-                    setDecalageHoraire();
-                    accueil_to_resultat.putExtra(Accueil.RESERVATION, reservation);
-                    accueil_to_resultat.putExtra(Accueil.LISTE_VOLS,(Parcelable)listeVols);
-                    if (reservation.isAllerRetour())
-                        accueil_to_resultat.putExtra(Accueil.LISTE_VOLS_RETOUR, (Parcelable)listeVolsRetour);
-                    startActivity(accueil_to_resultat);
-                } else {
-                    String messageErreur = "Veuillez renseigner les infos suivantes :";
-                    if (reservation.getAitaDepart() == null) messageErreur += "\nAéroport de départ";
-                    if (reservation.getAitaArrivee() == null) messageErreur += "\nAéroport d'arrivée";
-                    if (reservation.getDateAller() == null) messageErreur += "\nDate de départ";
-                    if (reservation.getDateRetour() == null && reservation.isAllerRetour()) messageErreur += "\nDate de retour";
-                    if (reservation.getNbAdultes() + reservation.getNbEnfants() == 0) messageErreur += "\nNombre de passagers";
-                    if (reservation.getClasse() == 0) messageErreur += "\nClasse";
-                    if (accueilETchoixDepart.getText().toString().equals(accueilETchoixArrivee.getText().toString())) {
-                        messageErreur += "\n\nVeuillez corriger l'erreur suivante:\nL'aéroport d'arrivée est identique\nà l'aéroport de départ";
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (accueilETdateDepart.getText().toString().length() > 0){
+                            reservation.setDateAller(accueilETdateDepart.getText().toString());
+                        }
+                        if (accueilETdateArrivee.getText().toString().length() > 0){
+                            reservation.setDateRetour(accueilETdateArrivee.getText().toString());
+                        }
+                        if (reservation.estComplete() && !reservation.getAitaDepart().equals(reservation.getAitaArrivee())){
+                            selectionListeVols();
+                            setDecalageHoraire();
+                            accueil_to_resultat.putExtra(Accueil.RESERVATION, reservation);
+                            accueil_to_resultat.putExtra(Accueil.LISTE_VOLS,(Parcelable)listeVols);
+                            if (reservation.isAllerRetour())
+                                accueil_to_resultat.putExtra(Accueil.LISTE_VOLS_RETOUR, (Parcelable)listeVolsRetour);
+                            startActivity(accueil_to_resultat);
+                        } else {
+                            messageErreur();
+                        }
                     }
-
-                    Toast.makeText(getApplicationContext(),messageErreur, Toast.LENGTH_LONG).show();
-                }
-
+                }).start();
             }
         });
+
 
         // sélection du nombre de passagers et de la classe -> ouverture de l'activité Passagers
         accueilNbPassagersButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                accueil_to_passagers.putExtra(Accueil.RESERVATION,reservation);
-                startActivityForResult(accueil_to_passagers, 2);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        accueil_to_passagers.putExtra(Accueil.RESERVATION,reservation);
+                        startActivityForResult(accueil_to_passagers, 2);
+                    }
+                }).start();
             }
         });
 
 
 
+
+    }
+
+    private void messageErreur() {
+        String messageErreur = "Veuillez renseigner les infos suivantes :";
+        if (reservation.getAitaDepart() == null) messageErreur += "\nAéroport de départ";
+        if (reservation.getAitaArrivee() == null) messageErreur += "\nAéroport d'arrivée";
+        if (reservation.getDateAller() == null) messageErreur += "\nDate de départ";
+        if (reservation.getDateRetour() == null && reservation.isAllerRetour()) messageErreur += "\nDate de retour";
+        if (reservation.getNbAdultes() + reservation.getNbEnfants() == 0) messageErreur += "\nNombre de passagers";
+        if (reservation.getClasse() == 0) messageErreur += "\nClasse";
+        if (accueilETchoixDepart.getText().toString().equals(accueilETchoixArrivee.getText().toString())) {
+            messageErreur += "\n\nVeuillez corriger l'erreur suivante:\nL'aéroport d'arrivée est identique\nà l'aéroport de départ";
+        }
+        Toast.makeText(getApplicationContext(),messageErreur, Toast.LENGTH_LONG).show();
+    }
+
+    private void afficherDetail(AlertDialog alertDialog) {
+        alertDialog.setTitle("Récapitulatif");
+        String recap = "";
+        if (reservation.getAitaDepart() != null) {
+            recap += reservation.getNomDepart() + " (" + reservation.getAitaDepart() + ")";
+        } else {
+            recap += "?";
+        }
+
+        if (reservation.getAitaArrivee() != null) {
+            recap += " \u2794 " + reservation.getNomArrivee() + " (" + reservation.getAitaArrivee() + ")";
+        } else {
+            recap += " \u2794 " + "?";
+        }
+
+        if (accueilETdateDepart.getText().toString().length() > 0) {
+            recap += "\nDate de départ : " + accueilETdateDepart.getText().toString();
+        } else {
+            recap += "\nDate de départ : ?";
+        }
+
+        if (accueilETdateArrivee.getText().toString().length() > 0) {
+            recap += "\nDate de retour : " + accueilETdateArrivee.getText().toString();
+        } else if (reservation.isAllerRetour()){
+            recap += "\nDate de retour : ?";
+        }
+
+        recap += "\nNb Passagers : " + (reservation.getNbAdultes() + reservation.getNbEnfants()) + "\n"
+                + "Adultes : "+ reservation.getNbAdultes() + "\n"
+                + "Enfants : "+ reservation.getNbEnfants() + "\n";
+
+        if (reservation.getClasse() > 0) {
+            ListeTablesBDD listeTablesBDD = new ListeTablesBDD(getApplicationContext());
+            listeTablesBDD.open(getApplicationContext());
+            recap += "Classe : " + ClasseBDD.getClasseNomwithID(reservation.getClasse());
+            listeTablesBDD.close();
+        } else {
+            recap += "Classe : ?";
+        }
+
+        alertDialog.setMessage(recap);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
     }
 
     private void setDecalageHoraire() {
