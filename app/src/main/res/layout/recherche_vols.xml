@@ -47,6 +47,7 @@
         android:text="Reserver"
         android:onClick="clickHandler"
         android:id="@+id/VolReserver"
+        android:background="@color/orange"
         android:layout_below="@+id/nbPassagersEtPrix"
         android:layout_alignParentEnd="true" />
 

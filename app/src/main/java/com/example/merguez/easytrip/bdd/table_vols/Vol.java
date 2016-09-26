@@ -31,6 +31,17 @@ public class Vol implements Parcelable{
         this.prix = prix;
     }
 
+    public Vol(Vol v){
+        this.id = v.id;
+        this.aeroportDepart = v.aeroportDepart;
+        this.aeroportArrivee = v.aeroportArrivee;
+        this.heureDepart = v.heureDepart;
+        this.heureArrivee = v.heureArrivee;
+        this.compagnieID = v.compagnieID;
+        this.classeID = v.classeID;
+        this.prix = v.prix;
+    }
+
     public int getId() {
         return id;
     }
