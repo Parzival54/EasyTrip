@@ -28,8 +28,10 @@
         <activity android:name=".affichage.Filtres" />
         <activity android:name=".affichage.PassagersMain" />
         <activity android:name=".affichage.Recepisse" />
-        <activity android:name=".affichage.Connexion"
-            android:label="@string/title_activity_connexion"/>
+        <activity
+            android:name=".affichage.Connexion"
+            android:label="@string/title_activity_connexion" />
+        <activity android:name=".affichage.ListeReservations"></activity>
     </application>
 
 </manifest>

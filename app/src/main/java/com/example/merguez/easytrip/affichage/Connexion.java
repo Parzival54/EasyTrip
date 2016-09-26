@@ -319,12 +319,10 @@ public class Connexion extends AppCompatActivity implements LoaderCallbacks<Curs
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-            final String CREDENTIALS[] = new String[1];
+            String credential = mEmail + ":" + mPassword;
             ListeTablesBDD listeTablesBDD = new ListeTablesBDD(getApplicationContext());
             listeTablesBDD.open(getApplicationContext());
-            String log = mEmail + ":" + UserBDD.UserExists(mEmail);
-            Log.w("TAG",log);
-            CREDENTIALS[0] = log;
+            preferences = getBaseContext().getSharedPreferences(Ouverture.PREFERENCES, MODE_PRIVATE);
 
             try {
                 // Simulate network access.
@@ -333,34 +331,42 @@ public class Connexion extends AppCompatActivity implements LoaderCallbacks<Curs
                 return false;
             }
 
-            for (String credential : CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
+            if (UserBDD.UserExists(mEmail)) {
 
-            // TODO: register the new account here.
-            User user = new User(mEmail,mPassword);
-            listeTablesBDD.open(getApplicationContext());
-            try {
-                Log.w("TAG", "user" + UserBDD.getUserIDithNom(mEmail));
-            } catch (Exception e) {
-                UserBDD.insertUser(user);
-                listeTablesBDD.close();
-
-                preferences = getBaseContext().getSharedPreferences(Ouverture.PREFERENCES, MODE_PRIVATE);
                 preferences
                         .edit()
                         .putBoolean(Ouverture.CONNECTE, true)
                         .putString(Ouverture.EMAIL, mEmail)
                         .putLong(Ouverture.DERNIERE_CONNEXION, System.currentTimeMillis())
                         .apply();
+
+
+                boolean isPasswordOK = mPassword.equals(UserBDD.getUserPasswordithNom(mEmail));
+                listeTablesBDD.close();
+                return isPasswordOK;
+
+            } else {
+
+                // TODO: register the new account here.
+                User user = new User(mEmail,mPassword);
+                listeTablesBDD.open(getApplicationContext());
+                UserBDD.insertUser(user);
+
+                preferences
+                        .edit()
+                        .putBoolean(Ouverture.CONNECTE, true)
+                        .putString(Ouverture.EMAIL, mEmail)
+                        .putLong(Ouverture.DERNIERE_CONNEXION, System.currentTimeMillis())
+                        .apply();
+
+
+                Log.w("TAG", "connecte" + preferences.getBoolean(Ouverture.CONNECTE, false));
+
+                listeTablesBDD.close();
+                return true;
+
             }
 
-
-            return true;
         }
 
         @Override

@@ -28,11 +28,12 @@ public class Recepisse extends AppCompatActivity {
     private static TextView recepisseTVidentifiant;
     private static Button recepisseBTconfirmer;
     private static String recap;
-    private static String trajet;
     private static String prix;
     private static String classe;
     private static String trajetAller;
+    private static String volAller;
     private static String trajetRetour = "";
+    private static String volRetour;
     private static SharedPreferences preferences;
     private static Intent recepisseToConnexion;
     private static Intent recepisseToOuverture;
@@ -57,26 +58,29 @@ public class Recepisse extends AppCompatActivity {
         }
 
         reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
-        trajet = getIntent().getExtras().getString("TRAJET");
+        trajetAller = getIntent().getExtras().getString("TRAJET_ALLER");
+        volAller = getIntent().getExtras().getString("VOL_ALLER_ID");
+        trajetRetour = getIntent().getExtras().getString("TRAJET_RETOUR");
+        volRetour = getIntent().getExtras().getString("VOL_RETOUR_ID");
         prix = getIntent().getExtras().getString("PRIX");
         classe = getIntent().getExtras().getString("CLASSE");
-        classe = classe.substring(classe.indexOf(":")+2);
+
 
         if (reservation.isAllerRetour()) {
-            trajetAller = "TRAJET ALLER : " + trajet + "\n"
+            trajetAller = "VOL ALLER : " + trajetAller + "\n"
                     + "DATE ALLER : " + reservation.toString().substring(reservation.toString().indexOf("dateAller") + 11,
                     reservation.toString().indexOf("dateAller") + 21) + "\n";
-            trajetRetour = "TRAJET RETOUR : " + trajet + "\n"
+            trajetRetour = "VOL RETOUR : " + trajetRetour + "\n"
                     + "DATE RETOUR : " + reservation.toString().substring(reservation.toString().indexOf("dateRetour") + 12,
                     reservation.toString().indexOf("dateRetour") + 22) + "\n";
         } else {
-            trajetAller = "TRAJET : " + trajet + "\n"
+            trajetAller = "VOL : " + trajetAller + "\n"
                     + "DATE : " + reservation.toString().substring(reservation.toString().indexOf("dateAller") + 11,
                     reservation.toString().indexOf("dateAller") + 21) + "\n";
         }
 
         recap = trajetAller + trajetRetour
-                + "PRIX : " + prix.substring(prix.indexOf("total:") + 7) + "\n"
+                + "PRIX : " + prix + "\n"
                 + "CLASSE : " + classe;
 
         recepisseTVrecap.setText(recap);
@@ -163,6 +167,7 @@ public class Recepisse extends AppCompatActivity {
                         .edit()
                         .putBoolean(Ouverture.VOL_ENREGISTRE, true)
                         .apply();
+                finish();
                 startActivity(recepisseToOuverture);
             }
         });
@@ -173,12 +178,11 @@ public class Recepisse extends AppCompatActivity {
         listeTablesBDD.open(getApplicationContext());
         int userID = UserBDD.getUserIDithNom(preferences.getString(Ouverture.EMAIL, null));
         enregistrement.setUserID(userID);
-        // TODO : récupérer volID
-        enregistrement.setVolAllerID(1);
-        enregistrement.setVolRetourID(1);
+        enregistrement.setVolAllerID(Integer.parseInt(volAller));
+        enregistrement.setVolRetourID(Integer.parseInt(volRetour));
         enregistrement.setNbAdultes(reservation.getNbAdultes());
         enregistrement.setNbEnfants(reservation.getNbEnfants());
-        enregistrement.setPrixTotal(Double.parseDouble(prix.substring(prix.indexOf("total:") + 7, prix.indexOf("€") - 1)));
+        enregistrement.setPrixTotal(Double.parseDouble(prix.substring(0, prix.indexOf("€") - 1)));
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.FRENCH);
         String timestamp = format.format(System.currentTimeMillis());
         enregistrement.setDateCreation(timestamp);

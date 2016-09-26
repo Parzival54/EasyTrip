@@ -144,4 +144,32 @@ public class VolBDD extends ListeTablesBDD {
         //Suppression d'un livre de la BDD grâce à l'ID
         return ListeTablesBDD.getBdd().delete(TABLE_VOLS, null, null);
     }
+
+    public static Vol getVolWithID(int id) {
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_VOLS,new String[] {COL_ID, COL_AEROPORT_DEPART, COL_AEROPORT_ARRIVEE, COL_HEURE_DEPART, COL_HEURE_ARRIVEE,
+                COL_COMPAGNIE_ID, COL_CLASSE_ID, COL_PRIX},
+                COL_ID + " LIKE \"" + id + "\"", null, null, null, null);
+        return cursorToVol(cursor);
+    }
+
+
+
+    private static Vol cursorToVol(Cursor c) {
+        Vol vol = new Vol();
+        try {
+            c.moveToFirst();
+            vol = new Vol();
+            vol.setID(c.getInt(NUM_COL_ID));
+            vol.setAeroportDepart(c.getString(NUM_COL_AEROPORT_DEPART));
+            vol.setAeroportArrivee(c.getString(NUM_COL_AEROPORT_ARRIVEE));
+            vol.setHeureDepart(c.getString(NUM_COL_HEURE_DEPART));
+            vol.setHeureArrivee(c.getString(NUM_COL_HEURE_ARRIVEE));
+            vol.setCompagnieID(c.getInt(NUM_COL_COMPAGNIE_ID));
+            vol.setClasseID(c.getInt(NUM_COL_CLASSE_ID));
+            vol.setPrix(c.getInt(NUM_COL_PRIX));
+        } finally {
+            c.close();
+            return vol;
+        }
+    }
 }

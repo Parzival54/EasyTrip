@@ -2,8 +2,12 @@ package com.example.merguez.easytrip.bdd.table_enregistrements;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
 import com.example.merguez.easytrip.bdd.ListeTablesBDD;
+import com.example.merguez.easytrip.bdd.table_users.User;
+
+import java.util.ArrayList;
 
 /**
  * Created by grap on 23/09/2016.
@@ -113,6 +117,36 @@ public class EnregistrementBDD extends ListeTablesBDD {
         values.put(COL_DATE_CREATION, enregistrement.getDateCreation());
         //on insère l'objet dans la BDD via le ContentValues
         return ListeTablesBDD.getBdd().insert(TABLE_ENREGISTREMENTS, null, values);
+    }
+
+    public static ArrayList<Enregistrement> getEnregistrementsWithUserID(int userID) {
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_ENREGISTREMENTS,new String[] {COL_ID, COL_USERID, COL_VOL_ALLER_ID, COL_VOL_RETOUR_ID, COL_NB_ADULTES, COL_NB_ENFANTS,
+                COL_PRIX, COL_DATE_CREATION},
+                COL_USERID + " = " + userID, null, null, null, null);
+        return cursorToEnregistrement(cursor);
+    }
+
+
+
+    private static ArrayList<Enregistrement> cursorToEnregistrement(Cursor c) {
+        ArrayList<Enregistrement> listeEnregistrement = new ArrayList<>();
+        try {
+            while (c.moveToNext()){
+                Enregistrement enregistrement = new Enregistrement();
+                enregistrement.setId(c.getInt(NUM_COL_ID));
+                enregistrement.setUserID(c.getInt(NUM_COL_USERID));
+                enregistrement.setVolAllerID(c.getInt(NUM_COL_VOL_ALLER_ID));
+                enregistrement.setVolRetourID(c.getInt(NUM_COL_VOL_RETOUR_ID));
+                enregistrement.setNbAdultes(c.getInt(NUM_COL_NB_ADULTES));
+                enregistrement.setNbEnfants(c.getInt(NUM_COL_NB_ENFANTS));
+                enregistrement.setPrixTotal(c.getDouble(NUM_COL_PRIX));
+                enregistrement.setDateCreation(c.getString(NUM_COL_DATE_CREATION));
+                listeEnregistrement.add(enregistrement);
+            }
+        } finally {
+            c.close();
+            return listeEnregistrement;
+        }
     }
 
 }
