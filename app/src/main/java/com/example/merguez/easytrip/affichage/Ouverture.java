@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.merguez.easytrip.R;
+import com.example.merguez.easytrip.bdd.InsertionDonnees;
+import com.example.merguez.easytrip.bdd.ListeTablesBDD;
 
 
 public class Ouverture extends AppCompatActivity {

@@ -256,15 +256,11 @@ public class Accueil extends AppCompatActivity {
         accueilNbPassagersButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
                         accueil_to_passagers.putExtra(Accueil.RESERVATION,reservation);
                         startActivityForResult(accueil_to_passagers, 2);
                     }
-                }).start();
-            }
-        });
+                });
+
 
 
 

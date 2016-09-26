@@ -178,7 +178,7 @@ public class Recherche extends AppCompatActivity {
                     Log.w("TAG", heureArr);
                     double prixTotal = (double) ((int) (v.getPrix() * (nbAdulte + nbEnfants * 0.8) * 100)) / 100;
                     element = new HashMap<String, String>();
-                    element.put("Horaires", heureDep + " (" + depAita + ")  \u2794  " + heureArr.substring(0, 5) + " (" + arrAita + ") " + infoNbJoursDecalage);
+                    element.put("Horaires", "Vol " + v.getId() + ":  " + heureDep + " (" + depAita + ")  \u2794  " + heureArr.substring(0, 5) + " (" + arrAita + ") " + infoNbJoursDecalage);
                     element.put("nbPassagersEtPrix", libelleAdultes + libelleEnfants + "Prix total: " + prixTotal + " €");
                     element.put("classe", "Classe: " + libClasse);
                     listItem.add(element);
@@ -201,8 +201,8 @@ public class Recherche extends AppCompatActivity {
                     Log.w("TAG", heureArr);
                     double prixTotal = (double) ((int) ((aller.getPrix()+retour.getPrix()) * (nbAdulte + nbEnfants * 0.8)) * 100) / 100;
                     element = new HashMap<String, String>();
-                    element.put("Horaires", heureDep + " (" + depAita + ")  \u2794  " + heureArr.substring(0, 5) + " (" + arrAita + ") " + infoNbJoursDecalage
-                    + "\n" + heureDepRetour + " (" + arrAita + ")  \u2794  " + heureArrRet.substring(0, 5) + " (" + depAita + ") " + infoNbJoursDecalageRet);
+                    element.put("Horaires", numVol(aller.getId(),retour.getId())[0] + heureDep + " (" + depAita + ")  \u2794  " + heureArr.substring(0, 5) + " (" + arrAita + ") " + infoNbJoursDecalage
+                    + "\n" + numVol(aller.getId(),retour.getId())[1] + heureDepRetour + " (" + arrAita + ")  \u2794  " + heureArrRet.substring(0, 5) + " (" + depAita + ") " + infoNbJoursDecalageRet);
                     element.put("nbPassagersEtPrix", libelleAdultes + libelleEnfants + "Prix total: " + prixTotal + " €");
                     element.put("classe", "Classe: " + libClasse);
                     listItem.add(element);
@@ -267,5 +267,23 @@ public class Recherche extends AppCompatActivity {
         if (result < 0)
             result += y;
         return result;
+    }
+
+    private static String[] numVol(int allerId, int retourId) {
+        int longueurAller = (int)Math.log10(allerId);
+        int longueurRetour = (int)Math.log10(retourId);
+        int diff = longueurAller - longueurRetour;
+        String[] tab = {"Vol " + allerId + ": ","Vol " +retourId+": "};
+        if (diff<0) {
+            for (int i=0; i<-diff;i++) {
+                tab[0]+="  ";
+            }
+        }
+        else if(diff>0) {
+            for (int i=0; i<diff;i++) {
+                tab[1] += "  ";
+            }
+        }
+       return tab;
     }
 }

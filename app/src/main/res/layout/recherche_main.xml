@@ -27,6 +27,7 @@
         android:layout_height="306dp"
         android:id="@+id/volsElvListeVols"
         android:clickable="true"
+        android:background="#a0ccf5"
         android:layout_gravity="center_horizontal" />
 
     <Button
@@ -35,6 +36,8 @@
         android:text="@string/rechercheETRetour"
         android:background="@color/orange"
         android:id="@+id/volsBtnRetour"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
         android:layout_weight="0.06" />
 
     <Button
@@ -42,6 +45,8 @@
         android:layout_height="wrap_content"
         android:text="@string/rechercheETFiltrer"
         android:background="@color/orange"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
         android:id="@+id/volsBtnFiltrer" />
 
 </LinearLayout>

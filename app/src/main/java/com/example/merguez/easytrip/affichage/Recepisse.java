@@ -43,6 +43,7 @@ public class Recepisse extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recepisse_main);
+        listeTablesBDD = new ListeTablesBDD(getApplicationContext());
         recepisseTVrecap = (TextView)findViewById(R.id.recepisseTVrecap);
         recepisseTVidentifiant = (TextView)findViewById(R.id.recepisseTVidentifiant);
         recepisseBTconfirmer = (Button)findViewById(R.id.recepisseBTconfirmer);
@@ -59,10 +60,7 @@ public class Recepisse extends AppCompatActivity {
         trajet = getIntent().getExtras().getString("TRAJET");
         prix = getIntent().getExtras().getString("PRIX");
         classe = getIntent().getExtras().getString("CLASSE");
-        listeTablesBDD = new ListeTablesBDD(this);
-        listeTablesBDD.open(this);
-        classe = ClasseBDD.getClasseNomwithID(Integer.parseInt(classe.substring(classe.indexOf(":")+2)));
-        listeTablesBDD.close();
+        classe = classe.substring(classe.indexOf(":")+2);
 
         if (reservation.isAllerRetour()) {
             trajetAller = "TRAJET ALLER : " + trajet + "\n"
