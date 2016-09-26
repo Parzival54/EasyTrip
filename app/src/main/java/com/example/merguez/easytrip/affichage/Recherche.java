@@ -237,13 +237,37 @@ public class Recherche extends AppCompatActivity {
 
     public void clickHandler(View v){
         RelativeLayout viewParentRow = (RelativeLayout)v.getParent();
-        TextView trajet = (TextView)viewParentRow.getChildAt(0);
-        TextView prix = (TextView)viewParentRow.getChildAt(1);
-        TextView classe = (TextView)viewParentRow.getChildAt(2);
-        Button btnChild = (Button)viewParentRow.getChildAt(3);
-        rechercheToRecepisse.putExtra("TRAJET", trajet.getText().toString());
-        rechercheToRecepisse.putExtra("PRIX", prix.getText().toString());
-        rechercheToRecepisse.putExtra("CLASSE", classe.getText().toString());
+        TextView rechercheTVtrajet = (TextView)viewParentRow.getChildAt(0);
+        TextView rechercheTVprix = (TextView)viewParentRow.getChildAt(1);
+        TextView rechercheTVclasse = (TextView)viewParentRow.getChildAt(2);
+
+        String trajetAller = rechercheTVtrajet.getText().toString();
+        String volAllerID = rechercheTVtrajet.getText().toString();
+        String trajetRetour = "";
+        String volRetourID = "0";
+        String prix = rechercheTVprix.getText().toString();
+        String classe = rechercheTVclasse.getText().toString();
+
+        trajetAller = trajetAller.substring(trajetAller.indexOf("(") - 6, trajetAller.indexOf("(") + 21);
+        volAllerID = volAllerID.substring(4, volAllerID.indexOf(":"));
+
+        if (reservation.isAllerRetour()){
+            trajetRetour = rechercheTVtrajet.getText().toString();
+            trajetRetour = trajetRetour.substring(trajetRetour.indexOf("(", trajetRetour.indexOf("Vol",4)) - 6, trajetRetour.indexOf("(", trajetRetour.indexOf("Vol",4)) + 21);
+            volRetourID = rechercheTVtrajet.getText().toString();
+            volRetourID = volRetourID.substring(volRetourID.indexOf("Vol",4) + 4, volRetourID.indexOf(":", volRetourID.indexOf("Vol", 4)));
+        }
+
+        prix = prix.substring(prix.indexOf("total:") + 7);
+
+        classe = classe.substring(classe.indexOf(":")+2);
+
+        rechercheToRecepisse.putExtra("TRAJET_ALLER", trajetAller);
+        rechercheToRecepisse.putExtra("VOL_ALLER_ID", volAllerID);
+        rechercheToRecepisse.putExtra("TRAJET_RETOUR", trajetRetour);
+        rechercheToRecepisse.putExtra("VOL_RETOUR_ID", volRetourID);
+        rechercheToRecepisse.putExtra("PRIX", prix);
+        rechercheToRecepisse.putExtra("CLASSE", classe);
         rechercheToRecepisse.putExtra(Accueil.RESERVATION, reservation);
         startActivity(rechercheToRecepisse);
 

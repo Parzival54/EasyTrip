@@ -344,11 +344,11 @@ public class Accueil extends AppCompatActivity {
     // + récupération du nombre de passagers et de la classe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        reservation = (Reservation) data.getSerializableExtra(RESERVATION);
         switch (resultCode) {
             case 0:
                 break;
             case 1:
+                reservation = (Reservation) data.getSerializableExtra(RESERVATION);
             if (estDepart) {
                     String affichageDepart = reservation.getNomDepart() + " (" + reservation.getAitaDepart() + ")";
                     accueilETchoixDepart.setText(affichageDepart);

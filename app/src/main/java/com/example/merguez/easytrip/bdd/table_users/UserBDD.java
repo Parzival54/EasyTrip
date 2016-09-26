@@ -67,6 +67,18 @@ public class UserBDD extends ListeTablesBDD {
         return cursorToUser(cursor).getId();
     }
 
+    public static String getUserPasswordithNom(String email){
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_USER,new String[] {COL_ID, COL_EMAIL, COL_PASSWORD},
+                COL_EMAIL + " LIKE \'" + email + "\'", null, null, null, null);
+        return cursorToUser(cursor).getPassword();
+    }
+
+    public static boolean UserExists(String email){
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_USER,new String[] {COL_ID, COL_EMAIL, COL_PASSWORD},
+                COL_EMAIL + " LIKE \'" + email + "\'", null, null, null, null);
+        return cursorExists(cursor);
+    }
+
     private static User cursorToUser(Cursor c) {
         User user = new User();
         try {
@@ -77,6 +89,17 @@ public class UserBDD extends ListeTablesBDD {
         } finally {
             c.close();
             return user;
+        }
+    }
+
+    private static boolean cursorExists(Cursor c) {
+        c.getCount();
+        if (c.getCount()>0) {
+            c.close();
+            return true;
+        } else {
+            c.close();
+            return false;
         }
     }
 }

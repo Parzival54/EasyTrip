@@ -24,6 +24,7 @@ public class Ouverture extends AppCompatActivity {
     private static Button ouvertureBTconnexion;
     private static Intent ouvertureToConnexion;
     private static Intent ouvertureToAccueil;
+    private static Intent ouvertureToListeReservations;
     private static TextView ouvertureTVidentifiant;
     private static TextView ouvertureTVlisteReservations;
     final static String PREFERENCES = "PREFERENCES";
@@ -49,6 +50,7 @@ public class Ouverture extends AppCompatActivity {
         ouvertureTVlisteReservations.setClickable(true);
         ouvertureToAccueil = new Intent(Ouverture.this,Accueil.class);
         ouvertureToConnexion = new Intent(Ouverture.this,Connexion.class);
+        ouvertureToListeReservations = new Intent(Ouverture.this,ListeReservations.class);
 
         /*ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
         listeTablesBDD.open(this);
@@ -107,6 +109,7 @@ public class Ouverture extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO : afficher liste réservations
+                startActivity(ouvertureToListeReservations);
             }
         });
     }
