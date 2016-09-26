@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -318,6 +319,12 @@ public class Connexion extends AppCompatActivity implements LoaderCallbacks<Curs
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
+            final String CREDENTIALS[] = new String[1];
+            ListeTablesBDD listeTablesBDD = new ListeTablesBDD(getApplicationContext());
+            listeTablesBDD.open(getApplicationContext());
+            String log = mEmail + ":" + UserBDD.UserExists(mEmail);
+            Log.w("TAG",log);
+            CREDENTIALS[0] = log;
 
             try {
                 // Simulate network access.
@@ -326,7 +333,7 @@ public class Connexion extends AppCompatActivity implements LoaderCallbacks<Curs
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
+            for (String credential : CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.
@@ -336,18 +343,22 @@ public class Connexion extends AppCompatActivity implements LoaderCallbacks<Curs
 
             // TODO: register the new account here.
             User user = new User(mEmail,mPassword);
-            ListeTablesBDD listeTablesBDD = new ListeTablesBDD(getApplicationContext());
             listeTablesBDD.open(getApplicationContext());
-            UserBDD.insertUser(user);
-            listeTablesBDD.close();
+            try {
+                Log.w("TAG", "user" + UserBDD.getUserIDithNom(mEmail));
+            } catch (Exception e) {
+                UserBDD.insertUser(user);
+                listeTablesBDD.close();
 
-            preferences = getBaseContext().getSharedPreferences(Ouverture.PREFERENCES, MODE_PRIVATE);
-            preferences
-                    .edit()
-                    .putBoolean(Ouverture.CONNECTE, true)
-                    .putString(Ouverture.EMAIL, mEmail)
-                    .putLong(Ouverture.DERNIERE_CONNEXION, System.currentTimeMillis())
-                    .apply();
+                preferences = getBaseContext().getSharedPreferences(Ouverture.PREFERENCES, MODE_PRIVATE);
+                preferences
+                        .edit()
+                        .putBoolean(Ouverture.CONNECTE, true)
+                        .putString(Ouverture.EMAIL, mEmail)
+                        .putLong(Ouverture.DERNIERE_CONNEXION, System.currentTimeMillis())
+                        .apply();
+            }
+
 
             return true;
         }
