@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.merguez.easytrip.R;
 import com.example.merguez.easytrip.bdd.RequetesBDD;
+import com.example.merguez.easytrip.bdd.table_classes.ClasseBDD;
 import com.example.merguez.easytrip.bdd.table_vols.Vol;
 import com.example.merguez.easytrip.bdd.table_vols.VolList;
 
@@ -162,6 +163,10 @@ public class Recherche extends AppCompatActivity {
                 libelleEnfants = "1 enfant    ";
             if (nbEnfants > 1)
                 libelleEnfants = nbEnfants + " enfants    ";
+            ClasseBDD classeBDD = new ClasseBDD(getApplicationContext());
+            classeBDD.open(getApplicationContext());
+            String libClasse = ClasseBDD.getClasseNomwithID(reservation.getClasse());
+            classeBDD.close();
             if (!reservation.isAllerRetour()) {
                 for (int i = 0; i < nbVols; i++) {
                     Vol v = listeVolsFiltree.get(i);
@@ -175,12 +180,12 @@ public class Recherche extends AppCompatActivity {
                     element = new HashMap<String, String>();
                     element.put("Horaires", heureDep + " (" + depAita + ")  \u2794  " + heureArr.substring(0, 5) + " (" + arrAita + ") " + infoNbJoursDecalage);
                     element.put("nbPassagersEtPrix", libelleAdultes + libelleEnfants + "Prix total: " + prixTotal + " €");
-                    element.put("classe", "Classe: " + reservation.getClasse());
+                    element.put("classe", "Classe: " + libClasse);
                     listItem.add(element);
                 }
             }
                 else  {
-                for (int i = 0; i < nbVols; i+=2) {
+                for (int i = 0; i < nbVols-1; i+=2) {
                     Vol aller = listeVolsFiltree.get(i);
                     String heureDep = aller.getHeureDepart();
                     Vol retour = listeVolsFiltree.get(i+1);
@@ -199,7 +204,7 @@ public class Recherche extends AppCompatActivity {
                     element.put("Horaires", heureDep + " (" + depAita + ")  \u2794  " + heureArr.substring(0, 5) + " (" + arrAita + ") " + infoNbJoursDecalage
                     + "\n" + heureDepRetour + " (" + arrAita + ")  \u2794  " + heureArrRet.substring(0, 5) + " (" + depAita + ") " + infoNbJoursDecalageRet);
                     element.put("nbPassagersEtPrix", libelleAdultes + libelleEnfants + "Prix total: " + prixTotal + " €");
-                    element.put("classe", "Classe: " + reservation.getClasse());
+                    element.put("classe", "Classe: " + libClasse);
                     listItem.add(element);
                 }
             }

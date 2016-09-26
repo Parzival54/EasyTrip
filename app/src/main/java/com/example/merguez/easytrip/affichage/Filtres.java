@@ -12,7 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
+
 import com.example.merguez.easytrip.R;
 import com.example.merguez.easytrip.bdd.table_vols.Vol;
 import com.example.merguez.easytrip.bdd.table_vols.VolList;
@@ -26,6 +26,7 @@ public class Filtres extends Activity {
     private Spinner filtreSpHeureDepMin, filtreSpHeureArrMax, filtreSpHeureDepMinRet, filtreSpHeureArrMaxRet;
     private EditText filtreEdtPrixMax;
     private Button filtrebtnFiltrer;
+    private Button filtrebtnRetour;
     private static Reservation reservation;
     private static VolList listeVols;
     private static VolList listeVolsRetour;
@@ -36,13 +37,13 @@ public class Filtres extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filtres);
+        setContentView(R.layout.filtres_main);
         listeVols = (VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS);
         reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
         if (reservation.isAllerRetour())
         listeVolsRetour =(VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS_RETOUR);
         listeVolsFiltree = new VolList();
-       // listeVolsFiltreeRetour = new VolList();
+        //listeVolsFiltreeRetour = new VolList();
         filtreCbHeureDepMin = (CheckBox) findViewById(R.id.filtreCbHeureDepMin);
         filtreCbHeureArrMax = (CheckBox) findViewById(R.id.filtreCbHeureArrMax);
         filtreCbHeureDepMinRet = (CheckBox) findViewById(R.id.filtreCbHeureDepMinRet);
@@ -53,6 +54,7 @@ public class Filtres extends Activity {
         filtreSpHeureDepMinRet = (Spinner) findViewById(R.id.filtreSpHeureDepMinRet);
         filtreSpHeureArrMaxRet = (Spinner) findViewById(R.id.filtreSpHeureArrMaxRet);
         filtreEdtPrixMax = (EditText) findViewById(R.id.filtreEdtPrixMax);
+        filtrebtnRetour = (Button) findViewById(R.id.filtrebtnRetour);
         filtresToRecherche = new Intent(Filtres.this, Recherche.class);
         addListenerOnButton();
         addItemsOnSpinners();
@@ -63,6 +65,10 @@ public class Filtres extends Activity {
         filtreSpHeureArrMax.setClickable(false);
         filtreEdtPrixMax.setEnabled(false);
         filtreEdtPrixMax.setClickable(false);
+        filtreSpHeureArrMaxRet.setEnabled(false);
+        filtreSpHeureArrMaxRet.setClickable(false);
+        filtreSpHeureDepMinRet.setEnabled(false);
+        filtreSpHeureDepMinRet.setClickable(false);
 
         filtreCbHeureDepMin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -133,6 +139,13 @@ public class Filtres extends Activity {
                 }
             }
         });
+
+        filtrebtnRetour.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     public void addItemsOnSpinners() {
         List<String> listeHoraires = new ArrayList<String>();
@@ -172,13 +185,14 @@ public class Filtres extends Activity {
                 }
                 else {
                     for (int i = 0; i < listeVols.size(); i++) {
-                        Vol aller = listeVols.get(i);
+                        Vol aller = new Vol(listeVols.get(i));
                         for (int j = 0; j < listeVolsRetour.size(); j++) {
-                            Vol retour = listeVolsRetour.get(j);
+                            Vol retour = new Vol(listeVolsRetour.get(j));
                             if (horairesValidesAller(aller) && horairesValidesRetour(retour)
-                            &&(prixValideAllerRetour(aller, retour, nbAdultes, nbEnfants)))
+                            &&(prixValideAllerRetour(aller, retour, nbAdultes, nbEnfants))) {
                                 listeVolsFiltree.add(listeVols.get(i));
                                 listeVolsFiltree.add(listeVolsRetour.get(j));
+                            }
                         }
                     }
                     filtresToRecherche.putExtra(Accueil.LISTE_VOLS_RETOUR, (Parcelable)listeVolsRetour);
@@ -192,23 +206,23 @@ public class Filtres extends Activity {
     }
 
     private boolean horairesValidesAller(Vol v) {
-        return ((!(filtreCbHeureDepMin.isChecked())||(stringHeureToInt(filtreSpHeureDepMin.getSelectedItem().toString())<stringHeureToInt(v.getHeureDepart())))
-                &&(!(filtreCbHeureArrMax.isChecked())||(stringHeureToInt(filtreSpHeureArrMax.getSelectedItem().toString())>Recherche.mod(stringHeureToInt(v.getHeureArrivee())+reservation.getDecalageHoraire()*100,2400))));
+        return ((!(filtreCbHeureDepMin.isChecked()))||(stringHeureToInt(filtreSpHeureDepMin.getSelectedItem().toString())<stringHeureToInt(v.getHeureDepart())))
+                &&((!(filtreCbHeureArrMax.isChecked()))||(stringHeureToInt(filtreSpHeureArrMax.getSelectedItem().toString())>Recherche.mod(stringHeureToInt(v.getHeureArrivee())+reservation.getDecalageHoraire()*100,2400)));
     }
 
     private boolean horairesValidesRetour(Vol v){
-        return ((!(filtreCbHeureDepMinRet.isChecked())||(stringHeureToInt(filtreSpHeureDepMinRet.getSelectedItem().toString())<stringHeureToInt(v.getHeureDepart())))
-                &&(!(filtreCbHeureArrMaxRet.isChecked())||(stringHeureToInt(filtreSpHeureArrMaxRet.getSelectedItem().toString())>Recherche.mod(stringHeureToInt(v.getHeureArrivee())-reservation.getDecalageHoraire()*100,2400))));
+        return ((!(filtreCbHeureDepMinRet.isChecked()))||(stringHeureToInt(filtreSpHeureDepMinRet.getSelectedItem().toString())<stringHeureToInt(v.getHeureDepart())))
+                &&((!(filtreCbHeureArrMaxRet.isChecked()))||(stringHeureToInt(filtreSpHeureArrMaxRet.getSelectedItem().toString())>Recherche.mod(stringHeureToInt(v.getHeureArrivee())-reservation.getDecalageHoraire()*100,2400)));
     }
 
     private boolean prixValideAllerSimple(Vol v, int nbAdultes, int nbEnfants) {
-        return (!(filtreCbPrixMax.isChecked())
+        return ((!(filtreCbPrixMax.isChecked()))
                 ||(Double.parseDouble(filtreEdtPrixMax.getText().toString())> prixTotal(v.getPrix(),nbAdultes,nbEnfants)));
     }
 
     private boolean prixValideAllerRetour(Vol aller, Vol retour, int nbAdultes, int nbEnfants) {
-        return (!(filtreCbPrixMax.isChecked())
-                ||(Double.parseDouble(filtreEdtPrixMax.getText().toString())> prixTotal(aller.getPrix()+retour.getPrix(),nbAdultes,nbEnfants)));
+        return (!(filtreCbPrixMax.isChecked()))
+                ||(Double.parseDouble(filtreEdtPrixMax.getText().toString())> prixTotal(aller.getPrix()+retour.getPrix(),nbAdultes,nbEnfants));
     }
 
     private double prixTotal(double prix, int nbAdultes, int nbEnfants) {
