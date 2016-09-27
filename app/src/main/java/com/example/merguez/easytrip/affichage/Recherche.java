@@ -324,9 +324,7 @@ public class Recherche extends AppCompatActivity {
     }
 
     private static String[] numVol(int allerId, int retourId) {
-        int longueurAller = (int)Math.log10(allerId);
-        int longueurRetour = (int)Math.log10(retourId);
-        int diff = longueurAller - longueurRetour;
+        int diff = (int)Math.log10(allerId/retourId);
         String[] tab = {"Vol " + allerId + ": ","Vol " +retourId+": "};
         if (diff<0) {
             for (int i=0; i<-diff;i++) {
