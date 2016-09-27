@@ -151,9 +151,11 @@ public class Filtres extends Activity {
         List<String> listeHoraires = new ArrayList<String>();
         for (int i = 4; i<10;i++){
             listeHoraires.add("0"+i+":00");
+            listeHoraires.add("0"+i+":30");
         }
         for (int i = 10; i<24;i++) {
             listeHoraires.add(i + ":00");
+            listeHoraires.add(i + ":30");
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listeHoraires);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

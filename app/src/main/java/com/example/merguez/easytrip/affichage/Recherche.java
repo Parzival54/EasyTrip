@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -17,14 +18,15 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.example.merguez.easytrip.R;
-import com.example.merguez.easytrip.bdd.RequetesBDD;
 import com.example.merguez.easytrip.bdd.table_classes.ClasseBDD;
+import com.example.merguez.easytrip.bdd.table_vols.HeuresArriveeComparator;
+import com.example.merguez.easytrip.bdd.table_vols.HeuresDepartComparator;
+import com.example.merguez.easytrip.bdd.table_vols.PrixComparator;
 import com.example.merguez.easytrip.bdd.table_vols.Vol;
 import com.example.merguez.easytrip.bdd.table_vols.VolList;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -126,13 +128,43 @@ public class Recherche extends AppCompatActivity {
 
         spinner = (Spinner) findViewById(R.id.spinner);
         List<String> listeTris = new ArrayList<String>();
-        listeTris.add("par prix croissant");
-        listeTris.add("par heure de départ");
-        listeTris.add("par heure d'arrivée");
-        listeTris.add("par durée du vol");
+        if (!reservation.isAllerRetour()) {
+            listeTris.add("par prix");
+            listeTris.add("par heure de départ");
+            listeTris.add("par heure d'arrivée");
+        }
+        else {
+            listeTris.add("par heure de départ (aller)");
+            listeTris.add("par heure d'arrivée (aller)");
+        }
         ArrayAdapter<String> choixTris = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listeTris);
         choixTris.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(choixTris);
+
+    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+      {
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+        {
+            String selectedItem = parent.getItemAtPosition(position).toString();
+            switch (selectedItem) {
+                case "par heure de départ":
+                case "par heure de départ (aller)":
+                    Collections.sort(listeVols, new HeuresDepartComparator());
+                    break;
+                case "par heure d'arrivée":
+                case "par heure d'arrivée (aller)":
+                    Collections.sort(listeVols, new HeuresArriveeComparator());
+                    break;
+                case "par prix":
+                    Collections.sort(listeVols, new PrixComparator());
+                    break;
+            }
+            selectionListeFiltree();
+            remplirListView();
+        } // to close the onItemSelected
+    public void onNothingSelected(AdapterView<?> parent) {
+       }
+      });
     }
 
     private void remplirListView() {
@@ -143,7 +175,6 @@ public class Recherche extends AppCompatActivity {
         {
             element = new HashMap<String, String>();
             element.put("Horaires","Il n'y a aucun vol correspondant à votre recherche.");
-            //volsBtnVol.setVisibility(View.INVISIBLE);
             listItem.add(element);
         }
         else {
@@ -210,10 +241,6 @@ public class Recherche extends AppCompatActivity {
             }
         }
 
-       /* ArrayAdapter<String> itemsAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, listItem);
-        //On attribut à notre listView l'adapter que l'on vient de créer
-        volsElvListeVols.setAdapter(itemsAdapter);*/
         adapter = new SimpleAdapter(this, listItem, R.layout.recherche_vols, new String[]{"Horaires", "nbPassagersEtPrix", "classe"}, new int[]{R.id.horaires, R.id.nbPassagersEtPrix, R.id.classe});
         vue.setAdapter(adapter);
     }
