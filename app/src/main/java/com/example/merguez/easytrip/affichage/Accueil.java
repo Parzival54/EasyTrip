@@ -1,6 +1,5 @@
 package com.example.merguez.easytrip.affichage;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,18 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.merguez.easytrip.R;
-import com.example.merguez.easytrip.bdd.InsertionDonnees;
 import com.example.merguez.easytrip.bdd.ListeTablesBDD;
 import com.example.merguez.easytrip.bdd.RequetesBDD;
 import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
 import com.example.merguez.easytrip.bdd.table_classes.ClasseBDD;
-import com.example.merguez.easytrip.bdd.table_users.User;
-import com.example.merguez.easytrip.bdd.table_vols.Vol;
 import com.example.merguez.easytrip.bdd.table_vols.VolList;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class Accueil extends AppCompatActivity {
     public static boolean accueilToRecherche = true;

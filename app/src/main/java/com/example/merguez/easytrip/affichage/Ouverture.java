@@ -52,7 +52,7 @@ public class Ouverture extends AppCompatActivity {
         ouvertureToConnexion = new Intent(Ouverture.this,Connexion.class);
         ouvertureToListeReservations = new Intent(Ouverture.this,ListeReservations.class);
 
-        /*ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
+       /* ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
         listeTablesBDD.open(this);
         InsertionDonnees.insertionDonnees(this);
         listeTablesBDD.close();*/
