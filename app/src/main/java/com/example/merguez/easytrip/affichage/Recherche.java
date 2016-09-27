@@ -79,8 +79,6 @@ public class Recherche extends AppCompatActivity {
                                           {
                                               @Override
                                               public void onClick(View v) {
-                                                  //ArrayList<Vol> listeNonFiltree = new ArrayList<Vol>();
-                                                  //listeNonFiltree = liste;
                                                   rechercheToFiltre.putExtra(Accueil.LISTE_VOLS, (Parcelable) listeVols);
                                                   if (reservation.isAllerRetour())
                                                   rechercheToFiltre.putExtra(Accueil.LISTE_VOLS_RETOUR, (Parcelable) listeVolsRetour);
@@ -159,9 +157,8 @@ public class Recherche extends AppCompatActivity {
                     Collections.sort(listeVols, new PrixComparator());
                     break;
             }
-            selectionListeFiltree();
             remplirListView();
-        } // to close the onItemSelected
+        }
     public void onNothingSelected(AdapterView<?> parent) {
        }
       });
@@ -300,7 +297,7 @@ public class Recherche extends AppCompatActivity {
 
     }
 
-    private static String ajouterTimeToHeure(String heure, int time) {
+    public static String ajouterTimeToHeure(String heure, int time) {
         int nbHeures = Integer.parseInt(heure.substring(0,2))+time;
         int reste = mod(nbHeures,24);
         int quotient = (nbHeures - reste)/24;

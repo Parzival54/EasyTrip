@@ -10,10 +10,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +25,6 @@ import com.example.merguez.easytrip.bdd.RequetesBDD;
 import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
 import com.example.merguez.easytrip.bdd.table_classes.ClasseBDD;
 import com.example.merguez.easytrip.bdd.table_vols.VolList;
-
 
 public class Accueil extends AppCompatActivity {
     public static boolean accueilToRecherche = true;
@@ -40,8 +41,8 @@ public class Accueil extends AppCompatActivity {
     private static Intent accueil_to_lieu;
     private static Intent accueil_to_resultat;
     private static Intent accueil_to_passagers;
-   // private static Spinner accueilSPclasse;
-   // private static ArrayAdapter<CharSequence> classeAdapter;
+    private static Spinner accueilSPclasse;
+    private static ArrayAdapter<CharSequence> classeAdapter;
     final static String DEPART_OU_ARRIVEE = "depart ou arrivee";
     final static String RESERVATION = "reservation";
     private static Reservation reservation ;
