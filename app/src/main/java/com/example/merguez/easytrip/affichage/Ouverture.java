@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.merguez.easytrip.R;
 import com.example.merguez.easytrip.bdd.InsertionDonnees;
 import com.example.merguez.easytrip.bdd.ListeTablesBDD;
+import com.example.merguez.easytrip.bdd.table_aeroports.AeroportBDD;
 
 
 public class Ouverture extends AppCompatActivity {
@@ -52,10 +53,14 @@ public class Ouverture extends AppCompatActivity {
         ouvertureToConnexion = new Intent(Ouverture.this,Connexion.class);
         ouvertureToListeReservations = new Intent(Ouverture.this,ListeReservations.class);
 
-       /* ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
+
+
+        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
         listeTablesBDD.open(this);
-        InsertionDonnees.insertionDonnees(this);
-        listeTablesBDD.close();*/
+        if (!AeroportBDD.AeroportBDDExists()){
+            InsertionDonnees.insertionDonnees(this);
+        }
+        listeTablesBDD.close();
 
         final AlertDialog connexion = new AlertDialog.Builder(Ouverture.this).create();
         verificationConnexion(connexion);

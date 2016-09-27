@@ -202,4 +202,21 @@ public class AeroportBDD extends ListeTablesBDD {
         }
     }
 
+    public static boolean AeroportBDDExists() {
+        Cursor cursor = ListeTablesBDD.getBdd().query(TABLE_AEROPORTS,new String[] {COL_ID, COL_AITA, COL_NOM, COL_VILLE, COL_PAYS, COL_LATITUDE, COL_LONGITUDE, COL_TIMEZONE},
+                null, null, null, null, null);
+        return cursorExists(cursor);
+    }
+
+    private static boolean cursorExists(Cursor c) {
+        c.getCount();
+        if (c.getCount()>0) {
+            c.close();
+            return true;
+        } else {
+            c.close();
+            return false;
+        }
+    }
+
 }
