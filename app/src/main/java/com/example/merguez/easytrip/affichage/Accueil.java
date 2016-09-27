@@ -236,7 +236,13 @@ public class Accueil extends AppCompatActivity {
                                 accueil_to_resultat.putExtra(Accueil.LISTE_VOLS_RETOUR, (Parcelable)listeVolsRetour);
                             startActivity(accueil_to_resultat);
                         } else {
-                            messageErreur();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    messageErreur();
+                                }
+                            });
+
                         }
                     }
                 }).start();
@@ -350,6 +356,7 @@ public class Accueil extends AppCompatActivity {
                 }
                 break;
             case 2:
+                reservation = (Reservation) data.getSerializableExtra(RESERVATION);
                 break;
 
         }

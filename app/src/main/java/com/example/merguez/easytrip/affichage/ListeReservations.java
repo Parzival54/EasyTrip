@@ -60,6 +60,7 @@ public class ListeReservations extends AppCompatActivity {
             reservation = new HashMap<>();
             volAller = VolBDD.getVolWithID(enregistrement.getVolAllerID());
             String vol;
+            String passagers = "Nombre de passagers :";
 
             if (enregistrement.getVolRetourID()>0){
                 volRetour = VolBDD.getVolWithID(enregistrement.getVolRetourID());
@@ -70,8 +71,21 @@ public class ListeReservations extends AppCompatActivity {
             } else {
                 vol = "Vol : " + volAller.getAeroportDepart() + " \u2794 " + volAller.getAeroportArrivee();
             }
+
+            if (enregistrement.getNbAdultes() > 1){
+                passagers +=  "\n" + enregistrement.getNbAdultes() + " adultes";
+            } else if (enregistrement.getNbAdultes() == 1){
+                passagers += "\n" + enregistrement.getNbAdultes() + " adulte";
+            }
+
+            if (enregistrement.getNbEnfants() > 1){
+                passagers += "\n" + enregistrement.getNbAdultes() + " enfants\n";
+            } else if (enregistrement.getNbEnfants() == 1){
+                passagers += "\n" + enregistrement.getNbEnfants() + " enfant\n";
+            }
+
             reservation.put("Vol", vol);
-            reservation.put("Passagers", "Nombre de passagers : " + enregistrement.getNbAdultes() + " adultes\n" + enregistrement.getNbEnfants() + " enfants");
+            reservation.put("Passagers", passagers);
             reservation.put("Prix", "Prix total : " + enregistrement.getPrixTotal() + " €");
             reservation.put("Classe", "Classe : " + ClasseBDD.getClasseNomwithID(volAller.getClasseID()));
             reservation.put("Creation", "Date de création : " + enregistrement.getDateCreation());

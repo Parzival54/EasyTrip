@@ -43,10 +43,10 @@ public class PassagersMain extends AppCompatActivity {
         passagerSPclasse=(Spinner) findViewById(R.id.passagerSPclasse);
         adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.passagerSPclasse,R.layout.passager_spinner);
         passagerSPclasse.setAdapter(adapter);
-        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
-        listeTablesBDD.open(this);
-        ClasseBDD.getClasseIDwithNom(passagerSPclasse.getSelectedItem().toString());
-        listeTablesBDD.close();
+//        ListeTablesBDD listeTablesBDD = new ListeTablesBDD(this);
+//        listeTablesBDD.open(this);
+//        reservation.setClasse(ClasseBDD.getClasseIDwithNom(passagerSPclasse.getSelectedItem().toString()));
+//        listeTablesBDD.close();
         retourAccueilBtn=(Button)findViewById(R.id.retourAccueilBtn);
 
         passagerAdulteditText.setOnClickListener(new View.OnClickListener() {

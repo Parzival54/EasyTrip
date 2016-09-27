@@ -58,8 +58,13 @@ public class Recherche extends AppCompatActivity {
         setContentView(R.layout.recherche_main);
         reservation = (Reservation) getIntent().getSerializableExtra(Accueil.RESERVATION);
         listeVols = (VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS);
-        if (reservation.isAllerRetour())
+        String libelleRecherche;
+        if (reservation.isAllerRetour()){
             listeVolsRetour= (VolList) getIntent().getParcelableExtra(Accueil.LISTE_VOLS_RETOUR);
+            libelleRecherche = "Selectionner votre vol en aller-retour";
+        } else libelleRecherche = "Selectionner votre vol en aller simple";
+
+
         selectionListeFiltree();
         volsBtnFiltrer = (Button) findViewById(R.id.volsBtnFiltrer);
         volsBtnRetour = (Button) findViewById(R.id.volsBtnRetour);
@@ -67,7 +72,7 @@ public class Recherche extends AppCompatActivity {
         volsElvListeVols = (ListView) findViewById(R.id.volsElvListeVols);
         volsBtnVol = (Button) findViewById(R.id.VolReserver);
         addItemsOnSpinner();
-        volsTvSelection.setText("Selectionner votre vol en aller simple");
+        volsTvSelection.setText(libelleRecherche);
         volsTvSelection.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
         rechercheToFiltre = new Intent(Recherche.this, Filtres.class);
         rechercheToAccueil = new Intent(Recherche.this, Accueil.class);
@@ -116,6 +121,7 @@ public class Recherche extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Accueil.accueilToRecherche = true;
+                reservation = new Reservation();
                 startActivity(rechercheToAccueil);
             }
         });
